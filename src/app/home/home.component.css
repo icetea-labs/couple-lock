@@ -1,0 +1,16 @@
+
+.container-fluid{
+    background-image:url('../../assets/image/image/10.jpg');
+    height: 800px;
+}
+
+.row{
+    min-height: 400px;
+    border: solid red 1px;
+}
+
+.col-md-6{
+    border: solid black 1px;
+}
+
+

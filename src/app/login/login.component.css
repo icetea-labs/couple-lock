@@ -1,0 +1,31 @@
+form{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 300px;
+    height: 300px;
+}
+h1{
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+    float: center;
+}
+
+span{
+    display: block;
+    border: solid steelblue 1px;
+    width: 60px;
+    float: right;
+}
+
+.login-page{
+    height: 500px;
+    background-image: url('../../assets/image/image/27.jpg');
+}
+
