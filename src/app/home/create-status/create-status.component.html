@@ -1,4 +1,4 @@
-<div  class="modal-dialog">
+<div class="modal-dialog">
   <div class="modal-content">
 
     <div class="modal-header">
@@ -23,17 +23,7 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary" (click) = "open()" data-target="#check-value" data-toggle="modal">Save</button>
+      <button type="button" class="btn btn-primary" (click)="open()">Save</button>
     </div>
-  </div>
-</div>
-<div>
-  <div class="modal" id="check-value" [hidden] = "modalContent" >
-    <input [(ngModel)]="bodyText" />
-    <p>
-      Success
-      <button type="button" data-dismiss="modal" (click) = "close()">close &times;</button>
-    </p>
-
   </div>
 </div>

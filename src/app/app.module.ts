@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-// import {MetaModule} from './meta/meta.module';
+import {MetaModule} from './meta/meta.module';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -12,7 +12,8 @@ import {
   MatCardModule,
   MatFormFieldModule,
   MatInputModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatSnackBarModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
@@ -21,6 +22,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { CreateStatusComponent } from './home/create-status/create-status.component';
 import { ModalService } from './service/modal.service';
+import { EthcontractService } from './service/ethcontract.service';
+import { TestSenderComponent } from './meta/test-sender/test-sender.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import { ModalService } from './service/modal.service';
     ViewComponent,
     PromiseComponent,
     LoginComponent,
-    CreateStatusComponent
+    CreateStatusComponent,
+    TestSenderComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -38,13 +42,17 @@ import { ModalService } from './service/modal.service';
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
+    MatSnackBarModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    // MetaModule,
-    AppRoutingModule
+    MetaModule,
+    AppRoutingModule,
   ],
-  providers: [ModalService],
+  providers: [
+    ModalService,
+    EthcontractService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
