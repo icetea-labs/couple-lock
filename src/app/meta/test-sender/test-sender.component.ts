@@ -4,7 +4,7 @@ import { EthcontractService } from '../../service/ethcontract.service';
 @Component({
   selector: 'app-test-sender',
   templateUrl: './test-sender.component.html',
-  styleUrls: ['./test-sender.component.css']
+  styleUrls: ['./test-sender.component.scss']
 })
 export class TestSenderComponent implements OnInit {
 

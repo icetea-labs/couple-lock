@@ -1,14 +1,35 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <title>AngularTruffleBox</title>
+  <title>Lock-love</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- <link href="https://trada.tech/assets/img/logo.svg" rel="svg"> -->
+  <script>
+    // function hideLoader() {
+    //   $('#loading').hide();
+    // }
+    // $(window).ready(hideLoader);
+    window.onload = function() 
+    {
+        //display loader on page load 
+        $('.loader').fadeOut();
+    }
+  </script>
+  
+
 </head>
+
 <body>
-  <app-root></app-root>
+
+  <app-root>
+    <img id="loading" />
+  </app-root>
+
 </body>
+
 </html>

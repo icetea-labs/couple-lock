@@ -3,22 +3,28 @@
   <div class="row">
     <div class="col-md-9">
       <div class="row">
-        View All
-        <div>
-
+        <div class="content-inside">
+          <label for="" class="label-view">View</label>
+          <div *ngFor=" let index of Views1" class="view-board">
+            {{index.id}}
+          </div>
         </div>
       </div>
-
+      <!-- View your pending -->
       <div class="row">
         <div class="col-md-6">
           <div class="row">
-            View yourselt
+            <div class="content-inside">
+              View yourselt
+            </div>
           </div>
         </div>
-
+        <!-- View Pending -->
         <div class="col-md-6">
           <div class="row">
-            Pending
+            <div class="content-inside">
+              Pending
+            </div>
           </div>
         </div>
 
@@ -27,19 +33,21 @@
     <!-- bar -->
     <div class="col-md-3">
       <!-- Create New Status -->
-      <div class="create-new-status">
+      <div class="content-inside">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
+        <button type="button" class="btn-create" data-toggle="modal" data-target="#modelId">
           Create new Status
         </button>
 
         <!-- Modal -->
         <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-         <app-create-status></app-create-status>
+          <app-create-status></app-create-status>
         </div>
       </div>
       <!-- Function -->
-      Bar
+      <div class="content-inside">
+        <img uer="" alt="" id="myavatar">
+      </div>
     </div>
   </div>
 </div>

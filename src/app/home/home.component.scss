@@ -1,0 +1,42 @@
+
+.container-fluid{
+    background-image:url('../../assets/image/image/10.jpg');
+    height: 900px;
+   
+}
+
+.content-inside{
+    position: relative;
+    min-height: 400px;
+    background-color: white;
+    margin: 5px;
+    border{
+        color: black;
+        size: 2px;
+    }
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+    .view-board{
+        background-color: cadetblue;
+        color: #003322;
+        border: {
+           border-radius: 5px;
+        }
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+        margin: 5px;
+        padding: 10px;
+    }
+    .label-view{
+        border-radius: 5px;
+        background-color: gray;
+        margin-left: 10px;
+        padding: 10px;
+    }
+}
+    
+.btn-create{
+    background-color: aquamarine;
+    font-family: Arial, Helvetica, sans-serif;
+    float: center;
+}

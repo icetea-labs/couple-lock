@@ -8,7 +8,7 @@ const metacoin_artifacts = require('../../../../build/contracts/MetaCoin.json');
 @Component({
   selector: 'app-meta-sender',
   templateUrl: './meta-sender.component.html',
-  styleUrls: ['./meta-sender.component.css']
+  styleUrls: ['./meta-sender.component.scss']
 })
 export class MetaSenderComponent implements OnInit {
 
@@ -31,6 +31,8 @@ export class MetaSenderComponent implements OnInit {
     console.log('OnInit: ' + this.web3Service);
     console.log(this);
     this.watchAccount();
+
+    // Artifact metacoin
     this.web3Service.artifactsToContract(metacoin_artifacts)
       .then((MetaCoinAbstraction) => {
         this.MetaCoin = MetaCoinAbstraction;
@@ -59,6 +61,8 @@ export class MetaSenderComponent implements OnInit {
     this.matSnackBar.open(status, null, {duration: 3000});
   }
 
+
+  // Send coin
   async sendCoin() {
     if (!this.MetaCoin) {
       this.setStatus('Metacoin is not loaded, unable to send transaction');
@@ -101,6 +105,8 @@ export class MetaSenderComponent implements OnInit {
       this.setStatus('Error getting balance; see log.');
     }
   }
+
+  // ser Amount and receive Toekn
 
   setAmount(e) {
     console.log('Setting amount: ' + e.target.value);
