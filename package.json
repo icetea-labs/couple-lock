@@ -1,5 +1,5 @@
 {
-  "name": "shoutboard",
+  "name": "locklove",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TradaAcademy/ShoutBoard.git"
+    "url": "git+https://github.com/TradaTech/vow.git"
   },
-  "author": "Trada Academy",
+  "author": "Trada Tech",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TradaAcademy/ShoutBoard/issues"
+    "url": "https://github.com/TradaTech/vow/issues"
   },
-  "homepage": "https://github.com/TradaAcademy/ShoutBoard#readme",
+  "homepage": "https://github.com/TradaTech/vow#readme",
   "devDependencies": {
     "clean-webpack-plugin": "^1.0.0",
     "css-loader": "^2.0.0",

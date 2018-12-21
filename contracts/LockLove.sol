@@ -1,5 +1,7 @@
 pragma solidity >=0.4.24;
 
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+
 
 interface IUserList {
     function isAddrRegistered(address _who) external view returns(bool);
@@ -48,7 +50,7 @@ contract LockLove {
         _;
     }
 
-    function setUserList(IUserList _userList) public {
+    function setUserList(IUserList _userList) public onlyOwner {
         userList = _userList;
     }
 
