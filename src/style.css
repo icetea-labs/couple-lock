@@ -1,0 +1,76 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #e6ecf0;
+}
+#wrapper {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+#shoutText, #toAddress {
+    width: calc(100% - 120px);
+    max-width: 360px;
+}
+.board {
+    background-color: #f8f8f8;
+}
+
+.card {
+    border-bottom: 10px solid #e6ecf0;
+    margin: 0;
+    line-height: 1.6;
+    /* display: flex; */
+}
+.top-message {
+  display: flex;
+  padding: 0.5rem 0.5rem 0rem 1rem;
+}
+.bottom-message {
+  display: block;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+}
+.meta {
+    font-size: 85%;
+    color: #828282;
+    display: block;
+}
+.meta a:link {
+  text-decoration: none;
+}
+.meta a:visited {
+  text-decoration: none;
+}
+.meta a:hover {
+  text-decoration: underline;
+}
+.meta a:active {
+  text-decoration: underline;
+}
+.content {
+  padding: 0rem 0.5rem 0.5rem 1rem;
+}
+.who {
+    font-weight: 600;
+    color: #3b5998;
+}
+/* .ago {
+} */
+.ago::before {
+    content: "\00b7";
+    padding: 0 0.3rem;
+}
+.input, .btn {
+    padding: 8px 12px;
+}
+#avatarImg {
+    height: 150px;
+    
+}
+.avatar img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
