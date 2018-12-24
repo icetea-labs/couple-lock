@@ -53,7 +53,7 @@ contract LockLove is Ownable {
     function setUserList(IUserList _userList) public onlyOwner {
         userList = _userList;
     }
-    
+
     // Send like pending.
     function clickLikePending(uint index, address _toAddress) public {
         //Add address liker to map
@@ -61,9 +61,10 @@ contract LockLove is Ownable {
     }
 
     // Send like pending.
-    function getLikePending(uint index) public view returns(address[] memory addLike) {
+    function getLikePending(uint index) public view returns(address[] memory addLike, uint indexValue) {
         //Add address liker to map
-        return lsLikePending[index];
+        addLike = lsLikePending[index];
+        indexValue = index;
     }
 
     // Send pending.

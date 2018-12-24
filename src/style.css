@@ -36,6 +36,9 @@ body {
     color: #828282;
     display: block;
 }
+.numlike {
+  font-size: 85%;
+}
 .meta a:link {
   text-decoration: none;
 }

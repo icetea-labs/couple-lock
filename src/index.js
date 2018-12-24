@@ -91,6 +91,7 @@ function processShout(item, callback,index) {
         if (err) {
             return callback(err, null);
         }
+        // console.log("data: ",data)
         var theItem = {
             avatar: makeAvatarUrl(data.fromUser.avatarHash, item.args.formAddress),
             formAddr: item.args.formAddress,
@@ -100,7 +101,7 @@ function processShout(item, callback,index) {
             when: data.when,
             ago: data.when.fromNow(),
             formPromise: item.args.formPromise,
-            like: data.numLike.getLike,
+            like: data.numLike,
             index: index
         };
         callback(null, theItem);
@@ -136,13 +137,13 @@ function getUser(addressUser, callback) {
 }
 
 function getLike(index,callback) {
-  app.instances.LockLove.getLikePending(index).then(function(value) {
-    console.log("getLike:",value);
-    callback(null,value.length+1);
-  }).catch(function(err) {
-      console.log(err);
-      callback(err, null);
-  })
+    app.instances.LockLove.getLikePending(index).then(function(value) {
+      //console.log("getLike:",value[0],"-",value[1].c[0],"-",value[0].length);
+      callback(null,value[0].length);
+    }).catch(function(err) {
+        console.log(err);
+        callback(err, null);
+    })
 }
 
 function loadOldShouts(instance) {
@@ -186,7 +187,7 @@ function showShout(item) {
 }
 
 function clickLike() {
-  var account = web3.eth.accounts[0];
+    var account = web3.eth.accounts[0];
     if (!account) {
         alert("Please sign-in MetaMask.");
         return;
