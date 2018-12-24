@@ -1,4 +1,4 @@
-# ShoutBoard
+# LockLove
 
 ## Setup
 1. clone repo
