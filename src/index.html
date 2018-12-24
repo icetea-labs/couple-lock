@@ -19,7 +19,7 @@
             <button type="submit" class="btn" onclick="" >&nbsp;&nbsp;Shout&nbsp;&nbsp;</button>
         </form>
         <br>
-        <section class="board"></section>
+        <section class="board" id="boardId"></section>
     </div>
 
     <script id="shoutTemplate" type="text/template">
@@ -40,7 +40,7 @@
                     <span>Like </span><span>#{like}</span>
                 </div>
                 <div class="buttonlike">
-                    <button class="button button-like">
+                    <button class="button button-like" data-id="#{index}" >
                         <i class="fa fa-heart"></i>
                         <span>Like</span>
                     </button>

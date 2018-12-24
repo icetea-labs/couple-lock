@@ -15,7 +15,8 @@ var app = {
     cache: {
         blockTime: {},
         usernames: {}
-    }
+    },
+    index:0
 }
 
 function init() {
@@ -72,7 +73,7 @@ function makeAvatarUrl(hash, account) {
     return "http://i.pravatar.cc/150?u=" + account;
 }
 
-function processShout(item, callback) {
+function processShout(item, callback,index) {
     async.parallel({
         when: function(next) {
             getTimestamp(item, next);
@@ -83,8 +84,8 @@ function processShout(item, callback) {
         toUser: function(next) {
             getUser(item.args.toAddress, next);
         },
-        liker: function(next) {
-          getUser(item.args.toAddress, next);
+        numLike: function(next) {
+          getLike(index,next);
         }
     }, function(err, data){
         if (err) {
@@ -99,8 +100,8 @@ function processShout(item, callback) {
             when: data.when,
             ago: data.when.fromNow(),
             formPromise: item.args.formPromise,
-            like: "1",
-            index: 1
+            like: data.numLike.getLike,
+            index: index
         };
         callback(null, theItem);
     })
@@ -134,12 +135,24 @@ function getUser(addressUser, callback) {
     })
 }
 
+function getLike(index,callback) {
+  app.instances.LockLove.getLikePending(index).then(function(value) {
+    console.log("getLike:",value);
+    callback(null,value.length+1);
+  }).catch(function(err) {
+      console.log(err);
+      callback(err, null);
+  })
+}
+
 function loadOldShouts(instance) {
     instance.NewPending({}, {fromBlock: 0 }).get(function (err, shouts) {
         var funcs = {};
+        console.log(shouts);
         _.each(shouts, function (item) {
             funcs[item.transactionHash] = function (next) {
-                processShout(item, next);
+                processShout(item, next,app.index);
+                app.index++;
             }
         });
         async.parallelLimit(funcs, 20, function (err, result) {
@@ -158,7 +171,8 @@ function loadOldShouts(instance) {
                 if (app.data.shouts[item.transactionHash]) return;
                 processShout(item, function(err, theItem) {
                     showShout(theItem);
-                })
+                },app.index)
+                app.index++;
             })
         })
     })
@@ -168,18 +182,18 @@ function showShout(item) {
     var node = createTag(applyTemplate(app.templates.shout_item, item));
     var board = document.querySelector(".board");
     board.insertBefore(node, board.firstChild);
+    node.getElementsByClassName("button-like")[0].addEventListener('click', clickLike, false);
 }
 
-function clickLike(index) {
-  alert("aa");
+function clickLike() {
   var account = web3.eth.accounts[0];
     if (!account) {
         alert("Please sign-in MetaMask.");
         return;
     }
-    alert("aa");
-    return;
-    app.instances.LockLove.sentLikePending(index,account, {
+    var index = this.getAttribute("data-id");
+    alert(index);
+    app.instances.LockLove.clickLikePending(index,account, {
         from: account,
         gas: 10000000, // gas limit
         gasPrice: '15000' // 15 gwei

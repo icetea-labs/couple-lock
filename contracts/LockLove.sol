@@ -9,7 +9,7 @@ interface IUserList {
 }
 
 
-contract LockLove {
+contract LockLove is Ownable {
 
     struct Promise {
         address formAddress;
@@ -53,6 +53,18 @@ contract LockLove {
     function setUserList(IUserList _userList) public onlyOwner {
         userList = _userList;
     }
+    
+    // Send like pending.
+    function clickLikePending(uint index, address _toAddress) public {
+        //Add address liker to map
+        lsLikePending[index].push(_toAddress);
+    }
+
+    // Send like pending.
+    function getLikePending(uint index) public view returns(address[] memory addLike) {
+        //Add address liker to map
+        return lsLikePending[index];
+    }
 
     // Send pending.
     function sentPending(address _toAddress, string memory _formPromise) public onlyRegiter {
@@ -67,12 +79,6 @@ contract LockLove {
 
         //Rase event new pedding request.
         emit NewPending(msg.sender, _formPromise, _toAddress);
-    }
-
-    // Send like pending.
-    function sentLikePending(uint index, address _toAddress) public {
-        //Add address liker to map
-        lsLikePending[index].push(_toAddress);
     }
 
     // Confirm Pending --> Change to promise
