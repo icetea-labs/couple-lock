@@ -24,6 +24,12 @@ contract LockLove is Ownable {
         //bool  isPrivate;
     }
 
+    struct Memory {
+        address who;
+        string  what;
+        string  image;
+    }
+
     struct Comment {
         address who;
         string  what;
@@ -31,6 +37,7 @@ contract LockLove is Ownable {
     }
 
     Propose[] public lsPropose;
+    Comment[] public lsMemory;
     Comment[] public lsComment;
     //
     string public emptyStr = "";
@@ -48,9 +55,13 @@ contract LockLove is Ownable {
     // For request: cover photo must be from memory.
     mapping (uint => string[]) public mpImage;
     event NewCoverImage(string fImg);
+    // map Propose => memory ID
+    mapping (uint => uint[]) public mpMemory;
+    event NewMemory(uint index, address indexed fAddress, string comment, string image);
     // map Propose => comment ID
-    mapping (uint => uint[]) public mpComment;
-    event NewComment(address indexed fAddress, string comment, string image);
+    mapping (uint => uint[]) public mpCommentMemory;
+    mapping (uint => uint[]) public mpCommentPropose;
+    event NewComment(uint typeComment, uint index, address indexed fAddress, string comment, string image);//typeComment: 0: lsPropose - 1: memory
 
     constructor (IUserList _userList) public {
         require(address(_userList) != address(0));
@@ -162,11 +173,64 @@ contract LockLove is Ownable {
         emit NewCoverImage(_imageHash);
     }
 
-    // ****** Add comment ****** 
-    // Change cover image form Memory image.
-    function addComment(uint _index, string memory _comment, string memory _image) public {
+    // ****** Memory ****** 
+    function addMemory(uint _index, string memory _comment, string memory _image) public {
+        uint id = lsMemory.push(Comment(msg.sender, _comment, _image)) - 1;
+        mpMemory[_index].push(id); 
+        emit NewMemory(_index, msg.sender, _comment, _image);
+    }
+
+    function getMemory(uint _index) public view returns (address[] who, string what, string imageHash) {
+        uint len = mpMemory[_index].length;
+        who = new address[](len);
+        bytes memory whatCollector;
+        bytes memory hashCollector;
+        for (uint i = 0; i < len; i++) {
+            who[i] = lsMemory[mpMemory[_index][i]].who;
+            whatCollector = abi.encodePacked(whatCollector, bytes(lsMemory[mpMemory[_index][i]].what), ";");//byte(0)
+            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[mpMemory[_index][i]].image), ";");//byte(0)
+        }
+        what = string(whatCollector);
+        imageHash = string(hashCollector);
+    }
+
+    // ****** Comment ****** 
+    function addComment(uint _type, uint _index, string memory _comment, string memory _image) public {
         uint id = lsComment.push(Comment(msg.sender, _comment, _image)) - 1;
-        mpComment[_index].push(id); 
-        emit NewComment(msg.sender, _comment, _image);
+        // Check comment for Propose(0) or Memory(1).
+        if (_type == 0) {
+            mpCommentPropose[_index].push(id);
+        }else {
+            mpCommentMemory[_index].push(id);
+        }
+        emit NewComment(_type, _index, msg.sender, _comment, _image);
+    }
+    
+    function getCommentPropose(uint _index) public view returns (address[] who, string what, string imageHash) {
+        uint len = mpCommentPropose[_index].length;
+        who = new address[](len);
+        bytes memory whatCollector;
+        bytes memory hashCollector;
+        for (uint i = 0; i < len; i++) {
+            who[i] = lsComment[mpCommentPropose[_index][i]].who;
+            whatCollector = abi.encodePacked(whatCollector, bytes(lsComment[mpCommentPropose[_index][i]].what), ";");//byte(0)
+            hashCollector = abi.encodePacked(hashCollector, bytes(lsComment[mpCommentPropose[_index][i]].image), ";");//byte(0)
+        }
+        what = string(whatCollector);
+        imageHash = string(hashCollector);
+    }
+
+    function getCommentMemory(uint _index) public view returns (address[] who, string what, string imageHash) {
+        uint len = mpCommentMemory[_index].length;
+        who = new address[](len);
+        bytes memory whatCollector;
+        bytes memory hashCollector;
+        for (uint i = 0; i < len; i++) {
+            who[i] = lsComment[mpCommentMemory[_index][i]].who;
+            whatCollector = abi.encodePacked(whatCollector, bytes(lsComment[mpCommentMemory[_index][i]].what), ";");//byte(0)
+            hashCollector = abi.encodePacked(hashCollector, bytes(lsComment[mpCommentMemory[_index][i]].image), ";");//byte(0)
+        }
+        what = string(whatCollector);
+        imageHash = string(hashCollector);
     }
 }

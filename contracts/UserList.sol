@@ -1,9 +1,12 @@
 pragma solidity >=0.4.24;
 
+
 contract UserList {
     struct User {
         bytes32 nick;
         string avatarHash;
+        // string email;
+        // bool isConfirmEmail;
     }
 
     mapping (address => User) public addrToUser;
@@ -23,7 +26,7 @@ contract UserList {
         return (!isAddrRegistered(_who), !isNickRegistered(_nick));
     }
 
-    function register(bytes32 _nick, string memory _avatarHash)    public {
+    function register(bytes32 _nick, string memory _avatarHash) public {
         require(_nick != 0 && !isAddrRegistered(msg.sender) && !isNickRegistered(_nick), "Invalid argument");
         addrToUser[msg.sender] = User(_nick, _avatarHash);
         nickToAddr[_nick] = msg.sender;
