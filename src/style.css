@@ -11,7 +11,14 @@ body {
 }
 #shoutText, #toAddress {
     width: calc(100% - 120px);
-    max-width: 360px;
+    /* max-width: 360px; */
+}
+.reply {
+  display: none;
+}
+
+.input-reply {
+  width: calc(100% - 120px);
 }
 .board {
     background-color: #f8f8f8;

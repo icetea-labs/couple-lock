@@ -85,7 +85,7 @@ function processShout(item, callback,index) {
             getUser(item.args.toAddress, next);
         },
         numLike: function(next) {
-          getLike(index,next);
+            getLike(index,next);
         }
     }, function(err, data){
         if (err) {
@@ -100,7 +100,7 @@ function processShout(item, callback,index) {
             toUsername: data.toUser.username || formatAddr(item.args.toAddress),
             when: data.when,
             ago: data.when.fromNow(),
-            formPromise: item.args.formPromise,
+            formPropose: item.args.formPropose,
             like: data.numLike,
             index: index
         };
@@ -137,7 +137,7 @@ function getUser(addressUser, callback) {
 }
 
 function getLike(index,callback) {
-    app.instances.LockLove.getLikePending(index).then(function(value) {
+    app.instances.LockLove.getLike(index).then(function(value) {
       //console.log("getLike:",value[0],"-",value[1].c[0],"-",value[0].length);
       callback(null,value[0].length);
     }).catch(function(err) {
@@ -147,7 +147,7 @@ function getLike(index,callback) {
 }
 
 function loadOldShouts(instance) {
-    instance.NewPending({}, {fromBlock: 0 }).get(function (err, shouts) {
+    instance.NewPropose({}, {fromBlock: 0 }).get(function (err, shouts) {
         var funcs = {};
         console.log(shouts);
         _.each(shouts, function (item) {
@@ -168,7 +168,7 @@ function loadOldShouts(instance) {
             _.each(sortedArray, showShout);
 
             // watch for new shout
-            instance.NewPending().watch(function(err, item) {
+            instance.NewPropose().watch(function(err, item) {
                 if (app.data.shouts[item.transactionHash]) return;
                 processShout(item, function(err, theItem) {
                     showShout(theItem);
@@ -184,6 +184,7 @@ function showShout(item) {
     var board = document.querySelector(".board");
     board.insertBefore(node, board.firstChild);
     node.getElementsByClassName("button-like")[0].addEventListener('click', clickLike, false);
+    node.getElementsByClassName("reply")[0].setAttribute("display", "display");
 }
 
 function clickLike() {
@@ -193,8 +194,8 @@ function clickLike() {
         return;
     }
     var index = this.getAttribute("data-id");
-    alert(index);
-    app.instances.LockLove.clickLikePending(index,account, {
+    //alert(index);
+    app.instances.LockLove.sentLike(index,account, {
         from: account,
         gas: 10000000, // gas limit
         gasPrice: '15000' // 15 gwei
@@ -224,7 +225,7 @@ function wireEvents() {
                 window.location.href = "/register.html";
                 return;
             } else {
-                app.instances.LockLove.sentPending(toAddress,text, {
+                app.instances.LockLove.sentPropose(toAddress,text, {
                     from: account,
                     gas: 10000000, // gas limit
                     gasPrice: '15000' // 15 gwei

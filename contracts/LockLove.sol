@@ -10,36 +10,48 @@ interface IUserList {
 
 
 contract LockLove is Ownable {
-
-    struct Promise {
-        address formAddress;
-        string  formPromise;
-        address toAddress;
-        string  toPromise;
+    
+    IUserList public userList;
+    
+    struct Propose {
+        address fAddress;
+        string  fPropose;
+        string  fImg;
+        address tAddress;
+        string  tPropose;
+        string  tImg;
+        string  coverImg;
         //bool  isPrivate;
     }
 
-    struct Pending {
-        address formAddress;
-        string formPromise;
-        address toAddress;
+    struct Comment {
+        address who;
+        string  what;
+        string  image;
     }
-    
-    Pending[] public lsPending;
-    Promise[] public lsPomise;
-    IUserList public userList;
 
-    //Pending -> List like address
-    mapping (uint => address[]) public lsLikePending;
-     //Address -> Pending ID
-    mapping (address => uint[]) public lsPendingOwner;
-    //Address -> Promise ID
-    mapping (address => uint[]) public lsPromiseOwner;
+    Propose[] public lsPropose;
+    Comment[] public lsComment;
     //
-    event NewPending(address indexed formAddress, string formPromise, address indexed toAddress);
+    string public emptyStr = "";
+    //Address -> Propose ID
+    mapping (address => uint[]) public mpProposeOwner;
     //
-    event NewPromise(address indexed formAddress, string formPromise, address indexed toAddress, string toPromise);
+    event NewPropose(address indexed fAddress, string fPropose, string fImg, address indexed tAddress);
+    //
+    event ReplyPropose(address indexed fAddress, string fPropose, string fImg, address indexed tAddress, string tPropose, string tImg);
     
+    // ****** Extension ******
+    //Map like address
+    mapping (uint => address[]) public mpLike;
+    event NewLike(address indexed fAddress);
+    // For request: cover photo must be from memory.
+    mapping (uint => string[]) public mpImage;
+    event NewCoverImage(string fImg);
+    // map Propose => comment ID
+    mapping (uint => uint[]) public mpComment;
+    event NewComment(address indexed fAddress, string comment, string image);
+
     constructor (IUserList _userList) public {
         require(address(_userList) != address(0));
         userList = _userList;
@@ -54,131 +66,107 @@ contract LockLove is Ownable {
         userList = _userList;
     }
 
-    // Send like pending.
-    function clickLikePending(uint index, address _toAddress) public {
-        //Add address liker to map
-        lsLikePending[index].push(_toAddress);
-    }
-
-    // Send like pending.
-    function getLikePending(uint index) public view returns(address[] memory addLike, uint indexValue) {
-        //Add address liker to map
-        addLike = lsLikePending[index];
-        indexValue = index;
-    }
-
-    // Send pending.
-    function sentPending(address _toAddress, string memory _formPromise) public onlyRegiter {
-        require(msg.sender != _toAddress, "From address must be different with to address!");
+    // Send Propose.
+    function sentPropose(string memory _fImage, string memory _fPropose, address _tAddress) public onlyRegiter {
+        require(msg.sender != _tAddress, "From address must be different with to address!");
 
         //Create new pending
-        Pending memory newPen = Pending(msg.sender, _formPromise, _toAddress);
-        uint id = lsPending.push(newPen) - 1;
+        Propose memory newPro = Propose(msg.sender, _fPropose, _fImage, _tAddress, emptyStr, emptyStr, emptyStr);
+        uint id = lsPropose.push(newPro) - 1;
         //Add ID mapping
-        lsPendingOwner[msg.sender].push(id);
-        lsPendingOwner[_toAddress].push(id);
+        mpProposeOwner[msg.sender].push(id);
+        mpProposeOwner[_tAddress].push(id);
 
         //Rase event new pedding request.
-        emit NewPending(msg.sender, _formPromise, _toAddress);
+        emit NewPropose(msg.sender, _fPropose, _fImage, _tAddress);
     }
 
-    // Confirm Pending --> Change to promise
-    function sentPromise(uint _index, string memory _toPromise) public onlyRegiter {
-        //Confirm Confirm address must be owner response promise!
-        uint pendingID = lsPendingOwner[msg.sender][_index];
-        Pending storage myPen = lsPending[pendingID];
-        require(msg.sender == myPen.toAddress, "Confirm address must be owner response promise!");
+    // Reply Propose
+    function replyPropose(uint _index, string memory _tPropose, string memory _tImage) public onlyRegiter {
+        //Confirm Confirm address must be owner response Propose!
+        require(msg.sender == lsPropose[_index].tAddress, "Confirm address must be owner!");
+        // Check is update.
+        bytes memory tempToPropose = bytes(lsPropose[_index].tPropose);
+        require(tempToPropose.length == 0, "Propose can't update!");
 
-        //Create new promise
-        Promise memory newPro = Promise(myPen.formAddress, myPen.formPromise, msg.sender, _toPromise);
-        //Promise ID mapping to address.
-        uint id = lsPomise.push(newPro) - 1;
-        lsPromiseOwner[msg.sender].push(id);
-        lsPromiseOwner[myPen.formAddress].push(id);
-
-        //Clear Pending which changed to Promise.
-        delete lsPending[pendingID];
-        //Remove pending in owner pending list.
-        removePending(_index, lsPendingOwner[msg.sender]);
-        removePending(_index, lsPendingOwner[myPen.formAddress]);
-
-        //Rase event new promise
-        emit NewPromise(msg.sender, myPen.formPromise, myPen.toAddress, _toPromise);
+        lsPropose[_index].tPropose = _tPropose;
+        lsPropose[_index].tImg = _tImage;
+        //Rase event new Propose
+        emit ReplyPropose(msg.sender, lsPropose[_index].fPropose, lsPropose[_index].fImg, lsPropose[_index].tAddress, _tPropose, _tImage);
     }
 
     //
-    function getOwnerPending() public view returns(address[] memory toList, string memory formPromise) {
-        uint len = lsPendingOwner[msg.sender].length;
-        uint index = 0;
-        bytes memory contentCollector;
-        toList = new address[](len);
-        for (uint i = 0; i < len; i++) {
-            index = lsPendingOwner[msg.sender][i];
-            toList[i] = lsPending[index].toAddress;
-            contentCollector = abi.encodePacked(contentCollector, lsPending[index].formPromise, ";");//byte(0)
-        }
-        formPromise = string(contentCollector);
-    }
-
-    //
-    function getOwnerPromise() public view returns(string memory formPromise, address[] memory toList, string memory toPromise) {
-        uint len = lsPromiseOwner[msg.sender].length;
-        uint index = 0;
-        bytes memory formCollector;
-        bytes memory toCollector;
-        toList = new address[](len);
-        for (uint i = 0; i < len; i++) {
-            index = lsPromiseOwner[msg.sender][i];
-            toList[i] = lsPomise[index].toAddress;
-            formCollector = abi.encodePacked(formCollector, lsPomise[index].formPromise, ";");//byte(0)
-            toCollector = abi.encodePacked(toCollector, lsPomise[index].toPromise, ";");//byte(0)
-        }
-        formPromise = string(formCollector);
-        toPromise = string(toCollector);
-    }
-
-    //
-    function getAllPromise() public view returns(address[] memory fromList, string memory formPromise, address[] memory toList, string memory toPromise) {
-        uint len = lsPomise.length;
+    function getAllPropose() public view returns(address[] fromList, string memory formPropose, address[] toList, string memory toPropose) {
+        uint len = lsPropose.length;
         bytes memory formCollector;
         bytes memory toCollector;
         toList = new address[](len);
         fromList = new address[](len);
         for (uint i = 0; i < len; i++) {
-            toList[i] = lsPomise[i].toAddress;
-            fromList[i] = lsPomise[i].formAddress;
-            formCollector = abi.encodePacked(formCollector, lsPomise[i].formPromise, ";");//byte(0)
-            toCollector = abi.encodePacked(toCollector, lsPomise[i].toPromise, ";");//byte(0)
+            toList[i] = lsPropose[i].tAddress;
+            fromList[i] = lsPropose[i].fAddress;
+            formCollector = abi.encodePacked(formCollector, lsPropose[i].fPropose, ";");//byte(0)
+            toCollector = abi.encodePacked(toCollector, lsPropose[i].tPropose, ";");//byte(0)
         }
-        formPromise = string(formCollector);
-        toPromise = string(toCollector);
+        formPropose = string(formCollector);
+        toPropose = string(toCollector);
     }
 
-    //
-    function getAllPending() public view returns(address[] memory fromList, string memory formPromise, address[] memory toList) {
-        uint len = lsPending.length;
-        bytes memory formCollector;
-        // bytes memory toCollector;
-        toList = new address[](len);
-        fromList = new address[](len);
+    // Get Detail Propose(For wallpage)
+    function getDetailPropose(uint index) public view returns(address fAddress, string memory fPropose, string memory fImg, address tAddress, string memory tPropose, string memory tImg, string memory coverImg) {
+        // Can get form array lsPropose
+        fAddress = lsPropose[index].fAddress;
+        fPropose = lsPropose[index].fPropose;
+        fImg = lsPropose[index].fImg;
+        tAddress = lsPropose[index].tAddress;
+        tPropose = lsPropose[index].tPropose;
+        tImg = lsPropose[index].tImg;
+        coverImg = lsPropose[index].coverImg;
+    }
+
+    // ****** Extension ******
+    // ****** Like ****** 
+    // Send like.
+    function sentLike(uint _index, address _tAddress) public {
+        //Add address liker to map
+        mpLike[_index].push(_tAddress);
+        emit NewLike(_tAddress);
+    }
+
+    // Send like pending.
+    function getLike(uint _index) public view returns(address[] addLike, uint indexValue) {
+        //Add address liker to map
+        addLike = mpLike[_index];
+        indexValue = _index;
+    }
+
+    // ****** Change cover image ****** 
+    // Get list image in memory for change cover image.
+    function getMemoryImage(uint _index) public view returns (string memory imageHash) {
+        uint len = mpImage[_index].length;
+        bytes memory hashCollector;
         for (uint i = 0; i < len; i++) {
-            toList[i] = lsPending[i].toAddress;
-            fromList[i] = lsPending[i].formAddress;
-            formCollector = abi.encodePacked(formCollector, lsPending[i].formPromise, ";");//byte(0)
-            // toCollector = abi.encodePacked(toCollector, lsPomise[i].toPromise, ";");//byte(0)
+            hashCollector = abi.encodePacked(hashCollector, bytes(mpImage[_index][i]), ";");//byte(0)
         }
-        formPromise = string(formCollector);
-        // toPromise = string(toCollector);
+        imageHash = string(hashCollector);
     }
 
-    //
-    function removePending(uint index, uint[] storage array) internal {
-        if (index >= array.length) return;
+    // Change cover image form Memory image.
+    function setCoverImage(uint _index, string memory _imageHash) public {
+      // Get approve
+      // TODO..
+      //Confirm Confirm address must be owner response Propose!
+        require(msg.sender == lsPropose[_index].tAddress || msg.sender == lsPropose[_index].fAddress, "Address must be owner!");
+        lsPropose[_index].coverImg = _imageHash;
+        //lsPropose[_index].coverImg = mpImage[indexImage];
+        emit NewCoverImage(_imageHash);
+    }
 
-        for (uint i = index; i < array.length-1; i++) {
-            array[i] = array[i+1];
-        }
-        delete array[array.length-1];
-        array.length--;
+    // ****** Add comment ****** 
+    // Change cover image form Memory image.
+    function addComment(uint _index, string memory _comment, string memory _image) public {
+        uint id = lsComment.push(Comment(msg.sender, _comment, _image)) - 1;
+        mpComment[_index].push(id); 
+        emit NewComment(msg.sender, _comment, _image);
     }
 }
