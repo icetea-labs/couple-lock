@@ -96,27 +96,27 @@ contract LovePropose is Ownable {
     }
 
     //
-    function getAllPropose() public view returns(address[] memory fromList, string memory formPropose, address[] memory toList, string memory toPropose, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
+    function getAllPropose() public view returns(address[] memory fListAddr, string memory fPropose, address[] memory tListAddr, string memory tPropose, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
         uint len = lsPropose.length;
         bytes memory formCollector;
         bytes memory toCollector;
-        toList = new address[](len);
-        fromList = new address[](len);
+        tListAddr = new address[](len);
+        fListAddr = new address[](len);
         place = new bytes32[](len);
         long = new bytes32[](len);
         lat = new bytes32[](len);
         
         for (uint i = 0; i < len; i++) {
-            toList[i] = lsPropose[i].tAddress;
-            fromList[i] = lsPropose[i].fAddress;
+            tListAddr[i] = lsPropose[i].tAddress;
+            fListAddr[i] = lsPropose[i].fAddress;
             formCollector = abi.encodePacked(formCollector, lsPropose[i].fPropose, ";");//byte(0)
             toCollector = abi.encodePacked(toCollector, lsPropose[i].tPropose, ";");//byte(0)
             place[i] = lsPropose[i].place;
             long[i] = lsPropose[i].longitude;
             lat[i] = lsPropose[i].latitude;
         }
-        formPropose = string(formCollector);
-        toPropose = string(toCollector);
+        fPropose = string(formCollector);
+        tPropose = string(toCollector);
     }
 
     // ****** Like ****** 
