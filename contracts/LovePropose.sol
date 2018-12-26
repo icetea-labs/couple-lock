@@ -154,4 +154,14 @@ contract LovePropose is Ownable {
         what = string(whatCollector);
         imageHash = string(hashCollector);
     }
+
+    //
+    function setCoverImage(uint _index, string memory _imageHash) public {
+      // Get approve
+      // TODO..
+      //Confirm Confirm address must be owner response Propose!
+        require(isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
+        lsPropose[_index].coverImg = _imageHash;
+        //lsPropose[_index].coverImg = mpImage[indexImage];
+    }
 }
