@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap 4 Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU'
+        crossorigin='anonymous'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#propose">
+            Propose
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="propose">
+            <div class="modal-dialog propose">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Propose</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container h-100">
+                            <div class="d-flex justify-content-center h-100">
+                                <div class="searchbar">
+                                    <input class="search_input" type="text" name="" placeholder="Search...">
+                                    <i class="material-icons">&#xe8b6;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger back" data-dismiss="modal">Back</button>
+                        <button type="button" class="btn btn-success success" data-toggle="modal" data-target="#promise">Next</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Promise -->
+        <div class="modal fade" id="promise">
+            <div class="modal-dialog promise">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"> <i class="fa">&#xf060;</i>
+                        </button>
+                        <h4 class="modal-title">Add memory</h4>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="my-avatar">
+                                        <img src='abc.jpg'>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <!-- <input class="input-memory" type="text"> -->
+                                    <textarea class="form-control" name="" id="" rows="3"  placeholder="Describe your Memory..."></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="tag col-9">
+                                    <input type="text" class="input-tag" placeholder="TAGS:    #honeymoon #travel">
+                                </div>
+                                <div class="to-avatar col-3">
+                                    <div class="row">
+                                        <div class="friend-avatar col-7">
+                                            <img class="img-f-a" src='abc.jpg'>
+                                        </div>
+                                        <div class="calender col-5">
+                                            <i class="material-icons col">&#xe24f;</i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span class="more-infor col-3">
+                                    <i class="material-icons">&#xe432;</i>
+                                    <p>Photo</p>
+
+                                </span>
+                                <span class="more-infor col-3">
+                                    <i class="material-icons">&#xe55f;</i>
+                                    <p>Check-in</p>
+                                </span>
+                                <span class="more-infor col-3">
+                                    <p>Public</p>
+                                    <i class="material-icons">arrow_drop_down</i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button class="button-send" data-dismiss="modal">Send</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
