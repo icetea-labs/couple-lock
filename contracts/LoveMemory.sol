@@ -67,7 +67,7 @@ contract LoveMemory is Ownable {
     }
     // ****** Memory ****** 
     function addMemory(uint _index, string memory _comment, string memory _image, bytes32 _place, bytes32 _long, bytes32 _lat) public onlyRegiter {
-        require(isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
+        require(lovePropose.isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
         Memory memory newMemo = Memory(msg.sender, _comment, _image, _place, _long, _lat);
         uint id = lsMemory.push(newMemo) - 1;
         mpProposeMemory[_index].push(id); 
