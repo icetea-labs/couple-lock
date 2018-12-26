@@ -113,12 +113,16 @@ contract LockLove is Ownable {
     }
 
     //
-    function getAllPropose() public view returns(address[] fromList, string memory formPropose, address[] toList, string memory toPropose, bytes32[] place, bytes32[] long, bytes32[] lat) {
+    function getAllPropose() public view returns(address[] memory fromList, string memory formPropose, address[] memory toList, string memory toPropose, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
         uint len = lsPropose.length;
         bytes memory formCollector;
         bytes memory toCollector;
         toList = new address[](len);
         fromList = new address[](len);
+        place = new bytes32[](len);
+        long = new bytes32[](len);
+        lat = new bytes32[](len);
+        
         for (uint i = 0; i < len; i++) {
             toList[i] = lsPropose[i].tAddress;
             fromList[i] = lsPropose[i].fAddress;
@@ -154,7 +158,7 @@ contract LockLove is Ownable {
     }
 
     // Send like pending.
-    function getLike(uint _index) public view returns(address[] addLike, uint indexValue) {
+    function getLike(uint _index) public view returns(address[] memory addLike, uint indexValue) {
         //Add address liker to map
         addLike = mpLike[_index];
         indexValue = _index;
@@ -190,12 +194,12 @@ contract LockLove is Ownable {
         emit NewMemory(_index, msg.sender, _comment, _image, _place, _long, _lat);
     }
 
-    function getMemory(uint _index) public view returns (address[] who, string what, string imageHash, bytes32[] place, bytes32[] long, bytes32[] lat) {
+    function getMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
         uint len = mpMemory[_index].length;
         who = new address[](len);
-        // place = new bytes32[](len);
-        // long = new bytes32[](len);
-        // lat = new bytes32[](len);
+        place = new bytes32[](len);
+        long = new bytes32[](len);
+        lat = new bytes32[](len);
 
         bytes memory whatCollector;
         bytes memory hashCollector;
@@ -223,7 +227,7 @@ contract LockLove is Ownable {
         emit NewComment(_type, _index, msg.sender, _comment, _image);
     }
     
-    function getCommentPropose(uint _index) public view returns (address[] who, string what, string imageHash) {
+    function getCommentPropose(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash) {
         uint len = mpCommentPropose[_index].length;
         who = new address[](len);
         bytes memory whatCollector;
@@ -237,7 +241,7 @@ contract LockLove is Ownable {
         imageHash = string(hashCollector);
     }
 
-    function getCommentMemory(uint _index) public view returns (address[] who, string what, string imageHash) {
+    function getCommentMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash) {
         uint len = mpCommentMemory[_index].length;
         who = new address[](len);
         bytes memory whatCollector;
