@@ -26,8 +26,11 @@ contract LockLove is Ownable {
 
     struct Memory {
         address who;
-        string  what;
-        string  image;
+        string what;
+        string image;
+        string place;
+        string longitude;
+        string latitude;
     }
 
     struct Comment {
@@ -37,7 +40,7 @@ contract LockLove is Ownable {
     }
 
     Propose[] public lsPropose;
-    Comment[] public lsMemory;
+    Memory[] public lsMemory;
     Comment[] public lsComment;
     //
     string public emptyStr = "";
@@ -57,7 +60,7 @@ contract LockLove is Ownable {
     event NewCoverImage(string fImg);
     // map Propose => memory ID
     mapping (uint => uint[]) public mpMemory;
-    event NewMemory(uint index, address indexed fAddress, string comment, string image);
+    event NewMemory(uint index, address indexed fAddress, string comment, string image, string place, string long, string la);
     // map Propose => comment ID
     mapping (uint => uint[]) public mpCommentMemory;
     mapping (uint => uint[]) public mpCommentPropose;
@@ -174,25 +177,35 @@ contract LockLove is Ownable {
     }
 
     // ****** Memory ****** 
-    function addMemory(uint _index, string memory _comment, string memory _image) public {
-        uint id = lsMemory.push(Comment(msg.sender, _comment, _image)) - 1;
+    function addMemory(uint _index, string memory _comment, string memory _image, string memory _place, string memory _long, string memory _lat) public {
+        Memory memory newMemo = Memory(msg.sender, _comment, _image, _place, _long, _lat);
+        uint id = lsMemory.push(newMemo) - 1;
         mpMemory[_index].push(id); 
-        emit NewMemory(_index, msg.sender, _comment, _image);
+        emit NewMemory(_index, msg.sender, _comment, _image, _place, _long, _lat);
     }
 
-    function getMemory(uint _index) public view returns (address[] who, string what, string imageHash) {
-        uint len = mpMemory[_index].length;
-        who = new address[](len);
-        bytes memory whatCollector;
-        bytes memory hashCollector;
-        for (uint i = 0; i < len; i++) {
-            who[i] = lsMemory[mpMemory[_index][i]].who;
-            whatCollector = abi.encodePacked(whatCollector, bytes(lsMemory[mpMemory[_index][i]].what), ";");//byte(0)
-            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[mpMemory[_index][i]].image), ";");//byte(0)
-        }
-        what = string(whatCollector);
-        imageHash = string(hashCollector);
-    }
+    // function getMemory(uint _index) public view returns (address[] who, string what, string imageHash, string place, string long, string lat) {
+    //     uint len = mpMemory[_index].length;
+    //     who = new address[](len);
+    //     bytes memory whatCollector;
+    //     bytes memory hashCollector;
+    //     bytes memory placeCollector;
+    //     bytes memory longCollector;
+    //     bytes memory latCollector;
+    //     for (uint i = 0; i < len; i++) {
+    //         who[i] = lsMemory[mpMemory[_index][i]].who;
+    //         whatCollector = abi.encodePacked(whatCollector, bytes(lsMemory[mpMemory[_index][i]].what), ";");//byte(0)
+    //         hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[mpMemory[_index][i]].image), ";");//byte(0)
+    //         placeCollector = abi.encodePacked(placeCollector, bytes(lsMemory[mpMemory[_index][i]].place), ";");//byte(0)
+    //         longCollector = abi.encodePacked(longCollector, bytes(lsMemory[mpMemory[_index][i]].longitude), ";");//byte(0)
+    //         latCollector = abi.encodePacked(latCollector, bytes(lsMemory[mpMemory[_index][i]].latitude), ";");//byte(0)
+    //     }
+    //     what = string(whatCollector);
+    //     imageHash = string(hashCollector);
+    //     place = string(placeCollector);
+    //     long = string(longCollector);
+    //     lat = string(latCollector);
+    // }
 
     // ****** Comment ****** 
     function addComment(uint _type, uint _index, string memory _comment, string memory _image) public {
