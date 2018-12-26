@@ -9,14 +9,17 @@
 //     });
 //   });
 // };
-
-var lockLove = artifacts.require("./LockLove.sol");
 var userList = artifacts.require("./UserList.sol");
+var lovePropose = artifacts.require("./LovePropose.sol");
+var loveMemory = artifacts.require("./LoveMemory.sol");
 
 module.exports = function(deployer, network, accounts) {
   if (network === "mainnet") return;
-  deployer.deploy(userList).then(function(){
-    console.log("Log Deploy:","-",accounts[0],"-",userList.address);
-    return deployer.deploy(lockLove,userList.address);
-  })
+  deployer.deploy(userList).then(function(){ 
+    console.log("Log Deploy1:","-",accounts[0],"-",userList.address);
+    return deployer.deploy(lovePropose,userList.address).then(function(){
+      console.log("Log Deploy2:","-",accounts[0],"-",lovePropose.address);
+      return deployer.deploy(loveMemory,userList.address,lovePropose.address);
+    });
+  });
 };

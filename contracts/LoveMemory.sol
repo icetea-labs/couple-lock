@@ -66,12 +66,12 @@ contract LoveMemory is Ownable {
         _;
     }
     // ****** Memory ****** 
-    function addMemory(uint _index, string memory _comment, string memory _image, bytes32 _place, bytes32 _long, bytes32 _lat) public onlyRegiter {
+    function addMemory(uint _index, string memory _content, string memory _image, bytes32 _place, bytes32 _long, bytes32 _lat) public onlyRegiter {
         require(lovePropose.isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
-        Memory memory newMemo = Memory(msg.sender, _comment, _image, _place, _long, _lat);
+        Memory memory newMemo = Memory(msg.sender, _content, _image, _place, _long, _lat);
         uint id = lsMemory.push(newMemo) - 1;
         mpProposeMemory[_index].push(id); 
-        emit NewMemory(_index, msg.sender, _comment, _image, _place, _long, _lat);
+        emit NewMemory(_index, msg.sender, _content, _image, _place, _long, _lat);
     }
 
     function getAllMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
