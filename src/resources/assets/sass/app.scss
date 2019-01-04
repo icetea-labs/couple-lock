@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
+@import 'variables';
+@import 'common.scss';
+
+*{margin: 0; padding: 0; box-sizing: border-box}
+
+body{
+  font-family: $font-body;
+  font-size: $font-root;
+  background: $color-grey-light;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: $color-grey;
+}
+::-webkit-scrollbar-thumb {
+  background: $color-violet;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: $color-violet;
+}
+
+// common
+
+.w-960 {
+  width: 960px;
+}
+a{
+  text-decoration: none;
+}
+
+// page
+
+#header {
+  width: 100%;
+  height: 80px;
+  background: $color-violet;
+  .header__container{
+    margin: 0 auto;
+    .logo{
+      font-size: $font-bigger;
+      display: inline-block;
+      margin-top: 23px;
+      a{
+        color: $color-white;
+      }
+      img, span{
+        vertical-align: middle;
+        margin-right: 12px;
+      }
+    }
+  }
+}
