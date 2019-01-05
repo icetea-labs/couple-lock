@@ -6,6 +6,8 @@ import SearchBox from './resources/assets/components/SearchBox';
 import UserAccount from './resources/assets/components/UserAccount';
 import BannerImage from './resources/assets/components/BannerImage';
 import RecentChat from './resources/assets/components/RecentChat';
+import MemoryPost from './resources/assets/components/MemoryPost';
+import DialogueChat from './resources/assets/components/DialogueChat';
 
 class App extends Component {
   render() {
@@ -25,6 +27,10 @@ class App extends Component {
               <div className="main__container-top w-960 mg-auto">
                 <BannerImage />
                 <RecentChat />
+              </div>
+              <div className="main__container-center w-960 mg-auto">
+                <MemoryPost />
+                <DialogueChat />
               </div>
             </div>
           </div>
