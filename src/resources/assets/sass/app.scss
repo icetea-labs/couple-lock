@@ -7,6 +7,7 @@
 body{
   font-family: $font-body;
   font-size: $font-root;
+  font-weight: 500;
   background: $color-grey-light;
 }
 
@@ -32,7 +33,36 @@ body{
 a{
   text-decoration: none;
 }
-
+input{
+  color: $color-grey;
+  font:{
+    family: $font-body;
+    size: $font-root;
+    weight: 500;
+  }
+  &:focus{
+    outline: none;
+    box-shadow: none;
+  }
+}
+img{
+  max-width: 100%;
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.mg-auto{
+  margin: 0 auto;
+}
+.color-violet {
+  color: $color-violet;
+}
+.color-grey{
+  color: $color-grey;
+}
 // page
 
 #header {
@@ -45,6 +75,7 @@ a{
       font-size: $font-bigger;
       display: inline-block;
       margin-top: 23px;
+      float: left;
       a{
         color: $color-white;
       }
@@ -52,6 +83,156 @@ a{
         vertical-align: middle;
         margin-right: 12px;
       }
+    }
+  }
+}
+
+.search_box {
+  display: inline-block;
+  width: 295px;
+  height: 36px;
+  margin: 22px 0 0 35px;
+  padding: 5px;
+  position: relative;
+  background: $color-white;
+  border-radius: 18px;
+  float: left;
+  overflow: hidden;
+  .icon-search{
+    display: inline-block;
+    font-size: 20px;
+    margin-left: 11px;
+    margin-top: 3px;
+  }
+  input{
+    position: absolute;
+    left: 42px;
+    height: 27px;
+    width: calc(100% - 55px);
+    border: none;
+    right: 0;
+    top: 5px;
+  }
+}
+
+.custom-right-header {
+  display: inline-block;
+  float: right;
+  color: $color-white;
+}
+
+.user{
+  display: inline-block;
+  margin-top: 18px;
+  span{
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .user__photo{
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .user__name{
+    margin-left: 20px;
+  }
+}
+.explore{
+  display: inline-block;
+  margin-left: 43px;
+  vertical-align: middle;
+  .explore__box{
+    float: left;
+  }
+  .explore__icon{
+    margin-left: 20px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+// end header
+
+#main{
+  .main__container-top{
+    margin-top: 33px;
+    padding: 30px;
+    border-radius: 10px;
+    background: $color-white;
+    -moz-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+	  -webkit-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+	  box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+  }
+}
+.banner_container{
+  border-radius: 10px;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed $color-grey-gallery;
+  overflow: hidden;
+  .short_desc{
+    font-weight: 600;
+    margin-top: 24px;
+    .icon-luggage{
+      font-size: 24px;
+      margin-right: 16px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.Recentchat{
+  display: inline-block;
+  margin-top: 35px;
+  .box{
+    width: 50%;
+    height: auto;
+    &:nth-child(even){
+      padding-left: 15px;
+      .user_photo{
+        margin-right: 0;
+        margin-left: 15px;
+      }
+      .content_detail{
+        p{
+          background-image: linear-gradient(322deg, #ad76ff, #8dc1fe);
+        }
+      }
+      
+    }
+    &:nth-child(odd){
+      padding-right: 15px;
+    }
+  }
+  .user_photo{
+    display: block;
+    width: 58px;
+    height: 58px;
+    margin-right: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .content_detail{
+    display: block;
+    width: calc(100% - 58px - 15px);
+    .user_name{
+      font-weight: 600;
+    }
+    .time{
+      font-size: 12px;
+    }
+    p{
+      display: block;
+      padding: 11px 14px;
+      font-size: $font-smaller;
+      line-height: 18px;
+      color: $color-white;
+      border-radius: 10px;
+      margin-top: 10px;
+      -moz-box-shadow: 0 6px 12px 0 rgba($color-black, .1);
+      -webkit-box-shadow: 0 6px 12px 0 rgba($color-black, .1);
+      box-shadow: 0 6px 12px 0 rgba($color-black, .1);
+      background-image: linear-gradient(337deg, #76a8ff, #8df6fe);
     }
   }
 }
