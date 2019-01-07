@@ -1,42 +1,16 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link} from 'react-router-dom';
+import { BrowserRouter as Router,Route, Switch} from 'react-router-dom';
 import './resources/assets/sass/app.scss';
 import './resources/assets/icomoon/icon.scss'
-import SearchBox from './resources/assets/components/SearchBox';
-import UserAccount from './resources/assets/components/UserAccount';
-import BannerImage from './resources/assets/components/BannerImage';
-import RecentChat from './resources/assets/components/RecentChat';
-import MemoryPost from './resources/assets/components/MemoryPost';
-import DialogueChat from './resources/assets/components/DialogueChat';
+import Home from './resources/assets/components/Home';
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <div id="header">
-            <div className="header__container w-960">
-              <div className="logo"><Link to="/"><img src="./images/heart-logo.svg" alt="Couple Lock" /><span>LoveLock</span></Link></div>
-              <SearchBox />
-              <UserAccount />
-            </div>
-          </div>
-
-          <div id="main">
-            <div className="main__container">
-              <div className="main__container-top w-960 mg-auto">
-                <BannerImage />
-                <RecentChat />
-              </div>
-              <div className="main__container-center w-960 mg-auto">
-                <MemoryPost />
-                <DialogueChat />
-              </div>
-            </div>
-          </div>
-
-          <div id="footer"></div>
-        </div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+        </Switch>
       </Router>
     );
   }
