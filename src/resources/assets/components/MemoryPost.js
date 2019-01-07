@@ -1,7 +1,25 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
+
+const options = [
+  { value: 'Public', label: 'Public' },
+  { value: 'Unlisted', label: 'Unlisted' },
+  { value: 'Private', label: 'Private' }
+];
 
 class MemoryPost extends Component {
+
+  state = {
+    selectedOption: { value: 'Public', label: 'Public' },
+  }
+
+  handleChange = (selectedOption) => {
+    this.setState({ selectedOption });
+    // console.log(`Option selected:`, selectedOption);
+  }
+  
   render() {
+    const { selectedOption } = this.state;
     return (
       <div className="memorypost mg-auto">
         <div className="memorypost__content">
@@ -24,11 +42,7 @@ class MemoryPost extends Component {
           </div>
           <div className="action">
             <div className="privacy">
-              <select>
-                <option>Pulic</option>
-                <option>Unlisted</option>
-                <option>Private</option>
-              </select>
+              <Select className="privacy_select" value={selectedOption} onChange={this.handleChange} options={options} />
             </div>
             <button type="button">Share</button>
           </div>
