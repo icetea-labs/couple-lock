@@ -8,14 +8,15 @@ const options = [
 ];
 
 class MemoryPost extends Component {
-
-  state = {
-    selectedOption: { value: 'Public', label: 'Public' },
+  constructor(props) {
+    super (props);
+    this.state ={
+      selectedOption: { value: 'Public', label: 'Public' },
+    }
   }
 
   handleChange = (selectedOption) => {
     this.setState({ selectedOption });
-    // console.log(`Option selected:`, selectedOption);
   }
   
   render() {
