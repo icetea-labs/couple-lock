@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 
 class DialogueChat extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      post: [],
+    }
+  }
+
+  componentDidMount() {
+    fetch('https://5c2c6216ad36d90014f342b0.mockapi.io/api/v1/apiv1')
+    .then(results => results.json())
+    .then(data => this.setState({ post: data }))
+  }
+
+
   render() {
     return (
       <div className="dialogue_chat mg-auto">
@@ -9,89 +23,24 @@ class DialogueChat extends Component {
             <p><span className="icon-bed"></span>Lorem ipsum dolor sit amet</p>
             <span className="date">2/4/2004</span>
           </div>
-          <div className="chat_content">
-            <div className="user_photo fl"><img src="./images/user-photo.jpg" alt="" /></div>
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">John Smith</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-          </div>
 
-          <div className="chat_content -right">
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">Marry William</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-            <div className="user_photo fl"><img src="./images/user-photo-women.jpg" alt="" /></div>
-          </div>
+          {
+            this.state.post.length > 0 && this.state.post.map((item, index) => {
+              const className = item.isClass ? 'chat_content' : 'chat_content -right';
 
-          <div className="chat_content">
-            <div className="user_photo fl"><img src="./images/user-photo.jpg" alt="" /></div>
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">John Smith</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-          </div>
-
-          <div className="chat_content -right">
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">Marry William</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-            <div className="user_photo fl"><img src="./images/user-photo-women.jpg" alt="" /></div>
-          </div>
-
+              return (
+                <div className={className} key={index}>
+                  <div className="user_photo fl"><img src={item.avatar} alt="" /></div>
+                  <div className="content_detail fl clearfix">
+                    <span className="user_name color-violet" >{item.name}</span>
+                    <span className="time fr color-grey">{item.dateTime}</span>
+                    <p>{item.content}</p>
+                  </div>
+                </div>
+              )
+            })
+          }
         </div>
-
-
-        <div className="box">
-          <div className="title_time">
-            <p><span className="icon-bed"></span>Lorem ipsum dolor sit amet</p>
-            <span className="date">2/4/2004</span>
-          </div>
-          <div className="chat_content">
-            <div className="user_photo fl"><img src="./images/user-photo.jpg" alt="" /></div>
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">John Smith</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-          </div>
-
-          <div className="chat_content -right">
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">Marry William</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-            <div className="user_photo fl"><img src="./images/user-photo-women.jpg" alt="" /></div>
-          </div>
-
-          <div className="chat_content">
-            <div className="user_photo fl"><img src="./images/user-photo.jpg" alt="" /></div>
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">John Smith</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-          </div>
-
-          <div className="chat_content -right">
-            <div className="content_detail fl clearfix">
-              <span className="user_name color-violet">Marry William</span>
-              <span className="time fr color-grey">12:02 3 May 2018</span>
-              <p>Duis hendrerit, lacus a facilisis congue,</p>
-            </div>
-            <div className="user_photo fl"><img src="./images/user-photo-women.jpg" alt="" /></div>
-          </div>
-
-        </div>
-        
-        
       </div>
     );
   }
