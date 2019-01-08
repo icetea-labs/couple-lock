@@ -24,8 +24,8 @@ contract LoveMemory is Ownable {
         string what;
         string image;
         bytes32 place;
-        bytes32 longitude;
-        bytes32 latitude;
+        uint longitude;
+        uint latitude;
     }
 
     struct Comment {
@@ -41,7 +41,7 @@ contract LoveMemory is Ownable {
     
     // Map memory: Propose ID -> Array Memory
     mapping (uint => uint[]) public mpProposeMemory;
-    event NewMemory(uint index, address indexed fAddress, string comment, string image, bytes32 place, bytes32 long, bytes32 lat);
+    event NewMemory(uint index, uint proposeID, address indexed fAddress, string comment, string image, bytes32 place, uint long, uint lat);
     //Map like: Memory ID -> Array liker 
     mapping (uint => address[]) public mpLike;
     event NewLike(address indexed fAddress);
@@ -66,20 +66,20 @@ contract LoveMemory is Ownable {
         _;
     }
     // ****** Memory ****** 
-    function addMemory(uint _index, string memory _content, string memory _image, bytes32 _place, bytes32 _long, bytes32 _lat) public onlyRegiter {
+    function addMemory(uint _index, string memory _content, string memory _image, bytes32 _place, uint _long, uint _lat) public onlyRegiter {
         require(lovePropose.isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
         Memory memory newMemo = Memory(msg.sender, _content, _image, _place, _long, _lat);
         uint id = lsMemory.push(newMemo) - 1;
         mpProposeMemory[_index].push(id); 
-        emit NewMemory(_index, msg.sender, _content, _image, _place, _long, _lat);
+        emit NewMemory(id, _index, msg.sender, _content, _image, _place, _long, _lat);
     }
 
-    function getAllMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
+    function getAllMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, uint[] memory long, uint[] memory lat) {
         uint len = mpProposeMemory[_index].length;
         who = new address[](len);
         place = new bytes32[](len);
-        long = new bytes32[](len);
-        lat = new bytes32[](len);
+        long = new uint[](len);
+        lat = new uint[](len);
 
         bytes memory whatCollector;
         bytes memory hashCollector;

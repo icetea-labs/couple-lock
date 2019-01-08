@@ -22,8 +22,8 @@ contract LovePropose is Ownable {
         string  tImg;
         string  coverImg;
         bytes32 place;
-        bytes32 longitude;
-        bytes32 latitude;
+        uint longitude;//Convert to big number
+        uint latitude;//Convert to big number
         //bool  isPrivate;
     }
 
@@ -39,8 +39,8 @@ contract LovePropose is Ownable {
     string public emptyStr = "";
     //Map Propose: User -> Array Propose
     mapping (address => uint[]) public mpProposeOwner;
-    event NewPropose(address indexed fAddress, string fPropose, string fImg, address indexed tAddress, bytes32 place, bytes32 long, bytes32 lat);
-    event ReplyPropose(address indexed fAddress, string fPropose, string fImg, address indexed tAddress, string tPropose, string tImg);
+    event NewPropose(uint index, address indexed fAddress, string fPropose, string fImg, address indexed tAddress, bytes32 place, uint long, uint lat);
+    event ReplyPropose(uint index, string tPropose, string tImg);
     //Map like: Propose ID -> Array liker 
     mapping (uint => address[]) public mpLike;
     event NewLike(address indexed fAddress);
@@ -67,7 +67,7 @@ contract LovePropose is Ownable {
     }
 
     // Send Propose.
-    function sentPropose(string memory _fImage, string memory _fPropose, address _tAddress, bytes32 _place, bytes32 _long, bytes32 _lat) public onlyRegiter {
+    function sentPropose(string memory _fImage, string memory _fPropose, address _tAddress, bytes32 _place, uint _long, uint _lat) public onlyRegiter {
         require(msg.sender != _tAddress, "From address must be different with to address!");
 
         //Create new pending
@@ -78,7 +78,7 @@ contract LovePropose is Ownable {
         mpProposeOwner[_tAddress].push(id);
 
         //Rase event new pedding request.
-        emit NewPropose(msg.sender, _fPropose, _fImage, _tAddress, _place, _long, _lat);
+        emit NewPropose(id, msg.sender, _fPropose, _fImage, _tAddress, _place, _long, _lat);
     }
 
     // Reply Propose
@@ -92,19 +92,19 @@ contract LovePropose is Ownable {
         lsPropose[_index].tPropose = _tPropose;
         lsPropose[_index].tImg = _tImage;
         //Rase event new Propose
-        emit ReplyPropose(msg.sender, lsPropose[_index].fPropose, lsPropose[_index].fImg, lsPropose[_index].tAddress, _tPropose, _tImage);
+        emit ReplyPropose(_index, _tPropose, _tImage);
     }
 
     //
-    function getAllPropose() public view returns(address[] memory fListAddr, string memory fPropose, address[] memory tListAddr, string memory tPropose, bytes32[] memory place, bytes32[] memory long, bytes32[] memory lat) {
+    function getAllPropose() public view returns(address[] memory fListAddr, string memory fPropose, address[] memory tListAddr, string memory tPropose, bytes32[] memory place, uint[] memory long, uint[] memory lat) {
         uint len = lsPropose.length;
         bytes memory formCollector;
         bytes memory toCollector;
         tListAddr = new address[](len);
         fListAddr = new address[](len);
         place = new bytes32[](len);
-        long = new bytes32[](len);
-        lat = new bytes32[](len);
+        long = new uint[](len);
+        lat = new uint[](len);
         
         for (uint i = 0; i < len; i++) {
             tListAddr[i] = lsPropose[i].tAddress;
