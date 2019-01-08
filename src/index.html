@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShoutBoard - Trada Academy</title>
+    <style>
+        /* body {background-color: #e6ecf0} */
+        #wrapper { display: none }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <h3>Trada Academy Shout Board</h3>
+        <br>
+        <form id="shoutForm">
+            <input id="toAddress" class="input" type="text" autofocus required placeholder="To Address">
+            <input id="shoutText" class="input" type="text" required placeholder="What to shout today?">
+            <button type="submit" class="btn" >&nbsp;&nbsp;Shout&nbsp;&nbsp;</button>
+        </form>
+        <br>
+        <section class="board" id="boardId"></section>
+    </div>
+    <script id="shoutTemplate" type="text/template">
+      <div class="card">
+        <!-- Top -->
+          <div class="top-message">
+              <div class="avatar"><img src="#{avatar}"></div>
+              <div class="meta">
+                  <a href="#" class="who">#{formUsername}</a>&nbsp;&#x1F498;&nbsp;<a href="#" class="who">#{toUsername}</a>
+                  <br>
+                  <span>#{ago}</span>
+              </div>
+          </div>
+          <!-- content -->
+          <div class="content">
+              <div class="what">#{formPropose}</div>
+                <div class="reply">
+                  <input id="replyMsg" class="input input-reply" type="text" placeholder="Reply Message">
+                  <button class="button button-reply" data-id="#{index}">Reply</button>
+                <div>
+            </div>
+          </div> 
+          <!-- bottom -->
+          <div class="bottom-message">
+              <div class="numlike">
+                &#x1F44D <span>#{like}</span>
+              </div>
+              <div class="buttonlike">
+                  <button class="button button-like" data-id="#{index}" >
+                      <i class="fa fa-heart"></i>
+                      <span>Like</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+    </script>
+
+
+
+
+    <script src='app.bundle.js'></script>
+</body>
+
+</html>
