@@ -410,9 +410,10 @@ img{
     }
   }
   .chat_content{
+    width: 100%;
     display: inline-block;
     margin-bottom: 18px;
-    &.-right{
+    &:nth-child(odd){
       float: right;
       .user_photo{
         margin-right: 0;
@@ -423,6 +424,12 @@ img{
       .content_detail{
         max-width: calc(100% - 58px - 15px);
       }
+    }
+    .left_mes, .right_mes{
+      display: inline-block;
+    }
+    .right_mes{
+      float: right;
     }
     .user_photo{
       display: block;
@@ -443,6 +450,10 @@ img{
       .user_name{
         font-size: $font-root;
         font-weight: 600;
+        margin-right: 15px;
+      }
+      .time{
+        padding-top: 2px;
       }
       p{
         margin-top: 5px;

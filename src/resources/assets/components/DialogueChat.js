@@ -26,15 +26,17 @@ class DialogueChat extends Component {
 
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
-              const className = item.isClass ? 'chat_content' : 'chat_content -right';
+              const className = item.isClass ? 'left_mes' : 'right_mes';
 
               return (
-                <div className={className} key={index}>
-                  <div className="user_photo fl"><img src={item.avatar} alt="" /></div>
-                  <div className="content_detail fl clearfix">
-                    <span className="user_name color-violet" >{item.name}</span>
-                    <span className="time fr color-grey">{item.dateTime}</span>
-                    <p>{item.content}</p>
+                <div className="chat_content" key={index}>
+                  <div className={className}>
+                    <div className="user_photo fl"><img src={item.avatar} alt="" /></div>
+                    <div className="content_detail fl clearfix">
+                      <span className="user_name color-violet" >{item.name}</span>
+                      <span className="time fr color-grey">{item.dateTime}</span>
+                      <p>{item.content}</p>
+                    </div>
                   </div>
                 </div>
               )
