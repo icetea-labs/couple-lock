@@ -200,16 +200,23 @@ img{
           background-image: linear-gradient(322deg, #ad76ff, #8dc1fe);
         }
       }
-      
     }
     &:nth-child(odd){
       padding-right: 15px;
+    }
+    &.-right{
+      .user_photo{
+        float: right;
+      }
+      .user_name{
+      }
     }
   }
   .user_photo{
     display: block;
     width: 58px;
     height: 58px;
+    float: left;
     margin-right: 15px;
     border-radius: 10px;
     overflow: hidden;
