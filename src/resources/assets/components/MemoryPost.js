@@ -43,7 +43,7 @@ class MemoryPost extends Component {
           </div>
           <div className="action">
             <div className="privacy">
-              <Select className="privacy_select" value={selectedOption} onChange={this.handleChange} options={options} />
+              <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.handleChange} options={options} />
             </div>
             <button type="button">Share</button>
           </div>

@@ -208,7 +208,15 @@ img{
       .user_photo{
         float: right;
       }
-      .user_name{
+      .name_time{
+        display: inline-block;
+        width: 100%;
+        .user_name{
+          float: right;
+        }
+        .time{
+          float: none;
+        }
       }
     }
   }

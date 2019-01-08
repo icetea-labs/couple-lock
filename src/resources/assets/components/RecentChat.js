@@ -26,8 +26,10 @@ class RecentChat extends Component {
               <div className={className} key={index}>
                 <div className="user_photo"><img src={item.avatar} alt="" /></div>
                 <div className="content_detail fl clearfix">
-                  <span className="user_name color-violet">{item.name}</span>
-                  <span className="time fr color-grey">{item.dateTime}</span>
+                  <div className="name_time">
+                    <span className="user_name color-violet">{item.name}</span>
+                    <span className="time fr color-grey">{item.dateTime}</span>
+                  </div>
                   <p>{item.content}</p>
                 </div>
               </div>
