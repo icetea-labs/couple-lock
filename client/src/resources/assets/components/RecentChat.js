@@ -9,7 +9,7 @@ class RecentChat extends Component {
   }
 
   componentDidMount() {
-    fetch('https://5c2c6216ad36d90014f342b0.mockapi.io/api/v1/apiv1?page=1&limit=2')
+    fetch('/api/propose/1')
     .then(results => results.json())
     .then(data => this.setState({ para: data }))
   }
