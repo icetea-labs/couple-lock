@@ -9,7 +9,7 @@ class DialogueChat extends Component {
   }
 
   componentDidMount() {
-    fetch('https://5c2c6216ad36d90014f342b0.mockapi.io/api/v1/apiv1')
+    fetch('/api/memory/1')
     .then(results => results.json())
     .then(data => this.setState({ post: data }))
   }
