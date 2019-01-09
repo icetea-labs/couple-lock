@@ -11,8 +11,7 @@ exports.all = function(proposeId, cb) {
        "name":"Henriette Walter",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/jeremiaha/128.jpg",
        "dateTime":"Sunday",
-       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-       "isClass":true
+       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"2",
@@ -20,8 +19,7 @@ exports.all = function(proposeId, cb) {
        "name":"Paige Haag",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/dannol/128.jpg",
        "dateTime":"Saturday",
-       "content":"Duis hendrerit, lacus a facilisis congue",
-       "isClass":false
+       "content":"Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"3",
@@ -29,8 +27,7 @@ exports.all = function(proposeId, cb) {
        "name":"Trycia Botsford",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/megdraws/128.jpg",
        "dateTime":"Saturday",
-       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-       "isClass":true
+       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"4",
@@ -38,8 +35,7 @@ exports.all = function(proposeId, cb) {
        "name":"Peggie Anderson",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/brajeshwar/128.jpg",
        "dateTime":"Saturday",
-       "content":"Duis hendrerit, lacus a facilisis congue",
-       "isClass":false
+       "content":"Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"5",
@@ -47,8 +43,7 @@ exports.all = function(proposeId, cb) {
        "name":"Berniece Stracke Sr.",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/cocolero/128.jpg",
        "dateTime":"Monday",
-       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-       "isClass":true
+       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"6",
@@ -56,8 +51,7 @@ exports.all = function(proposeId, cb) {
        "name":"Kathryne Stokes",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/okcoker/128.jpg",
        "dateTime":"Saturday",
-       "content":"Duis hendrerit, lacus a facilisis congue",
-       "isClass":false
+       "content":"Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"7",
@@ -65,8 +59,7 @@ exports.all = function(proposeId, cb) {
        "name":"Barry Gutmann",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/_ragzor/128.jpg",
        "dateTime":"Friday",
-       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-       "isClass":true
+       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"8",
@@ -74,8 +67,7 @@ exports.all = function(proposeId, cb) {
        "name":"Bailey Wunsch",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/gcmorley/128.jpg",
        "dateTime":"Monday",
-       "content":"Duis hendrerit, lacus a facilisis congue",
-       "isClass":false
+       "content":"Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"9",
@@ -83,8 +75,7 @@ exports.all = function(proposeId, cb) {
        "name":"Dr. Janis Murray",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/prrstn/128.jpg",
        "dateTime":"Wednesday",
-       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-       "isClass":true
+       "content":"In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue"
     },
     {  
        "id":"10",
@@ -92,8 +83,7 @@ exports.all = function(proposeId, cb) {
        "name":"Maxwell Schmitt",
        "avatar":"https://s3.amazonaws.com/uifaces/faces/twitter/borantula/128.jpg",
        "dateTime":"Monday",
-       "content":"Duis hendrerit, lacus a facilisis congue",
-       "isClass":false
+       "content":"Duis hendrerit, lacus a facilisis congue"
     }
  ])
 }
