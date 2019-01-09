@@ -9,12 +9,16 @@ exports.get = function (proposeId, cb) {
         content: "In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
         createdAt: "Tuesday",
         dateTime: "Sunday",
-        id: "1"
+        id: "1",
+        isClass:true,
+        name:"Henriette Walter",
     }, {
         avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/dannol/128.jpg",
         content: "Duis hendrerit, lacus a facilisis congue",
         createdAt: "Friday",
         dateTime: "Saturday",
-        id: "2"
+        id: "2",
+        isClass:false,
+        name:"Trycia Botsford",
     }])
 }

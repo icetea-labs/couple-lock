@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
+import TagsInput from './TagsInput';
 
 const options = [
   { value: 'Public', label: 'Public' },
@@ -30,9 +31,10 @@ class MemoryPost extends Component {
           </div>
           <div className="custom_post">
             <div className="tags">
-              <p>TAGS: </p>
+              {/* <p>TAGS: </p>
               <span className="color-violet">#honeymoon</span>
-              <span className="color-violet">#travel</span>
+              <span className="color-violet">#travel</span> */}
+              <TagsInput />
             </div>
             <div className="options">
               <div><span className="icon-location"></span></div>

@@ -280,21 +280,82 @@ img{
     }
   }
   .custom_post{
-      height: 55px;
+      min-height: 55px;
+      margin-top: 20px;
       border-top: 1px solid $color-grey-mercury;
       border-bottom: 1px solid $color-grey-mercury;
     .tags{
+      width: 70%;
       margin: 19px 0 16px 0;
       vertical-align: middle;
       font-size: $font-smaller;
       display: inline-block;
       p{
-        display: inline;
+        display: inline-block;
         color: $color-grey;
         margin-right: 13px;
+        text-transform: uppercase;
       }
       span{
-        margin-right: 5px;
+        margin-right: 7px;
+      }
+      .react-tags-wrapper {
+        display: inline-block;
+        color: $color-violet;
+        max-width: 85%;
+      }
+      .tag-wrapper{
+        display: inline-block;
+      }
+      .ReactTags__tagInput{
+        display: inline-block;
+        width: 50px;
+        position: relative;
+      }
+      .ReactTags__tagInputField{
+        font-size: $font-smaller;
+        border: none;
+        background: transparent;
+        color: $color-violet;
+      }
+      .cursor-move{
+        cursor: inherit;
+      }
+      .ReactTags__remove{
+        cursor: pointer;
+        font-size: 20px;
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+
+      /* Styles for suggestions */
+      div.ReactTags__suggestions {
+        top: 25px;
+        position: absolute;
+        z-index: 100;
+      }
+      div.ReactTags__suggestions ul {
+        list-style-type: none;
+        box-shadow: .05em .01em .5em rgba(0,0,0,.2);
+        background: white;
+        width: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      div.ReactTags__suggestions li {
+        padding: 7px 10px;
+        margin: 0;
+        color: $color-grey;
+      }
+      div.ReactTags__suggestions li mark {
+        text-decoration: underline;
+        background: none;
+        font-weight: 600;
+        color: $color-violet;
+      }
+      div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+        background: $color-grey-gallery;
+        cursor: pointer;
       }
     }
     .options{
