@@ -1,33 +1,24 @@
 const promise = require("../helpers/promise");
-const store = require('../services/factory')('user');
+const _store = require('../services/factory');
+
+const store = () => {return _store.select('user')}
 
 exports.one = (username, cb) => {
-    return store.one(username, cb);
+    return store().one(username, cb);
 }
 
 exports.all = (cb) => {
-    return store.all(cb);
+    return store().all(cb);
 }
 
-exports.insert = (data, cb) => {
-    if (data.id) {
-        return promise.cbOrFail(new Error("Setting propose ID is not allowed"));
+exports.insert = async (data, cb) => {
+    if (data.username) {
+        if (await store().one(data.username)) {
+            return promise.cbOrFail("Username already exists");
+        }
+    } else {
+        promise.cbOrFail("Must specify username");
     }
 
-    if (!data.sender || !data.receiver) {
-        return promise.cbOrFail(new Error("Sender or receiver not found"));
-    }
-
-    const sender = user.one(data.sender);
-    if (!sender) {
-        return promise.cbOrFail(new Error("Sender not registered"));
-    }
-
-    const receiver = user.one(data.receiver);
-    if (!receiver) {
-        return promise.cbOrFail(new Error("Receiver not registered"));
-    }
-
-    data.id = data.sender + "~" + Date.now();
-    return store.insert(data.id, data, cb);
+    return store().insert(data.username, data, cb);
 }

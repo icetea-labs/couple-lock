@@ -1,17 +1,17 @@
-module.exports = new class {
-    succeed(value) {
+module.exports = class {
+    static succeed(value) {
         return new Promise(resolve => {
             resolve(value);
         })
     }
 
-    fail(error) {
+    static fail(error) {
         return new Promise((resolve, reject) => {
             reject(error);
         })
     }
 
-    cbOrSucceed(value, cb) {
+    static cbOrSucceed(value, cb) {
         if (cb) {
             cb(null, value);
         } else {
@@ -19,11 +19,23 @@ module.exports = new class {
         }
     }
 
-    cbOrFail(error, cb) {
+    static cbOrFail(error, cb) {
         if (cb) {
             cb(error, {});
         } else {
             return this.fail(error);
         }
     }
-}();
+
+    static cbOrAny(value, error, cb) {
+        if (value) {
+            return this.cbOrSucceed(value, cb);
+        } else {
+            return this.cbOrFail(error, cb);
+        }
+    }
+
+    static cbOrNotFound(value, key, cb) {
+        return this.cbOrAny(value, key + " not found", cb);
+    }
+};

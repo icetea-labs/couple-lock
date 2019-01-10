@@ -1,16 +1,13 @@
-const _ = require(lodash);
-const seeder = require('Seed');
+const _ = require('lodash');
+const seeder = require('./seed');
 
-const store = new require('ramstore')();
+const Store = require('./ram');
+const store = module.exports = new Store();
 
 // Seed some data for testing
 _.each(seeder, (value, namespace) => {
-    store.namespace(namespace);
+    store.select(namespace);
     _.each(value, item => {
-        store.insert(item.id, item);
+        store.insert(item.username || item.id, item);
     });
 })
-
-module.exports = (namespace) => {
-    return store.namespace(namespace);
-}

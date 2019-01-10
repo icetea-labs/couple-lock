@@ -1,35 +1,35 @@
 module.exports = class DataStore {
     // namespace = table in SQL
-    namespace(namespace) {
+    select(namespace) {
         this.namespace = namespace;
         return this;
     }
 
-    one(key) {
+    one(key, cb) {
         throw new Error("Not implemented");
     }
 
-    list(condition) {
+    list(condition, cb) {
         throw new Error("Not implemented");
     }
 
-    all() {
+    all(cb) {
         throw new Error("Not implemented")
     }
 
-    insert(key, value) {
+    insert(key, value, cb) {
         throw new Error("Not implemented");
     }
 
-    update(key, value) {
+    update(key, value, cb) {
         throw new Error("Not implemented");
     }
 
-    deleteOne(key) {
+    deleteOne(key, cb) {
         throw new Error("Not implemented");
     }
 
-    deleteList(condition) {
+    deleteList(condition, cb) {
         throw new Error("Not implemented");
     }
 }
