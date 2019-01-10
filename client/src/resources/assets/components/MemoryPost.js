@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import TagsInput from './TagsInput';
+import LocationSearchInput from './Places';
 
 const options = [
   { value: 'Public', label: 'Public' },
@@ -13,7 +14,12 @@ class MemoryPost extends Component {
     super (props);
     this.state ={
       selectedOption: { value: 'Public', label: 'Public' },
+      isPlace : false,
     }
+  }
+
+  showInputPlaces = () => {
+    this.setState({ isPlace : true });
   }
 
   handleChange = (selectedOption) => {
@@ -34,7 +40,11 @@ class MemoryPost extends Component {
               <TagsInput />
             </div>
             <div className="options">
-              <div><span className="icon-location"></span></div>
+              <div><span className="icon-location" onClick={ this.showInputPlaces }></span>
+                {
+                  this.state.isPlace && <LocationSearchInput />
+                }
+              </div>
               <div><span className="icon-photo"></span></div>
               <div><span className="icon-today"></span></div>
               <div><img src="./images/user-photo-women.jpg" alt="" /></div>
