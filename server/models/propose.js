@@ -1,20 +1,40 @@
-// PROPOSE
+const promise = require("../helpers/promise");
+const user = require("user");
+const store = require('../services/factory')('propose');
 
-// Currently, return dummy JSON data
-// TODO: update to get data from REDIS
+exports.one = (proposeId, cb) => {
+    return store.one(proposeId, cb);
+}
 
-exports.get = function (proposeId, cb) {
-    cb(null, [{
-        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/jeremiaha/128.jpg",
-        content: "In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-        createdAt: "Tuesday",
-        dateTime: "Sunday",
-        id: "1"
-    }, {
-        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/dannol/128.jpg",
-        content: "Duis hendrerit, lacus a facilisis congue",
-        createdAt: "Friday",
-        dateTime: "Saturday",
-        id: "2"
-    }])
+exports.list = async (username, cb) => {
+    const userSent = await store.list({ sender: username });
+    const userReceived = await store.list({ receiver: username });
+    const combined = (userSent || []).concat(userReceived);
+    return promise.cbOrSucceed(cb, combined);
+}
+
+exports.insert = (data, cb) => {
+    if (data.id) {
+        if (await store.one(data.id)) {
+            return promise.cbOrFail(new Error("Propose ID already exists"));
+        }
+    } else {
+        data.id = data.sender + "~" + Date.now();
+    }
+
+    if (!data.sender || !data.receiver) {
+        return promise.cbOrFail(new Error("Sender or receiver not found"));
+    }
+
+    const sender = await user.one(data.sender);
+    if (!sender) {
+        return promise.cbOrFail(new Error("Sender not registered"));
+    }
+
+    const receiver = await user.one(data.receiver);
+    if (!receiver) {
+        return promise.cbOrFail(new Error("Receiver not registered"));
+    }
+
+    return store.insert(data.id, data, cb);
 }
