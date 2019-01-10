@@ -27,6 +27,7 @@ class LocationSearchInput extends React.Component {
         value={this.state.address}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
+        googleCallbackName="myCallbackFunc"
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>

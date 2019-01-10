@@ -31,9 +31,6 @@ class MemoryPost extends Component {
           </div>
           <div className="custom_post">
             <div className="tags">
-              {/* <p>TAGS: </p>
-              <span className="color-violet">#honeymoon</span>
-              <span className="color-violet">#travel</span> */}
               <TagsInput />
             </div>
             <div className="options">
