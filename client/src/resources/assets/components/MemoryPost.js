@@ -10,8 +10,8 @@ const options = [
 ];
 
 class MemoryPost extends Component {
-  constructor(props) {
-    super (props);
+  constructor() {
+    super ();
     this.state ={
       selectedOption: { value: 'Public', label: 'Public' },
       isPlace : false,
@@ -19,7 +19,21 @@ class MemoryPost extends Component {
   }
 
   showInputPlaces = () => {
-    this.setState({ isPlace : true });
+    if(this.state.isPlace) {
+      document.addEventListener('click', this.handleOutslideClick, false)
+    }else {
+      document.removeEventListener('click', this.handleOutslideClick, false)
+    }
+    this.setState( prevState => ({
+      isPlace : !prevState.isPlace
+    }));
+  }
+
+  handleOutslideClick = (e) => {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.showInputPlaces();
   }
 
   handleChange = (selectedOption) => {
@@ -40,7 +54,8 @@ class MemoryPost extends Component {
               <TagsInput />
             </div>
             <div className="options">
-              <div><span className="icon-location" onClick={ this.showInputPlaces }></span>
+              <div className="place-wrapper" ref={node => { this.node = node }}>
+                <span className="icon-location" onClick={ this.showInputPlaces }></span>
                 {
                   this.state.isPlace && <LocationSearchInput />
                 }
