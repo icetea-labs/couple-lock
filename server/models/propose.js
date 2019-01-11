@@ -1,24 +1,42 @@
-// PROPOSE
+const promise = require("../helpers/promise");
+const user = require("./user");
+const _store = require('../services/factory');
 
-// Currently, return dummy JSON data
-// TODO: update to get data from REDIS
+const store = () => {return _store.select('propose')}
 
-exports.get = function (proposeId, cb) {
-    cb(null, [{
-        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/jeremiaha/128.jpg",
-        content: "In ultricies ipsum sem, in ullamcorper velit luctus sed. Fusce arcu ante, aliquet sit amet ornare quis, euismod ac justo. Duis hendrerit, lacus a facilisis congue",
-        createdAt: "Tuesday",
-        dateTime: "Sunday",
-        id: "1",
-        isClass:true,
-        name:"Henriette Walter",
-    }, {
-        avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/dannol/128.jpg",
-        content: "Duis hendrerit, lacus a facilisis congue",
-        createdAt: "Friday",
-        dateTime: "Saturday",
-        id: "2",
-        isClass:false,
-        name:"Trycia Botsford",
-    }])
+exports.one = (proposeId, cb) => {
+    return store().one(proposeId, cb);
+}
+
+exports.list = async (username, cb) => {
+    const userSent = await store().list({ sender: username });
+    const userReceived = await store().list({ receiver: username });
+    const combined = (userSent || []).concat(userReceived);
+    return promise.cbOrSucceed(combined, cb);
+}
+
+exports.insert = async (data, cb) => {
+    if (data.id) {
+        if (await store().one(data.id)) {
+            return promise.cbOrFail("Propose ID already exists");
+        }
+    } else {
+        data.id = data.sender + "~" + Date.now();
+    }
+
+    if (!data.sender || !data.receiver) {
+        return promise.cbOrFail("Sender or receiver not found");
+    }
+
+    const sender = await user.one(data.sender);
+    if (!sender) {
+        return promise.cbOrFail("Sender not registered");
+    }
+
+    const receiver = await user.one(data.receiver);
+    if (!receiver) {
+        return promise.cbOrFail("Receiver not registered");
+    }
+
+    return store().insert(data.id, data, cb);
 }
