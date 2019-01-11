@@ -9,7 +9,7 @@ module.exports = class BaseTask {
     }
 
     _doUploadSync(web3, contract, item) {
-        throw new Error("Could bot execute BaseTask directly!");
+        throw new Error("Could not execute BaseTask directly!");
     }
 
     async run(web3) {

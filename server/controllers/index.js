@@ -10,8 +10,8 @@ router.get('/api', function(req, res) {
   <ul>
     <li>
         <a href='/api/user/details?username=tradatech'>/api/user/details?username=tradatech</a>
-        </li>
-        <li>
+    </li>
+    <li>
         <a href='/api/user/all'>/api/user/all</a>
     </li>
     <li>
