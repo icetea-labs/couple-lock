@@ -21,7 +21,7 @@ module.exports = class DataStore {
         throw new Error("Not implemented");
     }
 
-    update(key, value, cb) {
+    update(key, newProps, cb) {
         throw new Error("Not implemented");
     }
 

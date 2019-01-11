@@ -8,6 +8,7 @@ seeder.user = [
         displayName: "Trà đá Công nghệ",
         email: "tradatech@locks.com",
         avatar: "https://trada.tech/assets/img/logo_360_pad40.png",
+        signature: "signature"
     },
     {
         chained: false,
@@ -16,6 +17,7 @@ seeder.user = [
         displayName: "Sô Ta Tếch",
         email: "sotatek@locks.com",
         avatar: "https://sotatek.com/images/logo.png",
+        signature: "signature"
     }
 ]
 

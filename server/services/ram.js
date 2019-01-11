@@ -33,7 +33,7 @@ module.exports = class RamStore extends DataStore {
         var pickedItems = _.pickBy(items, (value) => {
             let picked = false;
             _.each(condition, (cv, ck) => {
-                if (value[ck] === cv || String(value[ck]) === cv) {
+                if (value[ck] == cv) {
                     picked = true;
                     return false;
                 }
@@ -58,8 +58,14 @@ module.exports = class RamStore extends DataStore {
         }
     }
 
-    update(key, value, cb) {
-        throw new Error("Not implemented");
+    update(key, newProps, cb) {
+        const fullKey = this.nsKey(key);
+        const value = this.bucket[fullKey];
+        if (!value) {
+            return promise.cbOrFail("Key not found", cb);
+        } else {
+            _.extend(this.bucket[fullKey], newProps || {});
+        }
     }
 
     deleteOne(key, cb) {
