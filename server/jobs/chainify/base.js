@@ -32,7 +32,7 @@ module.exports = class BaseTask {
 
             try {
                 
-                // NOTE: have to wait for tx to mined before send next transaction
+                // NOTE: have to wait for tx to mined before sending next transaction
                 // or we'll run into nonce problem
 
                 const receipts = await this._doUploadSync(web3, contract, item);

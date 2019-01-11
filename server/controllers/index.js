@@ -26,6 +26,9 @@ router.get('/api', function(req, res) {
     <li>
         <a href='/api/memory/list?proposeId=0'>/api/memory/list?proposeId=0</a>
     </li>
+    <li>
+        POST /api/memory/create
+    </li>
   </ul>`
   );
 })

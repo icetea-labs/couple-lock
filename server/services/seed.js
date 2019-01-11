@@ -23,7 +23,7 @@ seeder.user = [
 
 seeder.propose = [
     {
-        id: 0,
+        id: '0',
         chained: false,
         visibility: 1, //1: listed, 2: public, 3: private
         sender: "sotatek",
@@ -66,8 +66,8 @@ seeder.propose = [
 
 seeder.memory = [
     {
-        id: 0,
-        proposeId: 0,
+        id: '0',
+        proposeId: '0',
         chained: false,
         visibility: 1,
         timestamp: Date.now(),
@@ -92,8 +92,8 @@ seeder.memory = [
         receiverReactTimestamp: Date.now
     },
     {
-        id: 1,
-        proposeId: 0,
+        id: '1',
+        proposeId: '0',
         chained: false,
         visibility: 1,
         timestamp: Date.now(),

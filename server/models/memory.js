@@ -24,7 +24,7 @@ exports.insert = async (data, cb) => {
     return promise.cbOrFail("Must specify proposeId");
   }
 
-  if (await propose.one(data.proposeId)) {
+  if (!await propose.one(data.proposeId)) {
     return promise.cbOrFail("Propose ID not found");
   }
 
