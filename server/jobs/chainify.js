@@ -10,9 +10,11 @@
 // 4. Add to blockchain
 // 5. Exit
 
+require('dotenv').config();
+
 const UserContractJson = require("../../truffle/build/contracts/UserList.json");
 const Web3 = require('web3');
-const TruffleConfig = require("../../truffle/truffle-config").networks[process.env.mode || "development"];
+const TruffleConfig = require("../../truffle/truffle-config").networks[process.env.MODE || "development"];
 
 const nodeUrl = `ws://${TruffleConfig.host}:${TruffleConfig.port}`;
 let networkId = TruffleConfig.network_id;
@@ -31,8 +33,8 @@ store.select('user');
     const web3 = new Web3(nodeUrl);
     const contract = new web3.eth.Contract(UserContractJson.abi, UserContractJson.networks[networkId].address);
 
-    //const privateKey = process.env.chainedPrivateKey;
-    const privateKey = "c06a32e9fc74d8b5abf66bd34c455ce2b15ab0754a342ef9513fca54ebb0c4bd";
+    const privateKey = process.env.UPLOAD_PRIVATE_KEY;
+    console.log(privateKey);
     const account = web3.eth.accounts.wallet.add('0x' + privateKey);
     
     for (const user of unchainedUsers) {
