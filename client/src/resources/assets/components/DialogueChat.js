@@ -7,14 +7,14 @@ class DialogueChat extends Component {
       post: [],
     }
   }
-
+  
   componentDidMount() {
-    fetch('/api/memory/1')
+    fetch('/api/memory/list?proposeId=0')
     .then(results => results.json())
-    .then(data => this.setState({ post: data }))
+    .then(data => this.setState({ post: data.data }))
   }
 
-
+  
   render() {
     return (
       <div className="dialogue_chat mg-auto">
@@ -26,16 +26,16 @@ class DialogueChat extends Component {
 
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
-              const className = item.isClass ? 'left_mes' : 'right_mes';
+              // const className = item.isClass ? 'left_mes' : 'right_mes';
 
               return (
                 <div className="chat_content" key={index}>
-                  <div className={className}>
-                    <div className="user_photo fl"><img src={item.avatar} alt="" /></div>
+                  <div className="left_mes">
+                    <div className="user_photo fl"><img src={item.attachments[0].url} alt="" /></div>
                     <div className="content_detail fl clearfix">
                       <span className="user_name color-violet" >{item.name}</span>
                       <span className="time fr color-grey">{item.dateTime}</span>
-                      <p>{item.content}</p>
+                      <p>{item.message}</p>
                     </div>
                   </div>
                 </div>
