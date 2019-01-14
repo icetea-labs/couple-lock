@@ -1,20 +1,51 @@
 import React, { Component } from 'react';
 
 class DialogueChat extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      post: [],
-    }
-  }
+  // constructor (props) {
+  //   super(props);
+  //   this.state = {
+  //     post: [],
+  //   }
+  // }
   
-  componentDidMount() {
-    fetch('/api/memory/list?proposeId=0')
-    .then(results => results.json())
-    .then(data => this.setState({ post: data.data }))
-  }
+  // componentDidMount() {
+  //   fetch('/api/memory/list?proposeId=0')
+  //   .then(results => results.json())
+  //   .then(data => this.setState({ post: data.data }))
+  // }
 
   
+  // render() {
+  //   return (
+  //     <div className="dialogue_chat mg-auto">
+  //       <div className="box">
+  //         <div className="title_time">
+  //           <p><span className="icon-bed"></span>Lorem ipsum dolor sit amet</p>
+  //           <span className="date">2/4/2004</span>
+  //         </div>
+
+  //         {
+  //           this.state.post.length > 0 && this.state.post.map((item, index) => {
+  //             // const className = item.isClass ? 'left_mes' : 'right_mes';
+
+  //             return (
+  //               <div className="chat_content" key={index}>
+  //                 <div className="left_mes">
+  //                   <div className="user_photo fl"><img src={item.attachments[0].url} alt="" /></div>
+  //                   <div className="content_detail fl clearfix">
+  //                     <span className="user_name color-violet" >{item.name}</span>
+  //                     <span className="time fr color-grey">{item.dateTime}</span>
+  //                     <p>{item.message}</p>
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             )
+  //           })
+  //         }
+  //       </div>
+  //     </div>
+  //   );
+  // }
   render() {
     return (
       <div className="dialogue_chat mg-auto">
@@ -23,25 +54,16 @@ class DialogueChat extends Component {
             <p><span className="icon-bed"></span>Lorem ipsum dolor sit amet</p>
             <span className="date">2/4/2004</span>
           </div>
-
-          {
-            this.state.post.length > 0 && this.state.post.map((item, index) => {
-              // const className = item.isClass ? 'left_mes' : 'right_mes';
-
-              return (
-                <div className="chat_content" key={index}>
-                  <div className="left_mes">
-                    <div className="user_photo fl"><img src={item.attachments[0].url} alt="" /></div>
-                    <div className="content_detail fl clearfix">
-                      <span className="user_name color-violet" >{item.name}</span>
-                      <span className="time fr color-grey">{item.dateTime}</span>
-                      <p>{item.message}</p>
-                    </div>
-                  </div>
-                </div>
-              )
-            })
-          }
+          <div className="chat_content">
+            <div className="left_mes">
+              {/* <div className="user_photo fl"><img src={item.attachments[0].url} alt="" /></div> */}
+              <div className="content_detail fl clearfix">
+                {/* <span className="user_name color-violet" >{item.name}</span>
+                <span className="time fr color-grey">{item.dateTime}</span> */}
+                <p>{this.props.x.message}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
