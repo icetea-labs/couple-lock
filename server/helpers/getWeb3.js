@@ -1,5 +1,5 @@
 const Web3 = require('web3');
-const TruffleConfig = require("../../truffle/truffle-config").networks[process.env.MODE || "development"];
+const TruffleConfig = require("../../truffle/truffle-config").networks[process.env.NODE_ENV || "development"];
 
 const nodeUrl = `ws://${TruffleConfig.host}:${TruffleConfig.port}`;
 let networkId = TruffleConfig.network_id;

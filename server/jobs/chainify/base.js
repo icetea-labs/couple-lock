@@ -14,7 +14,7 @@ module.exports = class BaseTask {
 
     async run(web3) {
         store.select(this.entity);
-        const unchainedItems = await store.list({chained: false});
+        const unchainedItems = await store.list({ chained: false });
         if (!unchainedItems.length) {
             console.log(`All ${this.entity}(s) chained!`);
             return;
@@ -27,11 +27,11 @@ module.exports = class BaseTask {
             gas: 1000000, // gas limit
             gasPrice: '2000000000' // 2 gwei
         });
-        
+
         for (const item of unchainedItems) {
 
             try {
-                
+
                 // NOTE: have to wait for tx to mined before sending next transaction
                 // or we'll run into nonce problem
 
@@ -45,14 +45,10 @@ module.exports = class BaseTask {
                 console.log(`Successful upload ${this.entity} with ${this.keyName} of ${item[this.keyName]}`);
                 //console.log(await store.all());
 
-            } catch(error) {
+            } catch (error) {
                 console.log(`Failed upload ${this.entity} with ${this.keyName} of ${item[this.keyName]}`);
                 console.error(error);
             }
         }
-
-};
-
-
-
+    };
 }

@@ -1,4 +1,4 @@
-const TruffleConfig = require("../../truffle/truffle-config").networks[process.env.MODE || "development"];
+const TruffleConfig = require("../../truffle/truffle-config").networks[process.env.NODE_ENV || "development"];
 let networkId = TruffleConfig.network_id;
 if (networkId === "*") networkId = "5778";
 

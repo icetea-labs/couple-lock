@@ -35,7 +35,7 @@ seeder.propose = [
             {
                 type: 'photo',
                 url: "https://dq1eylutsoz4u.cloudfront.net/2018/01/25162144/relationship-tips-happy-couples.jpg",
-                caption: "Remember where this photo take?",
+                caption: "Remember where this photo taken?",
                 timestamp: Date.now(),
                 location: {
                     name: "Mongolia",
