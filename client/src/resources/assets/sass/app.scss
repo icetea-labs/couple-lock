@@ -234,6 +234,7 @@ img{
     width: calc(100% - 58px - 15px);
     .user_name{
       font-weight: 600;
+      text-transform: capitalize;
     }
     .time{
       font-size: 12px;
@@ -527,6 +528,7 @@ img{
         font-size: $font-root;
         font-weight: 600;
         margin-right: 15px;
+        text-transform: capitalize;
       }
       .time{
         padding-top: 2px;
