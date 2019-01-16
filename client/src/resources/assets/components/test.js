@@ -31,9 +31,8 @@ class test extends Component {
         this.getUsers(propose.data.sender, propose.data.receiver)
       });
   }
-  
+
   render() {
-    console.log(this.state.leftUser);
     return (
       <div>
         
