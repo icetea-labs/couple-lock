@@ -29,14 +29,13 @@ module.exports = class LevelStore extends DataStore {
     }
 
     list(condition, cb) {
-        console.log('hic')
         const prefix = this.namespace + ":";
         const arr = [];
 
         const stream = this.db.createReadStream({
             keys: false,
             gte: prefix,
-            lte: prefix + "~"
+            lte: String.fromCharCode(prefix.charCodeAt(0) + 1)
         });
 
         stream.on('data', (value) => {
