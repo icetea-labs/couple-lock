@@ -5,6 +5,10 @@ module.exports = class DataStore {
         return this;
     }
 
+    exist(key, cb) {
+        throw new Error("Not implemented");
+    }
+
     one(key, cb) {
         throw new Error("Not implemented");
     }
@@ -21,7 +25,15 @@ module.exports = class DataStore {
         throw new Error("Not implemented");
     }
 
+    tryInsert(key, value, cb) {
+        throw new Error("Not implemented");
+    }
+
     update(key, newProps, cb) {
+        throw new Error("Not implemented");
+    }
+
+    put(key, value, cb) {
         throw new Error("Not implemented");
     }
 

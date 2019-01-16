@@ -29,7 +29,7 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity >=0.4.24;\n\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\n\n\ninterface IUserList {\n    function isAddrRegistered(address _who) external view returns(bool);\n    function isNickRegistered(bytes32 _nick) external view returns(bool);\n}\n\n\ninterface ILovePropose {\n    function isOwnerPropose(address _who, uint _index) external view returns(bool);\n}\n\n\ncontract LoveMemory is Ownable {\n    \n    IUserList public userList;\n    ILovePropose public lovePropose;\n\n    struct Memory {\n        address who;\n        string what;\n        string image;\n        bytes32 place;\n        uint longitude;\n        uint latitude;\n    }\n\n    struct Comment {\n        address who;\n        string  what;\n        string  image;\n    }\n\n    Memory[] public lsMemory;\n    Comment[] public lsComment;\n    //\n    string public emptyStr = \"\";\n    \n    // Map memory: Propose ID -> Array Memory\n    mapping (uint => uint[]) public mpProposeMemory;\n    event NewMemory(uint index, uint proposeID, address indexed fAddress, string comment, string image, bytes32 place, uint long, uint lat);\n    //Map like: Memory ID -> Array liker \n    mapping (uint => address[]) public mpLike;\n    event NewLike(address indexed fAddress);\n    // Map comment: Memory ID -> Array comment \n    mapping (uint => uint[]) public mpComment;\n    event NewComment(uint index, address indexed fAddress, string comment, string image);\n\n    constructor (IUserList _userList, ILovePropose _lovePropose) public {\n        require(address(_userList) != address(0));\n        require(address(_lovePropose) != address(0));\n        userList = _userList;\n        lovePropose = _lovePropose;\n    }\n\n    function setUserList(IUserList _userList, ILovePropose _lovePropose) public onlyOwner {\n        userList = _userList;\n        lovePropose = _lovePropose;\n    }\n\n    modifier onlyRegiter {\n        require(userList.isAddrRegistered(msg.sender));\n        _;\n    }\n    // ****** Memory ****** \n    function addMemory(uint _index, string memory _content, string memory _image, bytes32 _place, uint _long, uint _lat) public onlyRegiter {\n        require(lovePropose.isOwnerPropose(msg.sender, _index), \"Sender must be owner propose!\");\n        Memory memory newMemo = Memory(msg.sender, _content, _image, _place, _long, _lat);\n        uint id = lsMemory.push(newMemo) - 1;\n        mpProposeMemory[_index].push(id); \n        emit NewMemory(id, _index, msg.sender, _content, _image, _place, _long, _lat);\n    }\n\n    function getAllMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, uint[] memory long, uint[] memory lat) {\n        uint len = mpProposeMemory[_index].length;\n        who = new address[](len);\n        place = new bytes32[](len);\n        long = new uint[](len);\n        lat = new uint[](len);\n\n        bytes memory whatCollector;\n        bytes memory hashCollector;\n        for (uint i = 0; i < len; i++) {\n            who[i] = lsMemory[mpProposeMemory[_index][i]].who;\n            whatCollector = abi.encodePacked(whatCollector, bytes(lsMemory[mpProposeMemory[_index][i]].what), \";\");//byte(0)\n            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[mpProposeMemory[_index][i]].image), \";\");//byte(0)\n            place[i] = lsMemory[mpProposeMemory[_index][i]].place;\n            long[i] = lsMemory[mpProposeMemory[_index][i]].longitude;\n            lat[i] = lsMemory[mpProposeMemory[_index][i]].latitude;\n        }\n        what = string(whatCollector);\n        imageHash = string(hashCollector);\n    }\n\n    // ****** Like ****** \n    function sentLike(uint _index) public {\n        //Add address liker to map\n        mpLike[_index].push(msg.sender);\n        emit NewLike(msg.sender);\n    }\n\n    // Get like form mpLike.\n    // function getLike(uint _index) public view returns(address[] memory addLike) {\n    //     //Add address liker to map\n    //     addLike = mpLike[_index];\n    // }\n\n    // ****** Comment ****** \n    function addComment(uint _index, string memory _comment, string memory _image) public {\n        uint id = lsComment.push(Comment(msg.sender, _comment, _image)) - 1;\n        // Check comment for Propose(0) or Memory(1).\n        mpComment[_index].push(id);\n        emit NewComment(_index, msg.sender, _comment, _image);\n    }\n\n    //\n    function getAllComment(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash) {\n        uint len = mpComment[_index].length;\n        who = new address[](len);\n        bytes memory whatCollector;\n        bytes memory imageHashCollector;\n        for (uint i = 0; i < len; i++) {\n            who[i] = lsComment[mpComment[_index][i]].who;\n            whatCollector = abi.encodePacked(whatCollector, bytes(lsComment[mpComment[_index][i]].what), \";\");//byte(0)\n            imageHashCollector = abi.encodePacked(imageHashCollector, bytes(lsComment[mpComment[_index][i]].image), \";\");//byte(0)\n        }\n        what = string(whatCollector);\n        imageHash = string(imageHashCollector);\n    }\n}",
+  "source": "pragma solidity >=0.4.24;\n\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\n\n\ninterface IUserList {\n    function isAddrRegistered(address _who) external view returns(bool);\n    function isNickRegistered(bytes32 _nick) external view returns(bool);\n}\n\n\ninterface ILovePropose {\n    function isOwnerPropose(address _who, uint _index) external view returns(bool);\n}\n\n\ncontract LoveMemory is Ownable {\n    \n    IUserList public userList;\n    ILovePropose public lovePropose;\n\n    struct Memory {\n        address who;\n        string what;\n        string image;\n        bytes32 place;\n        uint longitude;\n        uint latitude;\n    }\n\n    struct Comment {\n        address who;\n        string  what;\n        string  image;\n    }\n\n    Memory[] public lsMemory;\n    Comment[] public lsComment;\n    //\n    string public emptyStr = \"\";\n    \n    // Map memory: Propose ID -> Array Memory\n    mapping (uint => uint[]) public mpProposeMemory;\n    event NewMemory(uint index, uint proposeID, address indexed fAddress, string comment, string image, bytes32 place, uint long, uint lat);\n    //Map like: Memory ID -> Array liker \n    mapping (uint => address[]) public mpLike;\n    event NewLike(address indexed fAddress);\n    // Map comment: Memory ID -> Array comment \n    mapping (uint => uint[]) public mpComment;\n    event NewComment(uint index, address indexed fAddress, string comment, string image);\n\n    constructor (IUserList _userList, ILovePropose _lovePropose) public {\n        require(address(_userList) != address(0));\n        require(address(_lovePropose) != address(0));\n        userList = _userList;\n        lovePropose = _lovePropose;\n    }\n\n    function setUserList(IUserList _userList, ILovePropose _lovePropose) public onlyOwner {\n        userList = _userList;\n        lovePropose = _lovePropose;\n    }\n\n    modifier onlyRegiter {\n        require(userList.isAddrRegistered(msg.sender));\n        _;\n    }\n    // ****** Memory ****** \n    function addMemory(uint _index, string memory _content, string memory _image, bytes32 _place, uint _long, uint _lat) public onlyRegiter {\n        require(lovePropose.isOwnerPropose(msg.sender, _index), \"Sender must be owner propose!\");\n        Memory memory newMemo = Memory(msg.sender, _content, _image, _place, _long, _lat);\n        uint id = lsMemory.push(newMemo) - 1;\n        mpProposeMemory[_index].push(id); \n        emit NewMemory(id, _index, msg.sender, _content, _image, _place, _long, _lat);\n    }\n\n    function getAllMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, uint[] memory long, uint[] memory lat) {\n        uint len = mpProposeMemory[_index].length;\n        who = new address[](len);\n        place = new bytes32[](len);\n        long = new uint[](len);\n        lat = new uint[](len);\n\n        bytes memory whatCollector;\n        bytes memory hashCollector;\n        for (uint i = 0; i < len; i++) {\n            who[i] = lsMemory[mpProposeMemory[_index][i]].who;\n            whatCollector = abi.encodePacked(whatCollector, bytes(lsMemory[mpProposeMemory[_index][i]].what), \";\");//byte(0)\n            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[mpProposeMemory[_index][i]].image), \";\");//byte(0)\n            place[i] = lsMemory[mpProposeMemory[_index][i]].place;\n            long[i] = lsMemory[mpProposeMemory[_index][i]].longitude;\n            lat[i] = lsMemory[mpProposeMemory[_index][i]].latitude;\n        }\n        what = string(whatCollector);\n        imageHash = string(hashCollector);\n    }\n\n    // ****** Like ****** \n    function sentLike(uint _index) public {\n        //Add address liker to map\n        mpLike[_index].push(msg.sender);\n        emit NewLike(msg.sender);\n    }\n\n    // Get like form mpLike.\n    // function getLike(uint _index) public view returns(address[] memory addLike) {\n    //     //Add address liker to map\n    //     addLike = mpLike[_index];\n    // }\n\n    // ****** Comment ****** \n    function addComment(uint _index, string memory _comment, string memory _image) public {\n        uint id = lsComment.push(Comment(msg.sender, _comment, _image)) - 1;\n        // Check comment for Propose(0) or Memory(1).\n        mpComment[_index].push(id);\n        emit NewComment(_index, msg.sender, _comment, _image);\n    }\n\n    //\n    function getAllComment(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash) {\n        uint len = mpComment[_index].length;\n        who = new address[](len);\n        bytes memory whatCollector;\n        bytes memory imageHashCollector;\n        for (uint i = 0; i < len; i++) {\n            who[i] = lsComment[mpComment[_index][i]].who;\n            whatCollector = abi.encodePacked(whatCollector, bytes(lsComment[mpComment[_index][i]].what), \";\");//byte(0)\n            imageHashCollector = abi.encodePacked(imageHashCollector, bytes(lsComment[mpComment[_index][i]].image), \";\");//byte(0)\n        }\n        what = string(whatCollector);\n        imageHash = string(imageHashCollector);\n    }\n\n    function upload() public {\n\n    }\n}",
   "sourcePath": "/Users/thi/Documents/GitHub/couple-lock/truffle/contracts/LoveMemory.sol",
   "ast": {
     "absolutePath": "/Users/thi/Documents/GitHub/couple-lock/truffle/contracts/LoveMemory.sol",
@@ -41,10 +41,10 @@
         17
       ],
       "LoveMemory": [
-        588
+        592
       ]
     },
-    "id": 589,
+    "id": 593,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -63,8 +63,8 @@
         "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
         "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 589,
-        "sourceUnit": 1595,
+        "scope": 593,
+        "sourceUnit": 1550,
         "src": "27:63:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -249,7 +249,7 @@
             "visibility": "external"
           }
         ],
-        "scope": 589,
+        "scope": 593,
         "src": "93:170:0"
       },
       {
@@ -375,7 +375,7 @@
             "visibility": "external"
           }
         ],
-        "scope": 589,
+        "scope": 593,
         "src": "266:110:0"
       },
       {
@@ -387,10 +387,10 @@
               "id": 28,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1594,
+              "referencedDeclaration": 1549,
               "src": "402:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$1594",
+                "typeIdentifier": "t_contract$_Ownable_$1549",
                 "typeString": "contract Ownable"
               }
             },
@@ -400,15 +400,15 @@
           }
         ],
         "contractDependencies": [
-          1594
+          1549
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 588,
+        "id": 592,
         "linearizedBaseContracts": [
-          588,
-          1594
+          592,
+          1549
         ],
         "name": "LoveMemory",
         "nodeType": "ContractDefinition",
@@ -418,7 +418,7 @@
             "id": 31,
             "name": "userList",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "421:25:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -446,7 +446,7 @@
             "id": 33,
             "name": "lovePropose",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "452:31:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -632,7 +632,7 @@
             ],
             "name": "Memory",
             "nodeType": "StructDefinition",
-            "scope": 588,
+            "scope": 592,
             "src": "490:155:0",
             "visibility": "public"
           },
@@ -721,7 +721,7 @@
             ],
             "name": "Comment",
             "nodeType": "StructDefinition",
-            "scope": 588,
+            "scope": 592,
             "src": "651:88:0",
             "visibility": "public"
           },
@@ -730,7 +730,7 @@
             "id": 56,
             "name": "lsMemory",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "745:24:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -768,7 +768,7 @@
             "id": 59,
             "name": "lsComment",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "775:26:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -806,7 +806,7 @@
             "id": 62,
             "name": "emptyStr",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "814:27:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -849,7 +849,7 @@
             "id": 67,
             "name": "mpProposeMemory",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "898:47:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1135,7 +1135,7 @@
             "id": 90,
             "name": "mpLike",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "1134:41:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1232,7 +1232,7 @@
             "id": 99,
             "name": "mpComment",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "1274:41:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1553,10 +1553,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1612,
+                      "referencedDeclaration": 1567,
                       "src": "1490:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1723,10 +1723,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1612,
+                      "referencedDeclaration": 1567,
                       "src": "1541:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1923,7 +1923,7 @@
               "parameters": [],
               "src": "1480:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "1412:246:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2044,7 +2044,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1528,
+                  "referencedDeclaration": 1483,
                   "src": "1740:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -2127,7 +2127,7 @@
               "parameters": [],
               "src": "1750:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "1664:159:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2154,7 +2154,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1609,
+                              "referencedDeclaration": 1564,
                               "src": "1894:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -2236,10 +2236,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1612,
+                      "referencedDeclaration": 1567,
                       "src": "1860:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -2305,7 +2305,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1609,
+                              "referencedDeclaration": 1564,
                               "src": "2139:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -2426,10 +2426,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1613,
+                      "referencedDeclaration": 1568,
                       "src": "2104:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2500,7 +2500,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "2233:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -2915,7 +2915,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "2409:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -3266,7 +3266,7 @@
               "parameters": [],
               "src": "2094:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "1958:508:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -4255,7 +4255,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "3049:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -4527,7 +4527,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "3174:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -5636,7 +5636,7 @@
               ],
               "src": "2527:130:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "2472:1101:0",
             "stateMutability": "view",
             "superFunction": null,
@@ -5660,7 +5660,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "3709:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -5773,7 +5773,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "3743:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -5881,7 +5881,7 @@
               "parameters": [],
               "src": "3644:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "3606:155:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -5951,7 +5951,7 @@
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1609,
+                                "referencedDeclaration": 1564,
                                 "src": "4125:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
@@ -6239,7 +6239,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "4283:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -6437,7 +6437,7 @@
               "parameters": [],
               "src": "4082:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "3996:323:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -7117,7 +7117,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "4741:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -7389,7 +7389,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "4866:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -7880,18 +7880,52 @@
               ],
               "src": "4388:67:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "4332:733:0",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 590,
+              "nodeType": "Block",
+              "src": "5096:8:0",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 591,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "upload",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 588,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5086:2:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 589,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5096:0:0"
+            },
+            "scope": 592,
+            "src": "5071:33:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
           }
         ],
-        "scope": 589,
-        "src": "379:4688:0"
+        "scope": 593,
+        "src": "379:4727:0"
       }
     ],
-    "src": "0:5067:0"
+    "src": "0:5106:0"
   },
   "legacyAST": {
     "absolutePath": "/Users/thi/Documents/GitHub/couple-lock/truffle/contracts/LoveMemory.sol",
@@ -7903,10 +7937,10 @@
         17
       ],
       "LoveMemory": [
-        588
+        592
       ]
     },
-    "id": 589,
+    "id": 593,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -7925,8 +7959,8 @@
         "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
         "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 589,
-        "sourceUnit": 1595,
+        "scope": 593,
+        "sourceUnit": 1550,
         "src": "27:63:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -8111,7 +8145,7 @@
             "visibility": "external"
           }
         ],
-        "scope": 589,
+        "scope": 593,
         "src": "93:170:0"
       },
       {
@@ -8237,7 +8271,7 @@
             "visibility": "external"
           }
         ],
-        "scope": 589,
+        "scope": 593,
         "src": "266:110:0"
       },
       {
@@ -8249,10 +8283,10 @@
               "id": 28,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1594,
+              "referencedDeclaration": 1549,
               "src": "402:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$1594",
+                "typeIdentifier": "t_contract$_Ownable_$1549",
                 "typeString": "contract Ownable"
               }
             },
@@ -8262,15 +8296,15 @@
           }
         ],
         "contractDependencies": [
-          1594
+          1549
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 588,
+        "id": 592,
         "linearizedBaseContracts": [
-          588,
-          1594
+          592,
+          1549
         ],
         "name": "LoveMemory",
         "nodeType": "ContractDefinition",
@@ -8280,7 +8314,7 @@
             "id": 31,
             "name": "userList",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "421:25:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -8308,7 +8342,7 @@
             "id": 33,
             "name": "lovePropose",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "452:31:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -8494,7 +8528,7 @@
             ],
             "name": "Memory",
             "nodeType": "StructDefinition",
-            "scope": 588,
+            "scope": 592,
             "src": "490:155:0",
             "visibility": "public"
           },
@@ -8583,7 +8617,7 @@
             ],
             "name": "Comment",
             "nodeType": "StructDefinition",
-            "scope": 588,
+            "scope": 592,
             "src": "651:88:0",
             "visibility": "public"
           },
@@ -8592,7 +8626,7 @@
             "id": 56,
             "name": "lsMemory",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "745:24:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -8630,7 +8664,7 @@
             "id": 59,
             "name": "lsComment",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "775:26:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -8668,7 +8702,7 @@
             "id": 62,
             "name": "emptyStr",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "814:27:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -8711,7 +8745,7 @@
             "id": 67,
             "name": "mpProposeMemory",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "898:47:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -8997,7 +9031,7 @@
             "id": 90,
             "name": "mpLike",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "1134:41:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -9094,7 +9128,7 @@
             "id": 99,
             "name": "mpComment",
             "nodeType": "VariableDeclaration",
-            "scope": 588,
+            "scope": 592,
             "src": "1274:41:0",
             "stateVariable": true,
             "storageLocation": "default",
@@ -9415,10 +9449,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1612,
+                      "referencedDeclaration": 1567,
                       "src": "1490:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -9585,10 +9619,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1612,
+                      "referencedDeclaration": 1567,
                       "src": "1541:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -9785,7 +9819,7 @@
               "parameters": [],
               "src": "1480:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "1412:246:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -9906,7 +9940,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1528,
+                  "referencedDeclaration": 1483,
                   "src": "1740:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -9989,7 +10023,7 @@
               "parameters": [],
               "src": "1750:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "1664:159:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -10016,7 +10050,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1609,
+                              "referencedDeclaration": 1564,
                               "src": "1894:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -10098,10 +10132,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1612,
+                      "referencedDeclaration": 1567,
                       "src": "1860:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -10167,7 +10201,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1609,
+                              "referencedDeclaration": 1564,
                               "src": "2139:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -10288,10 +10322,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1612,
-                        1613
+                        1567,
+                        1568
                       ],
-                      "referencedDeclaration": 1613,
+                      "referencedDeclaration": 1568,
                       "src": "2104:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -10362,7 +10396,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "2233:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -10777,7 +10811,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "2409:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -11128,7 +11162,7 @@
               "parameters": [],
               "src": "2094:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "1958:508:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -12117,7 +12151,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "3049:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -12389,7 +12423,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "3174:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -13498,7 +13532,7 @@
               ],
               "src": "2527:130:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "2472:1101:0",
             "stateMutability": "view",
             "superFunction": null,
@@ -13522,7 +13556,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "3709:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -13635,7 +13669,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "3743:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -13743,7 +13777,7 @@
               "parameters": [],
               "src": "3644:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "3606:155:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -13813,7 +13847,7 @@
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1609,
+                                "referencedDeclaration": 1564,
                                 "src": "4125:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
@@ -14101,7 +14135,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1609,
+                          "referencedDeclaration": 1564,
                           "src": "4283:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -14299,7 +14333,7 @@
               "parameters": [],
               "src": "4082:0:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "3996:323:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -14979,7 +15013,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "4741:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -15251,7 +15285,7 @@
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1596,
+                                "referencedDeclaration": 1551,
                                 "src": "4866:3:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
@@ -15742,18 +15776,52 @@
               ],
               "src": "4388:67:0"
             },
-            "scope": 588,
+            "scope": 592,
             "src": "4332:733:0",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 590,
+              "nodeType": "Block",
+              "src": "5096:8:0",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 591,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "upload",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 588,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5086:2:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 589,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5096:0:0"
+            },
+            "scope": 592,
+            "src": "5071:33:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
           }
         ],
-        "scope": 589,
-        "src": "379:4688:0"
+        "scope": 593,
+        "src": "379:4727:0"
       }
     ],
-    "src": "0:5067:0"
+    "src": "0:5106:0"
   },
   "compiler": {
     "name": "solc",
@@ -15761,5 +15829,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-01-08T10:42:51.112Z"
+  "updatedAt": "2019-01-14T08:54:16.120Z"
 }

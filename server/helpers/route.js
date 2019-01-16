@@ -23,7 +23,7 @@ exports.validate = (validationResult, req, res) => {
 
 exports.tryJson = async (res, func, ...args) => {
     try {
-        const data = await func(...args)
+        const data = await func(...args);
         exports.succeed(res, data);
     } catch (error) {
         exports.error(res, error);

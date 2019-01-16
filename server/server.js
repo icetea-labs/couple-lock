@@ -7,5 +7,5 @@ var express = require('express')
 app.use(require('./controllers'))
 
 app.listen(5000, function() {
-  console.log('SERVER http://localhost:5000')
+  console.log('Server started.')
 })
