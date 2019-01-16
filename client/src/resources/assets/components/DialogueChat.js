@@ -18,6 +18,11 @@ class DialogueChat extends Component {
 
   
   render() {
+    
+    const sender = this.props.sender
+    
+    console.log(sender);
+    
     return (
       <div className="dialogue_chat mg-auto">
         <div className="box">
@@ -27,11 +32,11 @@ class DialogueChat extends Component {
               return (
                 <div className="chat_content" key={index}>
                   <div className="left_mes">
-                    <div className="user_photo fl"><img src={item.attachments[0].url} alt="" /></div>
+                    <div className="user_photo fl"><img src="" alt="" /></div>
                     <div className="content_detail fl clearfix">
                       <span className="user_name color-violet" >{item.sender}</span>
                       <span className="time fr color-grey">{date}</span>
-                      <p>{item.message}</p>
+                      <p>{item.s_message}</p>
                     </div>
                   </div>
                 </div>

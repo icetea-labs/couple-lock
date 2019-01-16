@@ -2,74 +2,36 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 class RecentChat extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      para: [],
-      userName: "tradatech",
-    }
-  }
-
-  componentDidMount() {
-    fetch('/api/propose/list?username=tradatech')
-    .then(results => results.json())
-    .then(data => this.setState({ para: data.data })
-    )
-  }
-
-  renderBox = () => {
-    if(this.state.userName === "tradatech"){
-      return(
-        <div>
-          {
-            this.state.para.length > 0 && this.state.para.map((item, index) => {
-            let date = moment(item.s_timestamp).format("MM/DD/YYYY");
-            return (
-              <div className="box fl" key={index}>
-                <div className="user_photo"><img src={item.s_attachments[0].url} alt="" /></div>
-                <div className="content_detail fl clearfix">
-                  <div className="name_time">
-                    <span className="user_name color-violet">{item.sender}</span>
-                    <span className="time fr color-grey">{date}</span>
-                  </div>
-                  <p>{item.s_message}</p>
-                </div>
-              </div>
-              )
-            })
-          }
-        </div>
-      )
-    }else{
-      return(
-        <div>
-          {
-            this.state.para.length > 0 && this.state.para.map((item, index) => {
-            let date = moment(item.r_timestamp).format("MM/DD/YYYY");
-            return (
-              <div className="box fl" key={index}>
-                <div className="user_photo"><img src={item.r_attachments[0].url} alt="" /></div>
-                <div className="content_detail fl clearfix">
-                  <div className="name_time">
-                    <span className="user_name color-violet">{item.sender}</span>
-                    <span className="time fr color-grey">{date}</span>
-                  </div>
-                  <p>{item.r_message}</p>
-                </div>
-              </div>
-              )
-            })
-          }
-        </div>
-      )
-    }
-  }
 
   render() {
+    const leftTime = moment(this.props.s_timestamp).format("MM/DD/YYYY");
+    const rightTime = moment(this.props.r_timestamp).format("MM/DD/YYYY");
+    
     return (
       <div className="Recentchat">
         <div className="Recentchat__container clearfix">
-          { this.renderBox() }
+          <div className="box fl">
+            <div className="user_photo"><img src={this.props.sender.avatar} alt="" /></div>
+            <div className="content_detail fl clearfix">
+              <div className="name_time">
+                <span className="user_name color-violet">{this.props.sender.username}</span>
+                <span className="time fr color-grey">{leftTime}</span>
+              </div>
+              <p>{this.props.mes.s_message}</p>
+            </div>
+          </div>
+
+          <div className="box fr">
+            <div className="user_photo"><img src={this.props.receiver.avatar} alt="" /></div>
+            <div className="content_detail fl clearfix">
+              <div className="name_time">
+                <span className="time fr color-grey">{rightTime}</span>
+                <span className="user_name color-violet">{this.props.receiver.username}</span>
+              </div>
+              <p>{this.props.mes.r_message}</p>
+            </div>
+          </div>
+
         </div>
       </div>
     );
