@@ -16,7 +16,7 @@ class BannerImage extends Component {
 
   render() {
     return (
-      <div className="banner_container mg-auto">
+      <div>
          {
           this.state.post.length > 0 && this.state.post.map((item, index) => {
           // const className = item.isClass ? 'box fl' : 'box fl -right';
