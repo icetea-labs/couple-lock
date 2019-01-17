@@ -1,11 +1,12 @@
 const blockchain = require('../../helpers/blockchain');
-const store = require('../../services/factory');
+const factory = require('../../services/factory');
 
 module.exports = class BaseTask {
     constructor(JSON, entity, keyName) {
         this.JSON = JSON;
         this.entity = entity;
         this.keyName = keyName || 'id';
+        this.store = factory.getStore(entity);
     }
 
     _doUploadSync(web3, contract, item) {
@@ -13,8 +14,7 @@ module.exports = class BaseTask {
     }
 
     async run(web3) {
-        store.select(this.entity);
-        const unchainedItems = await store.list({ chained: false });
+        const unchainedItems = await this.store.list({ chained: false });
         if (!unchainedItems.length) {
             console.log(`All ${this.entity}(s) chained!`);
             return;
@@ -38,12 +38,12 @@ module.exports = class BaseTask {
                 const receipts = await this._doUploadSync(web3, contract, item);
                 //console.log(receipts);
 
-                await store.update(item[this.keyName], {
+                await this.store.update(item[this.keyName], {
                     chained: Date.now()
                 });
 
                 console.log(`Successful upload ${this.entity} with ${this.keyName} of ${item[this.keyName]}`);
-                //console.log(await store.all());
+                //console.log(await this.store.all());
 
             } catch (error) {
                 console.log(`Failed upload ${this.entity} with ${this.keyName} of ${item[this.keyName]}`);

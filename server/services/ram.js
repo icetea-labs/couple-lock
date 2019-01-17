@@ -1,19 +1,13 @@
 const _ = require("lodash");
 const promise = require("../helpers/promise");
-const DataStore = require("./datastore");
+const NsStore = require("./nsstore");
 
-module.exports = class RamStore extends DataStore {
-    constructor() {
-        super();
-        this.bucket = {};
-    }
+const storeBucket = {};
 
-    nsKey(key) {
-        return this.namespace + ":" + key;
-    }
-
-    nsIs(key) {
-        return key.startsWith(this.namespace + ":");
+module.exports = class RamStore extends NsStore {
+    constructor(namespace) {
+        super(namespace);
+        this.bucket = storeBucket;
     }
 
     nsFilter() {
@@ -22,81 +16,18 @@ module.exports = class RamStore extends DataStore {
         })
     }
 
-    exist(key, cb) {
-        const fullKey = this.nsKey(key);
-        const value = this.bucket[fullKey];
-        return promise.cbOrSucceed(!!value, cb);
-    }
-
     one(key, cb) {
         const fullKey = this.nsKey(key);
         const value = this.bucket[fullKey];
         return promise.cbOrNotFound(value, fullKey, cb);
     }
 
-    list(condition, cb) {
-        if (!condition) return this.all(cb);
-
-        var items = this.nsFilter()
-        var pickedItems = _.pickBy(items, (value) => {
-            let picked = false;
-            _.each(condition, (cv, ck) => {
-                if (value[ck] == cv) {
-                    picked = true;
-                    return false;
-                }
-            })
-            return picked;
-        })
-        return promise.cbOrSucceed(Object.values(pickedItems), cb);
+    set(key, value, cb) {
+        this.bucket[this.nsKey(key)] = value;
+        return promise.cbOrSucceed(value, cb);
     }
 
-    all(cb) {
-        return promise.cbOrSucceed(Object.values(this.nsFilter()), cb);
-    }
-
-    insert(key, value, cb) {
-        const fullKey = this.nsKey(key);
-        const oldValue = this.bucket[fullKey];
-        if (oldValue) {
-            return promise.cbOrFail("Key already exists", cb);
-        } else {
-            this.bucket[fullKey] = value;
-            return promise.cbOrSucceed(value, cb);
-        }
-    }
-
-    tryInsert(key, value, cb) {
-        const fullKey = this.nsKey(key);
-        const oldValue = this.bucket[fullKey];
-        if (!oldValue) {
-            this.bucket[fullKey] = value;
-        }
-
-        return promise.cbOrSucceed(!oldValue, cb);
-    }
-
-    update(key, newProps, cb) {
-        const fullKey = this.nsKey(key);
-        const value = this.bucket[fullKey];
-        if (!value) {
-            return promise.cbOrFail("Key not found", cb);
-        } else {
-            promise.cbOrSucceed(_.extend(this.bucket[fullKey], newProps || {}));
-        }
-    }
-
-    put(key, value, cb) {
-        const fullKey = this.nsKey(key);
-        if (this.bucket[fullKey]) {
-            return promise.cbOrSucceed(_.extend(this.bucket[fullKey], value || {}));
-        } else {
-            this.bucket[fullKey] = value;
-            return promise.cbOrSucceed(value, cb);
-        }
-    }
-
-    deleteOne(key, cb) {
+    delete(key, cb) {
         const fullKey = this.nsKey(key);
         if (!this.bucket[fullKey]) {
             return promise.cbOrFail("Key not found", cb);
@@ -105,8 +36,24 @@ module.exports = class RamStore extends DataStore {
         }
     }
 
-    deleteList(condition, cb) {
-        throw new Error("Not implemented");
+    list(condition, cb) {
+        let items = this.nsFilter();
+        let pickedItems;
+        if (condition) {
+            pickedItems = _.pickBy(items, (value) => {
+                let picked = false;
+                _.each(condition, (cv, ck) => {
+                    if (value[ck] == cv) {
+                        picked = true;
+                        return false;
+                    }
+                })
+                return picked;
+            })
+        } else {
+            pickedItems = items;
+        }
+        return promise.cbOrSucceed(Object.values(pickedItems), cb);
     }
 }
 
