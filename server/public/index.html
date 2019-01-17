@@ -13,10 +13,12 @@
 
     <h3>Current list of memory for <b>proposeId=0</b></h3>
     <div id="list"></div>
-    <script id="tmp" type="text/template">
+
+<script id="tmp" type="text/template">
 <div>{sender}: {message}</div>
 <div class="photo"><img style="width:120px"></div><hr>
 </script>
+
     <script>
 
         fetch('api/memory/list?proposeId=0')
