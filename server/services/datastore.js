@@ -74,4 +74,13 @@ module.exports = class DataStore {
             return this.set(key, value, cb);
         } 
     }
+
+
+    async tryDelete(key, cb) {
+        const existent = await this.exist(key);
+        if (existent) {
+            return this.delete(key, cb);
+        }
+        return promise.cbOrSucceed(false, cb);
+    }
 }

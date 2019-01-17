@@ -37,7 +37,7 @@ module.exports = class RamStore extends NsStore {
     }
 
     list(condition, cb) {
-        let items = this.nsFilter();
+        const items = this.nsFilter();
         let pickedItems;
         if (condition) {
             pickedItems = _.pickBy(items, (value) => {

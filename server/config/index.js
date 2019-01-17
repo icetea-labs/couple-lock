@@ -5,7 +5,7 @@ module.exports = {
     },
 
     development: {
-        datastore: 'leveldb', // 'ram' or 'leveldb'
+        datastore: 'smart', // 'ram', 'leveldb', 'smart'
         seed: true,
 
         // More config goes here

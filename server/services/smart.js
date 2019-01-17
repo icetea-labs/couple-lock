@@ -1,49 +1,41 @@
 // load from RAM first, then load from disk
+const promise = require("../helpers/promise");
+const DataStore = require('./datastore');
+const RamStore = require('./ram');
+const LevelStore = require('./leveldb');
 
-module.exports = class SmartStore {
+module.exports = class SmartStore extends DataStore {
     
-    constructor(ram, disk) {
-        this.ram = ram;
-        this.disk = disk;
+    constructor(namespace) {
+        super(namespace);
+        this.ram = new RamStore(namespace);
+        this.disk = new LevelStore(namespace);
     }
 
-    exist(key, cb) {
-        throw new Error("Not implemented");
-    }
+    async one(key, cb) {
+        const ramValue = await this.ram.tryOne(key);
+        if (ramValue) {
+            console.log(`Value for ${this.namespace} ${key} got from RAM`);
+            return promise.cbOrSucceed(ramValue, cb);
+        }
 
-    one(key, cb) {
-        throw new Error("Not implemented");
+        const diskValue = await this.disk.one(key);
+        console.log(`Value for ${this.namespace} ${key} got from LevelDB`);
+        this.ram.set(key, diskValue);
+        return promise.cbOrSucceed(diskValue, cb);
     }
 
     list(condition, cb) {
-        throw new Error("Not implemented");
+        return this.disk.list(condition, cb);
     }
 
-    all(cb) {
-        throw new Error("Not implemented")
+    async set(key, value, cb) {
+        this.ram.set(key, value);
+        return this.disk.set(key, value, cb);
     }
 
-    insert(key, value, cb) {
-        throw new Error("Not implemented");
-    }
-
-    tryInsert(key, value, cb) {
-        throw new Error("Not implemented");
-    }
-
-    update(key, newProps, cb) {
-        throw new Error("Not implemented");
-    }
-
-    put(key, value, cb) {
-        throw new Error("Not implemented");
-    }
-
-    deleteOne(key, cb) {
-        throw new Error("Not implemented");
-    }
-
-    deleteList(condition, cb) {
-        throw new Error("Not implemented");
+    async delete(key, cb) {
+        this.ram.tryDelete(key);
+        return this.disk.delete(key, cb);
     }
 }
