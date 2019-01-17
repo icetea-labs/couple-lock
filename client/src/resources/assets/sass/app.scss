@@ -184,6 +184,7 @@ img{
 }
 
 .Recentchat{
+  width: 100%;
   display: inline-block;
   margin-top: 35px;
   .box{
@@ -194,6 +195,7 @@ img{
       .user_photo{
         margin-right: 0;
         margin-left: 15px;
+        float: right;
       }
       .content_detail{
         p{
@@ -502,10 +504,10 @@ img{
         max-width: calc(100% - 58px - 15px);
       }
     }
-    .left_mes, .right_mes{
+    .sender, .receiver{
       display: inline-block;
     }
-    .right_mes{
+    .receiver{
       float: right;
     }
     .user_photo{

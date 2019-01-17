@@ -1,4 +1,4 @@
-pragma solidity >=0.4.24;
+pragma solidity >=0.5;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
@@ -6,6 +6,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 interface IUserList {
     function isAddrRegistered(address _who) external view returns(bool);
     function isNickRegistered(bytes32 _nick) external view returns(bool);
+    function isJobAddr(address _isAddrJob) external view returns(bool);
 }
 
 
@@ -19,35 +20,20 @@ contract LoveMemory is Ownable {
     IUserList public userList;
     ILovePropose public lovePropose;
 
-    struct Memory {
-        address who;
-        string what;
-        string image;
-        bytes32 place;
-        uint longitude;
-        uint latitude;
-    }
-
-    struct Comment {
-        address who;
-        string  what;
-        string  image;
-    }
-
-    Memory[] public lsMemory;
-    Comment[] public lsComment;
-    //
-    string public emptyStr = "";
+    string[] public lsMemory;
+    string[] public lsComment;
     
     // Map memory: Propose ID -> Array Memory
-    mapping (uint => uint[]) public mpProposeMemory;
-    event NewMemory(uint index, uint proposeID, address indexed fAddress, string comment, string image, bytes32 place, uint long, uint lat);
+    mapping (uint => uint[]) public proposeToMemories;
+    event NewMemory(uint index, uint proposeIndex, string hashInfo);
+    
+    // Map comment: Memory ID -> Array comment 
+    mapping (uint => uint[]) public memoryToComments;
+    event NewComment(uint index, string commentHash);
+
     //Map like: Memory ID -> Array liker 
     mapping (uint => address[]) public mpLike;
-    event NewLike(address indexed fAddress);
-    // Map comment: Memory ID -> Array comment 
-    mapping (uint => uint[]) public mpComment;
-    event NewComment(uint index, address indexed fAddress, string comment, string image);
+    event NewLike(address fAddress);
 
     constructor (IUserList _userList, ILovePropose _lovePropose) public {
         require(address(_userList) != address(0));
@@ -65,34 +51,29 @@ contract LoveMemory is Ownable {
         require(userList.isAddrRegistered(msg.sender));
         _;
     }
-    // ****** Memory ****** 
-    function addMemory(uint _index, string memory _content, string memory _image, bytes32 _place, uint _long, uint _lat) public onlyRegiter {
-        require(lovePropose.isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
-        Memory memory newMemo = Memory(msg.sender, _content, _image, _place, _long, _lat);
-        uint id = lsMemory.push(newMemo) - 1;
-        mpProposeMemory[_index].push(id); 
-        emit NewMemory(id, _index, msg.sender, _content, _image, _place, _long, _lat);
+
+    modifier onlyJob {
+        require(userList.isJobAddr(msg.sender));
+        _;
     }
 
-    function getAllMemory(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash, bytes32[] memory place, uint[] memory long, uint[] memory lat) {
-        uint len = mpProposeMemory[_index].length;
-        who = new address[](len);
-        place = new bytes32[](len);
-        long = new uint[](len);
-        lat = new uint[](len);
+    // ****** Memory ****** 
+    function addMemory(uint _index, string memory _hashInfo) public onlyRegiter {
+        doAddMemory(msg.sender, _index, _hashInfo);
+    }
 
-        bytes memory whatCollector;
+    // ****** Memory ****** 
+    function uploadMemory(uint _index, address _sender, string memory _hashInfo) public onlyJob {
+        doAddMemory(_sender, _index, _hashInfo);
+    }
+
+    function getAllMemory(uint _index) public view returns (string memory _hashInfo) {
+        uint len = proposeToMemories[_index].length;
         bytes memory hashCollector;
         for (uint i = 0; i < len; i++) {
-            who[i] = lsMemory[mpProposeMemory[_index][i]].who;
-            whatCollector = abi.encodePacked(whatCollector, bytes(lsMemory[mpProposeMemory[_index][i]].what), ";");//byte(0)
-            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[mpProposeMemory[_index][i]].image), ";");//byte(0)
-            place[i] = lsMemory[mpProposeMemory[_index][i]].place;
-            long[i] = lsMemory[mpProposeMemory[_index][i]].longitude;
-            lat[i] = lsMemory[mpProposeMemory[_index][i]].latitude;
+            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[proposeToMemories[_index][i]]), ";");//byte(0)
         }
-        what = string(whatCollector);
-        imageHash = string(hashCollector);
+        _hashInfo = string(hashCollector);
     }
 
     // ****** Like ****** 
@@ -109,25 +90,28 @@ contract LoveMemory is Ownable {
     // }
 
     // ****** Comment ****** 
-    function addComment(uint _index, string memory _comment, string memory _image) public {
-        uint id = lsComment.push(Comment(msg.sender, _comment, _image)) - 1;
-        // Check comment for Propose(0) or Memory(1).
-        mpComment[_index].push(id);
-        emit NewComment(_index, msg.sender, _comment, _image);
+    function addComment(uint _index, string memory _commentHash) public {
+        require(_index < lsMemory.length, "Invalid index memory. ");
+        uint id = lsComment.push(_commentHash) - 1;
+        memoryToComments[_index].push(id);
+        emit NewComment(_index, _commentHash);
     }
 
     //
-    function getAllComment(uint _index) public view returns (address[] memory who, string memory what, string memory imageHash) {
-        uint len = mpComment[_index].length;
-        who = new address[](len);
-        bytes memory whatCollector;
-        bytes memory imageHashCollector;
+    function getAllComment(uint _index) public view returns (string memory commentHash) {
+        uint len = memoryToComments[_index].length;
+        bytes memory hashCollect;
         for (uint i = 0; i < len; i++) {
-            who[i] = lsComment[mpComment[_index][i]].who;
-            whatCollector = abi.encodePacked(whatCollector, bytes(lsComment[mpComment[_index][i]].what), ";");//byte(0)
-            imageHashCollector = abi.encodePacked(imageHashCollector, bytes(lsComment[mpComment[_index][i]].image), ";");//byte(0)
+            hashCollect = abi.encodePacked(hashCollect, bytes(lsComment[memoryToComments[_index][i]]), ";");//byte(0)
         }
-        what = string(whatCollector);
-        imageHash = string(imageHashCollector);
+        commentHash = string(hashCollect);
+    }
+
+    // ****** Memory ****** 
+    function doAddMemory(address _sender, uint _index, string memory _hashInfo) private {
+        require(lovePropose.isOwnerPropose(_sender, _index), "Sender must be owner propose!");
+        uint id = lsMemory.push(_hashInfo) - 1;
+        proposeToMemories[_index].push(id); 
+        emit NewMemory(id, _index, _hashInfo);
     }
 }
