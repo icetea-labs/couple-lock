@@ -504,10 +504,10 @@ img{
         max-width: calc(100% - 58px - 15px);
       }
     }
-    .left_mes, .right_mes{
+    .sender, .receiver{
       display: inline-block;
     }
-    .right_mes{
+    .receiver{
       float: right;
     }
     .user_photo{

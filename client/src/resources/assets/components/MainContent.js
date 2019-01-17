@@ -40,7 +40,6 @@ class MainContent extends Component {
 }
 
   render() {
-    // console.log(this.state.rightUser);
     return (
       <div id="main">
         <div className="main__container">
@@ -50,7 +49,7 @@ class MainContent extends Component {
           </div>
           <div className="main__container-center w-960 mg-auto">
             <MemoryPost />
-            <DialogueChat sender={this.state.leftUser}/>
+            <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser}/>
           </div>
         </div>
       </div>
