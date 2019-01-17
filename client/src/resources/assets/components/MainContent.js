@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import BannerImage from './BannerImage';
-import MemoryPost from './MemoryPost';
-import DialogueChat from './DialogueChat';
-import RecentChat from './RecentChat';
+import BannerImage from './propose/BannerImage';
+import MemoryPost from './memory/MemoryPost';
+import DialogueChat from './memory/DialogueChat';
+import RecentChat from './propose/RecentChat';
 
 class MainContent extends Component {
   constructor(props) {
