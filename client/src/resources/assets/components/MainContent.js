@@ -3,6 +3,7 @@ import BannerImage from './propose/BannerImage';
 import MemoryPost from './memory/MemoryPost';
 import DialogueChat from './memory/DialogueChat';
 import RecentChat from './propose/RecentChat';
+import UploadImages from './memory/UploadImages';
 
 class MainContent extends Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class MainContent extends Component {
           </div>
           <div className="main__container-center w-960 mg-auto">
             <MemoryPost />
+            <UploadImages />
             <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser}/>
           </div>
         </div>

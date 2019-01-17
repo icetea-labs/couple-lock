@@ -20,7 +20,6 @@ class DialogueChat extends Component {
   render() {
     const sender = this.props.sender;
     const receiver = this.props.receiver;
-    console.log(sender.username);
 
     return (
       <div className="dialogue_chat mg-auto">
