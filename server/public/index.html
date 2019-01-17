@@ -15,7 +15,7 @@
     <div id="list"></div>
     <script id="tmp" type="text/template">
 <div>{sender}: {message}</div>
-<div class="photo"><img style="width:120px" src='{photo}'></div>
+<div class="photo"><img style="width:120px"></div><hr>
 </script>
     <script>
 
@@ -30,15 +30,12 @@
                     var h = tmp.replace("{sender}", m.sender)
                         .replace("{message}", m.message);
                     var hasPhoto = m.attachments && m.attachments.length && m.attachments[0].url;
-                    if (hasPhoto) {
-                        console.log(m.attachments[0].url)
-                        h = h.replace("{photo}", m.attachments[0].url);
-                        console.log(h)
-                    }
                     var div = document.createElement("div");
                     div.innerHTML = h;
                     if (!hasPhoto) {
                         div.querySelector(".photo").remove();
+                    } else {
+                        div.querySelector(".photo img").src = m.attachments[0].url;
                     }
                     list.appendChild(div);
                 });
@@ -52,7 +49,7 @@
                 method: 'POST',
                 body: formData
             }).then(function (res) {
-                console.log(res)
+                //console.log(res)
                 location.reload(true);
             });
         });

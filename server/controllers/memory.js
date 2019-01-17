@@ -28,7 +28,7 @@ router.post('/create', upload.single("attachment"), (req, res) => {
   if (!req.file) {
     console.log("No file uploaded");
   } else {
-    console.log(req.file);
+    //console.log(req.file);
     item.attachments.push({
       type: 'photo',
       url: "/uploads/" + req.file.filename,
