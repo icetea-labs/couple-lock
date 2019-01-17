@@ -45,8 +45,12 @@ module.exports = class DataStore {
 
     // insert, error if already exists
     async insert(key, value, cb) {
-        await this.one(key); // will throw if already exists
-        return this.set(key, value, cb);
+        const existent = await this.exist(key);
+        if (!existent) {
+            return this.set(key, value, cb);
+        } else {
+            return promise.cbOrFail("Key already exists", cb);
+        }
     }
 
     // insert, ignore if already exists

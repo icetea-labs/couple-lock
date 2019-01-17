@@ -62,3 +62,4 @@ typings/
 truffle/build/
 truffle/build/contracts/
 server/db/
+server/public/uploads/
