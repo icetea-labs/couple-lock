@@ -1,4 +1,4 @@
-pragma solidity >=0.4.24;
+pragma solidity >=0.5;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
@@ -83,7 +83,7 @@ contract LovePropose is Ownable {
         doReplyPropose(_index, _receiver, _proposeHash);
     }
 
-    function getAllPropose() public view returns(address[] lsSender, address[] lsReceiver, string memory proposeHash) {
+    function getAllPropose() public view returns(address[] memory lsSender, address[] memory lsReceiver, string memory proposeHash) {
         uint len = lsPropose.length;
         bytes memory hashCollect;
         lsSender = new address[](len);
