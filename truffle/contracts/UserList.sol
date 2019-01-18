@@ -1,26 +1,21 @@
 pragma solidity >=0.5;
 
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract UserList {
+
+contract UserList is Ownable {
     struct User {
         bytes32 nick;
         string infoHash;
     }
 
-    address admin;
-    address jobAddress;
+    address public jobAddress;
 
     mapping (address => User) public addrToUser;
     mapping (bytes32 => address) public nickToAddr;
     
-    mapping (address => address[]) followList;
-
-    constructor() public {
-        admin = msg.sender;
-    }
-
-    function setJobAddress(address _jobAddr) public {
-        require(msg.sender == admin, "Invalid admin address");
+    // mapping (address => address[]) followList;
+    function setJobAddress(address _jobAddr) public onlyOwner {
         jobAddress = _jobAddr;
     }
 

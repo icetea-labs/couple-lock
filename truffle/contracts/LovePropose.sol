@@ -22,20 +22,20 @@ contract LovePropose is Ownable {
 
     Propose[] public lsPropose;
     string[] public lsComment;
+    //Map ID Propose -> index list Propose: index = idToIndex - 1;
+    mapping (bytes32 => uint) public idToIndex;
     //Map Propose: User -> Array Propose
-    mapping (address => uint[]) public userToPropose;
-    event NewPropose(uint index, address sender, address receiver, string proposeHash);
-    event ReplyPropose(uint index, string proposeHash);
+    // mapping (address => uint[]) public userToPropose;
+    event NewPropose(bytes32 _id, string proposeHash);
 
     // Map comment: Propose ID -> Array comment 
-    mapping (uint => uint[]) public proposeToComment;
-    event NewComment(uint index, string commentHash);
+    mapping (bytes32 => uint[]) public proIdToComment;
+    event NewComment(bytes32 proId, string commentHash);
 
     //Map like: Propose ID -> Array liker 
-    mapping (uint => address[]) public mpLike;
-    event NewLike(address sender);
+    mapping (bytes32 => address[]) public mpLike;
+    event NewLike(bytes32 _id, address sender);
 
-    
     constructor (IUserList _userList) public {
         require(address(_userList) != address(0));
         userList = _userList;
@@ -55,32 +55,20 @@ contract LovePropose is Ownable {
         userList = _userList;
     }
 
-    function isOwnerPropose(address _who, uint _index) public view returns(bool) {
-        return (_who == lsPropose[_index].sender || _who == lsPropose[_index].receiver);
+    function isOwnerPropose(address _who, bytes32 _id) public view returns(bool) {
+        return (idToIndex[_id] != 0) && (_who == lsPropose[idToIndex[_id] - 1].sender || _who == lsPropose[idToIndex[_id] - 1].receiver);
     }
 
     // Send Propose.
-    function sentPropose(address _receiver, string memory _proposeHash) public onlyRegiter {
+    function addPropose(address _receiver, string memory _proposeHash) public onlyRegiter {
         ///Do Sent Propose
-        doSentPropose(msg.sender, _receiver, _proposeHash);
+        doAddPropose(byte(0), msg.sender, _receiver, _proposeHash);
     }
 
     // Upload Propose.
-    function uploadSentPropose(address _sender, address _receiver, string memory _proposeHash) public onlyJob {
+    function uploadPropose(bytes32 _id, address _sender, address _receiver, string memory _proposeHash) public onlyJob {
         ///Do Sent Propose
-        doSentPropose(_sender, _receiver, _proposeHash);
-    }
-
-    // Reply Propose
-    function replyPropose(uint _index, string memory _proposeHash) public onlyRegiter {
-        //Do Reply Propose
-        doReplyPropose(_index, msg.sender, _proposeHash);
-    }
-
-    // Upload Reply Propose
-    function uploadReplyPropose(uint _index, address _receiver, string memory _proposeHash) public onlyJob {
-        //Do Reply Propose
-        doReplyPropose(_index, _receiver, _proposeHash);
+        doAddPropose(_id, _sender, _receiver, _proposeHash);
     }
 
     function getAllPropose() public view returns(address[] memory lsSender, address[] memory lsReceiver, string memory proposeHash) {
@@ -92,68 +80,53 @@ contract LovePropose is Ownable {
         for (uint i = 0; i < len; i++) {
             lsSender[i] = lsPropose[i].sender;
             lsReceiver[i] = lsPropose[i].receiver;
-            hashCollect = abi.encodePacked(hashCollect, bytes(lsPropose[i].proposeHash), ";");//byte(0)
+            hashCollect = abi.encodePacked(hashCollect, bytes(lsPropose[i].proposeHash), byte(0));//byte(0)
         }
         proposeHash = string(hashCollect);
     }
 
     // ****** Like ****** 
-    function sentLike(uint _index) public {
+    function sentLike(bytes32 _id) public {
+        require(idToIndex[_id] != 0, "Propose id don't exist!");
         //Add address liker to map
-        mpLike[_index].push(msg.sender);
-        emit NewLike(msg.sender);
+        mpLike[_id].push(msg.sender);
+        emit NewLike(_id, msg.sender);
     }
 
     // ****** Comment ****** 
-    function addComment(uint _index, string memory _commentHash) public {
-        require(_index < lsPropose.length, "Invalid index propose.");
+    function addComment(bytes32 _id, string memory _commentHash) public {
+        require(idToIndex[_id] != 0, "Propose id don't exist!");
         uint id = lsComment.push(_commentHash) - 1;
-        proposeToComment[_index].push(id);
-        emit NewComment(_index, _commentHash);
+        proIdToComment[_id].push(id);
+        emit NewComment(_id, _commentHash);
     }
 
     //
-    function getAllComment(uint _index) public view returns (string memory commentHash) {
-        uint len = proposeToComment[_index].length;
+    function getCommentByProID(bytes32 _id) public view returns (string memory commentHash) {
+        uint len = proIdToComment[_id].length;
         bytes memory hashCollect;
         for (uint i = 0; i < len; i++) {
-            hashCollect = abi.encodePacked(hashCollect, bytes(lsComment[proposeToComment[_index][i]]), ";");//byte(0)
+            hashCollect = abi.encodePacked(hashCollect, bytes(lsComment[proIdToComment[_id][i]]), byte(0));//byte(0)
         }
         commentHash = string(hashCollect);
     }
 
-    
-    // function setCoverImage(uint _index, string memory _imageHash) public {
-    //   // Get approve
-    //   // TODO..
-    //   // Confirm Confirm address must be owner response Propose!
-    //     require(isOwnerPropose(msg.sender, _index), "Sender must be owner propose!");
-    //     lsPropose[_index].coverImg = _imageHash;
-    //     lsPropose[_index].coverImg = mpImage[indexImage];
-    // }
-
     // Do Send Propose.
-    function doSentPropose(address _sender, address _receiver, string memory _proposeHash) private {
+    function doAddPropose(bytes32 _id, address _sender, address _receiver, string memory _proposeHash) private {
+        require(idToIndex[_id] == 0, "Propose id existed!");
         require(_sender != _receiver, "Sender must be different with receiver address!");
 
         //Create new pending
         Propose memory newPro = Propose(_sender, _receiver, _proposeHash);
-        uint id = lsPropose.push(newPro) - 1;
-        //Add ID mapping
-        userToPropose[_sender].push(id);
-        userToPropose[_receiver].push(id);
+        uint index = lsPropose.push(newPro);
+        if (_id == byte(0))  
+            _id = bytes32(index);
+        //Add ID mapping: index = idToIndex - 1;
+        idToIndex[_id] = index;
+        // userToPropose[_sender].push(index);
+        // userToPropose[_receiver].push(index);
 
         //Rase event new pedding request.
-        emit NewPropose(id, _sender, _receiver, _proposeHash);
-    }
-
-    // Do Reply Propose
-    function doReplyPropose(uint _index, address _receiver, string memory _proposeHash) private {
-        //Confirm Confirm address must be owner response Propose!
-        require(_receiver == lsPropose[_index].receiver, "Receiver address must be owner-propose!");
-
-        lsPropose[_index].proposeHash = _proposeHash;
-        //Rase event new Propose
-        emit ReplyPropose(_index, _proposeHash);
+        emit NewPropose(_id, _proposeHash);
     }
 }
