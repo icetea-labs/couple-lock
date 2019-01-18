@@ -11,7 +11,7 @@ interface IUserList {
 
 
 interface ILovePropose {
-    function isOwnerPropose(address _who, uint _index) external view returns(bool);
+    function isOwnerPropose(address _who, bytes32 _id) external view returns(bool);
 }
 
 
@@ -22,18 +22,20 @@ contract LoveMemory is Ownable {
 
     string[] public lsMemory;
     string[] public lsComment;
-    
+    //Map memory id -> index list memory:index = idToIndex -1;
+    mapping (bytes32 => uint) public idToIndex;
+
     // Map memory: Propose ID -> Array Memory
-    mapping (uint => uint[]) public proposeToMemories;
-    event NewMemory(uint index, uint proposeIndex, string hashInfo);
+    mapping (bytes32 => bytes32[]) public proIdToMemories;
+    event NewMemory(bytes32 memoId, bytes32 proId, string hashInfo);
     
     // Map comment: Memory ID -> Array comment 
-    mapping (uint => uint[]) public memoryToComments;
-    event NewComment(uint index, string commentHash);
+    mapping (bytes32 => uint[]) public memoIdToComments;
+    event NewComment(bytes32 memoId, string commentHash);
 
     //Map like: Memory ID -> Array liker 
-    mapping (uint => address[]) public mpLike;
-    event NewLike(address fAddress);
+    mapping (bytes32 => address[]) public mpLike;
+    event NewLike(bytes32 _id, address sender);
 
     constructor (IUserList _userList, ILovePropose _lovePropose) public {
         require(address(_userList) != address(0));
@@ -58,60 +60,60 @@ contract LoveMemory is Ownable {
     }
 
     // ****** Memory ****** 
-    function addMemory(uint _index, string memory _hashInfo) public onlyRegiter {
-        doAddMemory(msg.sender, _index, _hashInfo);
+    function addMemory(bytes32 _proId, string memory _hashInfo) public onlyRegiter {
+        doAddMemory(msg.sender, byte(0), _proId, _hashInfo);
     }
 
     // ****** Memory ****** 
-    function uploadMemory(uint _index, address _sender, string memory _hashInfo) public onlyJob {
-        doAddMemory(_sender, _index, _hashInfo);
+    function uploadMemory(bytes32 _memoId, bytes32 _proId, address _sender, string memory _hashInfo) public onlyJob {
+        doAddMemory(_sender, _memoId, _proId, _hashInfo);
     }
 
-    function getAllMemory(uint _index) public view returns (string memory _hashInfo) {
-        uint len = proposeToMemories[_index].length;
+    function getAllMemory(bytes32 _id) public view returns (string memory _hashInfo) {
+        uint len = proIdToMemories[_id].length;
         bytes memory hashCollector;
         for (uint i = 0; i < len; i++) {
-            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[proposeToMemories[_index][i]]), ";");//byte(0)
+            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[idToIndex[proIdToMemories[_id][i]] - 1]), byte(0));//byte(0)
         }
         _hashInfo = string(hashCollector);
     }
 
     // ****** Like ****** 
-    function sentLike(uint _index) public {
+    function sentLike(bytes32 _id) public {
+        require(idToIndex[_id] != 0, "Memory id don't exist!");
         //Add address liker to map
-        mpLike[_index].push(msg.sender);
-        emit NewLike(msg.sender);
-    }
-
-    // Get like form mpLike.
-    // function getLike(uint _index) public view returns(address[] memory addLike) {
-    //     //Add address liker to map
-    //     addLike = mpLike[_index];
-    // }
-
-    // ****** Comment ****** 
-    function addComment(uint _index, string memory _commentHash) public {
-        require(_index < lsMemory.length, "Invalid index memory. ");
-        uint id = lsComment.push(_commentHash) - 1;
-        memoryToComments[_index].push(id);
-        emit NewComment(_index, _commentHash);
+        mpLike[_id].push(msg.sender);
+        emit NewLike(_id, msg.sender);
     }
 
     //
-    function getAllComment(uint _index) public view returns (string memory commentHash) {
-        uint len = memoryToComments[_index].length;
+    function addComment(bytes32 _id, string memory _commentHash) public {
+        require(idToIndex[_id] != 0, "Memory id don't exist!");
+        uint id = lsComment.push(_commentHash) - 1;
+        memoIdToComments[_id].push(id);
+        emit NewComment(_id, _commentHash);
+    }
+
+    //
+    function getCommentByMemoID(bytes32 _id) public view returns (string memory commentHash) {
+        uint len = memoIdToComments[_id].length;
         bytes memory hashCollect;
         for (uint i = 0; i < len; i++) {
-            hashCollect = abi.encodePacked(hashCollect, bytes(lsComment[memoryToComments[_index][i]]), ";");//byte(0)
+            hashCollect = abi.encodePacked(hashCollect, bytes(lsComment[memoIdToComments[_id][i]]), byte(0));//byte(0)
         }
         commentHash = string(hashCollect);
     }
 
     // ****** Memory ****** 
-    function doAddMemory(address _sender, uint _index, string memory _hashInfo) private {
-        require(lovePropose.isOwnerPropose(_sender, _index), "Sender must be owner propose!");
-        uint id = lsMemory.push(_hashInfo) - 1;
-        proposeToMemories[_index].push(id); 
-        emit NewMemory(id, _index, _hashInfo);
+    function doAddMemory(address _sender, bytes32 _memoId, bytes32 _proId, string memory _hashInfo) private {
+        require(idToIndex[_memoId] == 0, "Memory id existed!");
+        require(lovePropose.isOwnerPropose(_sender, _proId), "Sender must be owner propose!");
+        uint index = lsMemory.push(_hashInfo);
+        if (_memoId == byte(0))
+            _memoId = bytes32(index);
+         //Add ID mapping: index = idToIndex - 1;
+        idToIndex[_memoId] = index;           
+        proIdToMemories[_proId].push(_memoId); 
+        emit NewMemory(_memoId, _proId, _hashInfo);
     }
 }
