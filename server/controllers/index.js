@@ -1,6 +1,7 @@
 var express = require('express')
   , router = express.Router()
 
+router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
 router.use('/api/propose', require('./propose'))
 router.use('/api/memory', require('./memory'))
@@ -29,8 +30,16 @@ router.get('/api', function(req, res) {
     <li>
         POST /api/memory/create
     </li>
+    <li>
+        <a href='/login/google'>/login/goole</a>
+    </li>
   </ul>`
   );
 })
+
+router.get('/api/google/callback', (req, res) => {
+    res.redirect('/api/user/profile');
+})
+
 
 module.exports = router

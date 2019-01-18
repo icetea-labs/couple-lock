@@ -11,4 +11,9 @@ router.get('/all', (req, res) => {
   route.tryJson(res, User.all);
 })
 
+router.route('/profile')
+  .get((req, res) =>{
+    res.send('ok');
+  })
+
 module.exports = router
