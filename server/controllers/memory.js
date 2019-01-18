@@ -14,7 +14,11 @@ router.get('/list', checkSchema({ proposeId: route.stringSchema() }), (req, res)
   route.validateTryJson(req, res, validationResult, Memory.list, req.query.proposeId);
 })
 
-router.post('/create', upload.single("attachment"), (req, res) => {
+router.post('/create', upload.single("attachment"), checkSchema({
+  proposeId: route.stringSchema('body'),
+  sender: route.stringSchema('body'),
+  message: route.stringSchema('body')
+}), (req, res) => {
 
   const item = {
     proposeId: req.body.proposeId,
@@ -28,7 +32,7 @@ router.post('/create', upload.single("attachment"), (req, res) => {
   if (!req.file) {
     console.log("No file uploaded");
   } else {
-    console.log(req.file);
+    //console.log(req.file);
     item.attachments.push({
       type: 'photo',
       url: "/uploads/" + req.file.filename,
