@@ -1,23 +1,17 @@
 const propose = require("./propose");
-const _store = require('../services/factory');
-
-const store = () => {return _store.select('memory')}
+const store = require('../services/factory').getStore('memory');
 
 exports.one = (memoryId, cb) => {
-  return store().one(memoryId, cb);
+  return store.one(memoryId, cb);
 }
 
 exports.list = (proposeId, cb) => {
-  return store().list({ proposeId: proposeId }, cb)
+  return store.list({ proposeId: proposeId }, cb)
 }
 
 exports.insert = async (data, cb) => {
-  if (data.id) {
-    if (await store().one(data.id)) {
-      return promise.cbOrFail("Memory ID already exists");
-    }
-  } else {
-    data.id = data.proposeId + "~" + Date.now();
+  if (!data.id) {
+    data.id = data.proposeId + "_" + Date.now();
   }
 
   if (!data.proposeId) {
@@ -28,5 +22,5 @@ exports.insert = async (data, cb) => {
     return promise.cbOrFail("Propose ID not found");
   }
 
-  return store().insert(data.id, data, cb);
+  return store.insert(data.id, data, cb);
 }

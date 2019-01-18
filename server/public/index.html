@@ -1,0 +1,63 @@
+<html>
+
+<body>
+    <p>To get a list of API, go <a href="/api">here</a>.</p>
+    <form id="form" method="POST" action="/api/memory/create" enctype="multipart/form-data">
+        <label>sender: <input name="sender" value="tradatech" required></label><br>
+        <label>proposeId: <input name="proposeId" value="0" required></label><br>
+        <label>message: <input name="message" value="Hello World" autofocus required></label><br>
+        <label>photo: <input name="attachment" type="file"></label>
+        <p><button type="submit">Create new Memory by FORM POST</button></p>
+        <p><button id="jspost" type="button">Create new Memory by JS code</button><br></p>
+    </form>
+
+    <h3>Current list of memory for <b>proposeId=0</b></h3>
+    <div id="list"></div>
+    <script id="tmp" type="text/template">
+<div>{sender}: {message}</div>
+<div class="photo"><img style="width:120px" src='{photo}'></div>
+</script>
+    <script>
+
+        fetch('api/memory/list?proposeId=0')
+            .then(res => res.json())
+            .then(json => {
+                var tmp = document.getElementById("tmp").innerHTML;
+                var list = document.getElementById("list");
+                var dataList = json.data.sort(function (a, b) { return b.timestamp - a.timestamp })
+                dataList.forEach(m => {
+                    //console.log(m)
+                    var h = tmp.replace("{sender}", m.sender)
+                        .replace("{message}", m.message);
+                    var hasPhoto = m.attachments && m.attachments.length && m.attachments[0].url;
+                    if (hasPhoto) {
+                        console.log(m.attachments[0].url)
+                        h = h.replace("{photo}", m.attachments[0].url);
+                        console.log(h)
+                    }
+                    var div = document.createElement("div");
+                    div.innerHTML = h;
+                    if (!hasPhoto) {
+                        div.querySelector(".photo").remove();
+                    }
+                    list.appendChild(div);
+                });
+            })
+
+        document.getElementById("jspost").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(document.getElementById("form"));
+            fetch("/api/memory/create", {
+                method: 'POST',
+                body: formData
+            }).then(function (res) {
+                console.log(res)
+                location.reload(true);
+            });
+        });
+
+    </script>
+</body>
+
+</html>

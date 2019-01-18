@@ -1,27 +1,21 @@
 const promise = require("../helpers/promise");
 const user = require("./user");
-const _store = require('../services/factory');
-
-const store = () => {return _store.select('propose')}
+const store = require('../services/factory').getStore('propose');
 
 exports.one = (proposeId, cb) => {
-    return store().one(proposeId, cb);
+    return store.one(proposeId, cb);
 }
 
 exports.list = async (username, cb) => {
-    const userSent = await store().list({ sender: username });
-    const userReceived = await store().list({ receiver: username });
-    const combined = (userSent || []).concat(userReceived);
-    return promise.cbOrSucceed(combined, cb);
+    return store.list({
+        sender: username,
+        receiver: username
+    })
 }
 
 exports.insert = async (data, cb) => {
-    if (data.id) {
-        if (await store().one(data.id)) {
-            return promise.cbOrFail("Propose ID already exists");
-        }
-    } else {
-        data.id = data.sender + "~" + Date.now();
+    if (!data.id) {
+        data.id = data.sender + "_" + Date.now();
     }
 
     if (!data.sender || !data.receiver) {
@@ -38,5 +32,5 @@ exports.insert = async (data, cb) => {
         return promise.cbOrFail("Receiver not registered");
     }
 
-    return store().insert(data.id, data, cb);
+    return store.insert(data.id, data, cb);
 }

@@ -1,16 +1,26 @@
 const _ = require('lodash');
 const config = require('../config').get();
-const seeder = require('./seed');
-
 const Store = require('./' + config.datastore);
-const store = module.exports = new Store();
+
+const stores = {};
+
+module.exports = {
+    getStore: (namespace) => {
+        if (!stores[namespace]) {
+            stores[namespace] = new Store(namespace);
+        }
+        return stores[namespace];
+    }
+}
 
 console.log('CONFIG', config);
 
+// Seed some data for testing
 if (config.seed) {
-    // Seed some data for testing
+    const seeder = require('./seed');
+    const f = module.exports;
     _.each(seeder, (value, namespace) => {
-        store.select(namespace);
+        const store = f.getStore(namespace);
         _.each(value, item => {
             const key = item.username || item.id;
             store.tryInsert(key, item);
