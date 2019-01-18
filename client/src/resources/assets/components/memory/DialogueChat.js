@@ -12,7 +12,7 @@ class DialogueChat extends Component {
   componentDidMount() {
     fetch('/api/memory/list?proposeId=0')
     .then(results => results.json())
-    .then(data => this.setState({ post: data.data.concat(data.data) })
+    .then(data => this.setState({ post: data.data })
     )
   }
 
@@ -26,7 +26,7 @@ class DialogueChat extends Component {
         <div className="box">
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
-              const date = moment(item.timestamp).format("MM/DD/YYYY HH:mm");
+              const date = moment(item.timestamp).format("MM/DD/YYYY");
               const className = (sender.username === item.sender) ? "sender" : "receiver";
               const avatar = (sender.username === item.sender) ? sender.avatar : receiver.avatar;
               const userName = (sender.username === item.sender) ? sender.username : item.sender;

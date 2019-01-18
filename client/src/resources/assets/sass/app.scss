@@ -362,7 +362,9 @@ img{
       }
     }
     .options{
-      display: inline-block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       float: right;
       margin-top: 15px;
       div{
@@ -376,6 +378,24 @@ img{
         }
         img{
           width: 24px;
+        }
+      }
+      .upload_img{
+        width: 24px;
+        height: 25px;
+        position: relative;
+        overflow: hidden;
+        input[type=file]{
+          width: 100%;
+          height: 25px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          overflow: hidden;
+        }
+        .icon-photo{
+          cursor: pointer;
         }
       }
     }
@@ -494,12 +514,6 @@ img{
     margin-bottom: 18px;
     &:nth-child(odd){
       float: right;
-      .user_photo{
-        margin-right: 0;
-        margin-left: 15px;
-        display: inline-block;
-        float: right;
-      }
       .content_detail{
         max-width: calc(100% - 58px - 15px);
       }
@@ -509,6 +523,12 @@ img{
     }
     .receiver{
       float: right;
+      .user_photo{
+        margin-right: 0;
+        margin-left: 15px;
+        display: inline-block;
+        float: right;
+      }
     }
     .user_photo{
       display: block;
