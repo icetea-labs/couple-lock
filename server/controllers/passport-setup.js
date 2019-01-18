@@ -15,7 +15,6 @@ passport.deserializeUser((id, done) => {
     })
 });
 
-
 passport.use(
     new GoogleStrategy({
         clientID: keys.google.clientID,
@@ -32,7 +31,7 @@ passport.use(
             } else {
                 new User({
                     username: profile.displayName,
-                    googleid: profile.id, s
+                    googleid: profile.id,
                 }).save().then((newUser) => {
                     console.log('new user create: ', newUser);
                 });

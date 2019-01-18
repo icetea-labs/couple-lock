@@ -1,13 +1,13 @@
 module.exports = {
     google: {
-        clientID: '656940544950-kofdct0ehtdslu1uf461si4f2vlk5mn8.apps.googleusercontent.com',
-        clientSecret: 'Oxkv8DLlRS44sn0SwGz_F9U_',
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         passReqToCallback: true,
         callbackURL: 'http://localhost:5000/api/google/callback'
     },
 
     mongoDB: {
-        dbURI: 'mongodb://duyviet2841998:Anh123456.@ds151814.mlab.com:51814/tradatech_test',
+        dbURI: process.env.MONGO_DB_URI,
         useNewUrlParser: true
     }
 }
