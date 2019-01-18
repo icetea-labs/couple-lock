@@ -1,13 +1,14 @@
 var express = require('express')
-  , router = express.Router()
+    , router = express.Router()
+    , passport = require('passport');
 
 router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
 router.use('/api/propose', require('./propose'))
 router.use('/api/memory', require('./memory'))
 
-router.get('/api', function(req, res) {
-  res.send(`<h3>API list</h3>
+router.get('/api', function (req, res) {
+    res.send(`<h3>API list</h3>
   <ul>
     <li>
         <a href='/api/user/details?username=tradatech'>/api/user/details?username=tradatech</a>
@@ -34,12 +35,13 @@ router.get('/api', function(req, res) {
         <a href='/login/google'>/login/goole</a>
     </li>
   </ul>`
-  );
+    );
 })
 
-router.get('/api/google/callback', (req, res) => {
-    res.redirect('/api/user/profile');
-})
+router.route('/api/google/callback')
+    .get(passport.authenticate('google'),(req, res) => {
+        res.redirect('/api/user/profile');
+        console.log('ok')});
 
 
 module.exports = router

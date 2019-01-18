@@ -7,7 +7,6 @@ module.exports = {
     },
 
     mongoDB: {
-        dbURI: process.env.MONGO_DB_URI,
-        useNewUrlParser: true
+        dbURI: process.env.MONGO_DB_URI
     }
 }
