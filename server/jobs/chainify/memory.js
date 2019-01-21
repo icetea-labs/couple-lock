@@ -1,15 +1,14 @@
-const JSON = require("../../../truffle/build/contracts/LoveMemory.json");
+const CJSON = require("../../../truffle/build/contracts/LoveMemory.json");
 const BaseTask = require("./base");
 
 class MemoryTask extends BaseTask {
 
     constructor() {
-        super(JSON, 'memory');
+        super(CJSON, 'memory');
     }
 
-    async _doUploadSync(web3, contract, item) {
-        //return await contract.methods.addMemory(item).send();
-        return("Not implemented");
+    async _doUploadSync(web3, contract, item, hashValue) {
+        return await contract.methods.uploadMemory(web3.utils.fromAscii(item.id),web3.utils.fromAscii(item.proposeId),item.address,hashValue).send();
     }
 
 };
