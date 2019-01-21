@@ -62,14 +62,15 @@ class MemoryPost extends Component {
     this.setState({
       startDate: date
     });
+    console.log(this.state.startDate);
   }
   shareMemory = (e) => {
     e.preventDefault();
     const sender = window.getLoginUser();
-    const dateFormat = moment(this.state.startDate).format('MM/DD/YYYY');
+    const dateFormat = moment(this.state.startDate * 1000).unix();
     const formData = new FormData();
-    formData.append('message', this.state.m_message);
     formData.append('proposeId', 0);
+    formData.append('message', this.state.m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
     formData.append('attachment', this.state.selectFile);
@@ -78,6 +79,7 @@ class MemoryPost extends Component {
     .then(res => {
       console.log(res);
       console.log(res.data);
+      window.location.reload();
     })
   }
 
@@ -87,7 +89,7 @@ class MemoryPost extends Component {
       <div className="memorypost mg-auto">
         <div className="memorypost__content">
           <div className="post_container clearfix">
-            <div className="user_avatar fl"><img src="./images/user-photo.jpg" alt="" /></div>
+            <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
           </div>
           <div className="custom_post">
@@ -106,7 +108,7 @@ class MemoryPost extends Component {
                 <input type="file" onChange={ this.fileSelected }/>
               </div>
               <div><span className="icon-today"></span><DatePicker selected={this.state.startDate} onChange={this.getDate} /></div>
-              <div><img src="./images/user-photo-women.jpg" alt="" /></div>
+              <div><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
           <div className="action">

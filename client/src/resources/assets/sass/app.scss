@@ -561,3 +561,37 @@ img{
     }
   }
 }
+
+.sidebar {
+  width: 220px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #ddd;
+  margin-left: 20px;
+  padding: 20px;
+  background: #fff;
+  float: left;
+  position: fixed;
+  top: 95px;
+  z-index: 100;
+  &__item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    &__avatar{
+      width: 58px;
+      height: 58px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    &__detail{
+      width: calc(100% - 58px - 10px);
+      margin-left: 10px;
+    }
+  }
+}
+
+.main__container{
+  // width: calc(100% - 330px);
+  // float: left;
+  // margin-left: 350px;
+}

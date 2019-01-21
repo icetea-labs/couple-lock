@@ -48,7 +48,6 @@
             e.preventDefault();
 
             var formData = new FormData(document.getElementById("form"));
-            console.log(formData + 'aaa');
             fetch("/api/memory/create", {
                 method: 'POST',
                 body: formData

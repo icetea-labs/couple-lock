@@ -3,6 +3,8 @@ import BannerImage from './propose/BannerImage';
 import MemoryPost from './memory/MemoryPost';
 import DialogueChat from './memory/DialogueChat';
 import RecentChat from './propose/RecentChat';
+import axios from 'axios';
+import SideBar from './SideBar';
 
 class MainContent extends Component {
   constructor(props) {
@@ -17,38 +19,37 @@ class MainContent extends Component {
   }
 
   getUsers(sender, receiver) {
-    const p1 = fetch("/api/user/details?username=" + sender);
-    const p2 = fetch("/api/user/details?username=" + receiver);
+    const p1 = axios.get("/api/user/details?username=" + sender);
+    const p2 = axios.get("/api/user/details?username=" + receiver);
     Promise.all([p1, p2])
-    .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
     .then(([u1, u2]) => {
       const currentUser = window.getLoginUser();
       this.setState({
-        leftUser: (currentUser === u1.data.username) ? u1.data : u2.data,
-        rightUser: (currentUser !== u1.data.username) ? u1.data : u2.data,
+        leftUser: (currentUser === u1.data.data.username) ? u1.data.data : u2.data.data,
+        rightUser: (currentUser !== u1.data.data.username) ? u1.data.data : u2.data.data,
       });
     });
   }
 
   componentDidMount() {
-    fetch("/api/propose/details?id=0")
-    .then(resp => resp.json())
+    axios.get("/api/propose/details?id=0")
     .then(propose => {
-      this.getUsers(propose.data.sender, propose.data.receiver);
-      this.setState({ proposeList: propose.data });
+      this.getUsers(propose.data.data.sender, propose.data.data.receiver);
+      this.setState({ proposeList: propose.data.data });
     });
 }
 
   render() {
     return (
       <div id="main">
+        <SideBar />
         <div className="main__container">
           <div className="main__container-top w-960 mg-auto">
             <BannerImage />
             <RecentChat mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
           </div>
           <div className="main__container-center w-960 mg-auto">
-            <MemoryPost />
+            <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser}/>
             <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser}/>
           </div>
         </div>
