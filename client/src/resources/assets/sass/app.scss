@@ -71,6 +71,10 @@ img{
   width: 100%;
   height: 80px;
   background: $color-violet;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
   .header__container{
     margin: 0 auto;
     .logo{
@@ -155,6 +159,9 @@ img{
 }
 
 // end header
+#main_container {
+  margin-top: 113px;
+}
 
 #main{
   .main__container-top{

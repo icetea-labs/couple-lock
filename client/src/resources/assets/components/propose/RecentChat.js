@@ -4,8 +4,8 @@ import moment from 'moment';
 class RecentChat extends Component {
 
   render() {
-    const leftTime = moment(this.props.s_timestamp).format("MM/DD/YYYY");
-    const rightTime = moment(this.props.r_timestamp).format("MM/DD/YYYY");
+    const leftTime = moment(this.props.s_timestamp).format("MM/DD/YYYY HH:mm");
+    const rightTime = moment(this.props.r_timestamp).format("MM/DD/YYYY HH:mm");
     
     return (
       <div className="Recentchat">

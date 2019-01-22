@@ -4,7 +4,6 @@ import MemoryPost from './memory/MemoryPost';
 import DialogueChat from './memory/DialogueChat';
 import RecentChat from './propose/RecentChat';
 import axios from 'axios';
-import SideBar from './SideBar';
 
 class MainContent extends Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class MainContent extends Component {
   }
 
   componentDidMount() {
-    axios.get("/api/propose/details?id=0")
+    axios.get("/api/propose/details?id=1")
     .then(propose => {
       this.getUsers(propose.data.data.sender, propose.data.data.receiver);
       this.setState({ proposeList: propose.data.data });
@@ -42,7 +41,6 @@ class MainContent extends Component {
   render() {
     return (
       <div id="main">
-        <SideBar />
         <div className="main__container">
           <div className="main__container-top w-960 mg-auto">
             <BannerImage />

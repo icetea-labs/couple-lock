@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import Header from './header/Header';
 import MainContent from './MainContent';
+import Layout from './Layout';
 
 
 class Home extends Component {
   render() {
     return (
-      <div className="home">
-        <Header />
-        
-        <MainContent />
-      </div>
+      <Layout>
+        <div className="home">
+          <MainContent />
+        </div>
+      </Layout>
     );
   }
 }
