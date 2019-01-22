@@ -5,11 +5,24 @@ const web3 = require('../../helpers/getWeb3');
 const userTask = require('./user');
 const proposeTask = require('./propose');
 const memoryTask = require('./memory');
+const async = require('async');
 
 (async () => {
-    await userTask.run(web3);
-    await proposeTask.run(web3);
-    await memoryTask.run(web3);
-
-    process.exit();
+    async.series([
+        function (callback) {
+            userTask.run(web3,callback);
+        }
+        ,
+        function (callback) {
+            proposeTask.run(web3,callback);
+        },
+        function (callback) {
+            memoryTask.run(web3,callback);
+        }
+    ],
+    // optional callback
+    function(err, results) {
+        console.log("Index async.series: ",err, results);
+        process.exit();
+    });
 })();

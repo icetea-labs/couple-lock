@@ -3,7 +3,7 @@ const seeder = module.exports = {};
 seeder.user = [
     {
         chained: false,
-        publicKey: "publicKey",
+        publicKey: "0x4Cf35B3bB73e2CFA7f42ca6E14d572b7cc5bb09a",
         username: "tradatech",
         displayName: "Trà đá Công nghệ",
         email: "tradatech@locks.com",
@@ -12,7 +12,7 @@ seeder.user = [
     },
     {
         chained: false,
-        publicKey: "publicKey",
+        publicKey: "0xFE5A1AA408beCDdAB0A20C5F9cbCF6897AC977e2",
         username: "sotatek",
         displayName: "Sô Ta Tếch",
         email: "sotatek@locks.com",
@@ -27,6 +27,7 @@ seeder.propose = [
         chained: false,
         visibility: 1, //1: listed, 2: public, 3: private
         sender: "sotatek",
+        s_address: "0xFE5A1AA408beCDdAB0A20C5F9cbCF6897AC977e2",
         s_timestamp: Date.now(),
         s_visibilitySuggestion: 1,
         s_receiverCanChangeVisibility: 1, // 1: none, 2: reduceOnly, 3: all
@@ -45,6 +46,7 @@ seeder.propose = [
             }
         ],
         receiver: "tradatech",
+        r_address: "0x4Cf35B3bB73e2CFA7f42ca6E14d572b7cc5bb09a",
         r_react: 1, //null, 1: accepted, 2: denied
         r_timestamp: Date.now(),
         r_message: "OK, fine!",
@@ -72,6 +74,7 @@ seeder.memory = [
         visibility: 1,
         timestamp: Date.now(),
         sender: "sotatek",
+        address: "0xFE5A1AA408beCDdAB0A20C5F9cbCF6897AC977e2",
         visibilitySuggestion: 1,
         receiverCanChangeVisibility: 1,
         message: "This is great memory!",
@@ -98,6 +101,7 @@ seeder.memory = [
         visibility: 1,
         timestamp: Date.now(),
         sender: "tradatech",
+        address: "0x4Cf35B3bB73e2CFA7f42ca6E14d572b7cc5bb09a",
         visibilitySuggestion: 1,
         receiverCanChangeVisibility: 1,
         message: "This is also awesome!",
