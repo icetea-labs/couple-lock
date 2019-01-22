@@ -50,8 +50,7 @@ module.exports = class BaseTask {
                 ipfs.addJSON(itemPacked,{ pin:networkName == 'Main' },next);
             }
         }
-        callback(null);
-        return;
+        
         async.auto({
             upToIpfs: (next) => {
                 console.log(`Start upload ${this.entity} to ipfs.`);
