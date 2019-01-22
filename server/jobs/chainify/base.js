@@ -21,6 +21,7 @@ module.exports = class BaseTask {
         const unchainedItems = await this.store.list({ chained: false });
         if (!unchainedItems.length) {
             console.log(`All ${this.entity}(s) chained!`);
+            callback(null);
             return;
         }
 
