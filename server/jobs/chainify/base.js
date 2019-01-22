@@ -3,10 +3,11 @@ const ipfs          = require('../upload/ipfs.js').get();
 const blockchain    = require('../../helpers/blockchain');
 const factory       = require('../../services/factory');
 
+const BATCH_IPFS_LIMIT  = 5;
 
 module.exports = class BaseTask {
-    constructor(JSON, entity, keyName) {
-        this.JSON = JSON;
+    constructor(CJSON, entity, keyName) {
+        this.CJSON = CJSON;
         this.entity = entity;
         this.keyName = keyName || 'id';
         this.store = factory.getStore(entity);
@@ -25,7 +26,7 @@ module.exports = class BaseTask {
 
         const privateKey = process.env.UPLOAD_PRIVATE_KEY;
         const account = web3.eth.accounts.wallet.add('0x' + privateKey);
-        const contract = blockchain.contractFromJson(web3, this.JSON, {
+        const contract = blockchain.contractFromJson(web3, this.CJSON, {
             from: account.address,
             gas: 1000000, // gas limit
             gasPrice: '2000000000' // 2 gwei
@@ -44,21 +45,22 @@ module.exports = class BaseTask {
         }
 
         async.auto({
-            getHash: function(next) {
-                console.log('getHash');
-                async.parallelLimit(funcs, 5, (err, result) => {
+            upToIpfs: (next) => {
+                console.log(`Start upload ${this.entity} to ipfs.`);
+                async.parallelLimit(funcs, BATCH_IPFS_LIMIT, (err, result) => {
                     if (err) {
                         alert(err);
                         console.log(err);
                         return next(err);
                     }
                     // console.log(Date.now()," get_hash: ",result);
+                    console.log(`Successful upload ${this.entity} to ipfs.`);
                     return next(null, result);
                 });
             },
-            upToChain: ['getHash', async (results) => {
-                console.log('upToChain');
-                let arrHash = results.getHash, index = 0;
+            upToChain: ['upToIpfs', async (results) => {
+                console.log(`Start upload ${this.entity} to blockchian.`);
+                let arrHash = results.upToIpfs, index = 0;
                 for (const item of unchainedItems) {
                     try {
                         // NOTE: have to wait for tx to mined before sending next transaction
@@ -66,7 +68,7 @@ module.exports = class BaseTask {
                         index++;
                         const receipts = await this._doUploadSync(web3, contract, item, arrHash[index]);
                         // console.log(receipts);
-                        await store.update(item[this.keyName], {
+                        await this.store.update(item[this.keyName], {
                             chained: Date.now()
                         });
                         console.log(`Successful upload ${this.entity} with ${this.keyName} of ${item[this.keyName]}`);
@@ -80,7 +82,8 @@ module.exports = class BaseTask {
                 return true;
             }]
         }, (err, results) => {
-            console.log("Index series: ",err, results);
+            console.log(`Successful upload ${this.entity} to ipfs and blockchian.`,err, results);
+            console.log("--------------------------------NEXT----------------------------------");
             if (err) {
                 return callback(err);
             }

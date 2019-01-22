@@ -22,7 +22,7 @@ const async = require('async');
     ],
     // optional callback
     function(err, results) {
-        console.log("Index series: ",err, results);
+        console.log("Index async.series: ",err, results);
         process.exit();
     });
 })();
