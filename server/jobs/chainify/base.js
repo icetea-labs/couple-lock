@@ -39,7 +39,7 @@ module.exports = class BaseTask {
             // NOTE: have to wait for tx to mined before sending next transaction
             // or we'll run into nonce problem
             //msg pack
-            let itemPacked = msgpack.pack(JSON.stringify(item));
+            let itemPacked = msgpack.pack(item);
             // console.log(`-- ${this.entity}`, itemPacked);
             // let itemUnPack = msgpack.unpack(itemPacked);
             // console.log(`-- ${this.entity}`, itemUnPack);
