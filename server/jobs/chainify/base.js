@@ -22,8 +22,7 @@ module.exports = class BaseTask {
         const unchainedItems = await this.store.list({ chained: false });
         if (!unchainedItems.length) {
             console.log(`All ${this.entity}(s) chained!`);
-            callback(null);
-            // return;
+            return callback(null);
         }
 
         const privateKey = process.env.UPLOAD_PRIVATE_KEY;
@@ -50,7 +49,7 @@ module.exports = class BaseTask {
                 ipfs.addJSON(itemPacked,{ pin:networkName == 'Main' },next);
             }
         }
-        
+
         async.auto({
             upToIpfs: (next) => {
                 console.log(`Start upload ${this.entity} to ipfs.`);
