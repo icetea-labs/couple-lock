@@ -2,6 +2,7 @@ const async         = require('async');
 const ipfs          = require('../upload/ipfs.js').get();
 const blockchain    = require('../../helpers/blockchain');
 const factory       = require('../../services/factory');
+const msgpack       = require('msgpack');
 
 const BATCH_IPFS_LIMIT  = 5;
 
@@ -22,7 +23,7 @@ module.exports = class BaseTask {
         if (!unchainedItems.length) {
             console.log(`All ${this.entity}(s) chained!`);
             callback(null);
-            return;
+            // return;
         }
 
         const privateKey = process.env.UPLOAD_PRIVATE_KEY;
@@ -38,13 +39,19 @@ module.exports = class BaseTask {
             // NOTE: have to wait for tx to mined before sending next transaction
             // or we'll run into nonce problem
             //msg pack
+            let itemPacked = msgpack.pack(JSON.stringify(item));
+            // console.log(`-- ${this.entity}`, itemPacked);
+            // let itemUnPack = msgpack.unpack(itemPacked);
+            // console.log(`-- ${this.entity}`, itemUnPack);
+
             let networkName = await web3.eth.net.getNetworkType();
             index++;
             funcs[index] = function (next) {
-                ipfs.addJSON(JSON.stringify(item,{ pin:networkName == 'Main' }),next);
+                ipfs.addJSON(itemPacked,{ pin:networkName == 'Main' },next);
             }
         }
-
+        callback(null);
+        return;
         async.auto({
             upToIpfs: (next) => {
                 console.log(`Start upload ${this.entity} to ipfs.`);
