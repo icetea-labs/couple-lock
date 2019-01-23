@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(<App />, document.getElementById('root'));
 
 window.getLoginUser = () => {
-  return "sotatrada";
+  return "sotatek";
 };
 
 serviceWorker.unregister();

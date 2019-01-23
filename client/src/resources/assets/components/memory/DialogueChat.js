@@ -11,11 +11,12 @@ class DialogueChat extends Component {
   }
   
   componentDidMount() {
-    axios.get('/api/memory/list?proposeId=1')
+    const pid = this.props.pid;
+    axios.get(`/api/memory/list?proposeId=${pid}`)
     .then(res => {
       const dataSort = res.data.data.sort(function(a, b) { return b.timestamp - a.timestamp })
       this.setState({ post: dataSort });
-    })
+    });
   }
 
   
@@ -40,6 +41,7 @@ class DialogueChat extends Component {
                       <span className="user_name color-violet" >{userName}</span>
                       <span className="time fr color-grey">{date}</span>
                       <p>{item.message}</p>
+                      <p><img src={item.attachments[0].url} alt="" /></p>
                     </div>
                   </div>
                 </div>

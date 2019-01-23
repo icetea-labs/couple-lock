@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -11,7 +12,7 @@ class SideBar extends Component {
   }
 
   componentDidMount(){
-    axios.get('/api/user/details?username=tradatech')
+    axios.get('/api/propose/list?username=sotatek')
     .then(res => {
       this.setState({
         listUser : res.data.data
@@ -22,17 +23,16 @@ class SideBar extends Component {
   render() {
     return (
       <div className="sidebar">
-        <div className="sidebar__item">
-          <div className="sidebar__item__avatar">
-            <img src={ this.state.listUser.avatar } alt=""/>
-          </div>
-          <div className="sidebar__item__detail">
-            <div className="sidebar__item__detail__username color-violet">{ this.state.listUser.username }</div>
-            {/* <div className="sidebar__item__detail__chat">This is also awesome!</div> */}
-          </div>
-        </div>
+        {
+          this.state.listUser.length > 0 && this.state.listUser.map((item, index) =>{
+            return(
+              <div className="sidebar__item" key={index}>
+                <Link push="true" to={`/propose/${item.id}`}>proposeId: {item.id}</Link>
+              </div>
+            )
+          })
+        }
       </div>
-
     );
   }
 }

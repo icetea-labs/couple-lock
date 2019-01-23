@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class BannerImage extends Component {
   constructor(props) {
@@ -9,11 +10,11 @@ class BannerImage extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/propose/list?username=tradatech')
-    .then(results => results.json())
-    .then(data => this.setState({ post: data.data }))
+    axios.get('/api/propose/list?username=tradatech')
+    .then(res => { this.setState({ post: res.data.data }) }
+    )
   }
-
+  
   render() {
     return (
       <div>
