@@ -6,7 +6,7 @@ class UserAccount extends Component {
       <div className="custom-right-header">
         <div className="user">
           <span className="user__photo"><img src="./images/user-photo.jpg" alt="" /></span>
-          <span className="user__name">John Smith</span>
+          <button className="login__button"><a href="/login">Login</a></button>
         </div>
 
         <div className="explore">
