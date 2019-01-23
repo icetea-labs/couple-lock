@@ -1,11 +1,24 @@
 var express = require('express')
     , router = express.Router()
-    , passport = require('passport');
+    , passport = require('passport')
+    , session = require('express-session')
+    , cookieParser = require('cookie-parser')
+    , nodePersist = require('./node-persist');
 
 router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
 router.use('/api/propose', require('./propose'))
 router.use('/api/memory', require('./memory'))
+router.use(cookieParser());
+router.use(session({
+    secret: process.env || null,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: 1000 * 60 * 60 * 24 * 7,
+        secure: true,
+    }
+}))
 
 router.get('/api', function (req, res) {
     res.send(`<h3>API list</h3>
@@ -32,16 +45,21 @@ router.get('/api', function (req, res) {
         POST /api/memory/create
     </li>
     <li>
-        <a href='/login/google'>/login/goole</a>
+        <a href='/login/google'>/login/google</a>
+    </li>
+    <li>
+        <a href='/api/user/profile'>/api/user/profile</a>
     </li>
   </ul>`
     );
 })
 
 router.route('/api/google/callback')
-    .get(passport.authenticate('google'),(req, res) => {
-        res.redirect('/api/user/profile');
-        console.log('ok')});
-
+    .get(passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+        nodePersist.savedata(req.user)
+            .then((result) => {
+                res.send(result);
+            })
+    })
 
 module.exports = router

@@ -3,10 +3,10 @@ const keys = require('../models/keys');
 const User = require('../models/user-model');
 const Cookies = require('cookies');
 const passport = require('passport');
+const session = require('express-session');
 
 // Enable next if ID of user is Ok
-passport.serializeUser((user, done) => {
-
+passport.serializeUser((user, done) => {000
     console.log('serrializeUser');
     console.log('user is:', '\x1b[36m', user, '\x1b[0m');
     done(null, user.id);
@@ -20,6 +20,10 @@ passport.deserializeUser((id, done) => {
     });
 });
 
+/**
+ * @param { string } google_id take id from user after send request
+ */
+
 passport.use(
     new GoogleStrategy({
         clientID: keys.google.clientID,
@@ -32,31 +36,19 @@ passport.use(
         User.findOne({ google_id })
             .then((currentUser) => {
                 if (currentUser) {
-                    console.log('currentUser is :', currentUser);
                     done(null, currentUser);
                 } else {
                     new User({
                         user_name: null,
                         display_name: profile.displayName,
                         google_id: profile.id,
-                        img_url: null
+                        img_url: profile._json.image.url,
                     }).save().then((newUser) => {
                         console.log('new user create: ', newUser);
                         done(null, newUser);
-                    });
-
+                    }).catch(
+                        console.log(err)
+                    );
                 }
             });
-        // Set Cookie
-        // var cookies = new Cookies(req, res, { keys: process.env.SESSION_KEY });
-        // cookies.set('user_name_cookie', profile.id, { signed: true });
-        // cookies.set('display_name_cookie', profile.displayName, { signed: true });
-        // cookies.set('img_url_cookie', profile.img.url, { signed: true });
-
-        // var user_name_cookie = cookies.get('user_name_cookie', { signed: true });
-        // var display_name_cookie = cookies.get('display_name_cookie', { signed: true });
-        // var img_url_cookie = cookies.get('img_url_cookie', { signed: true });
-
-        // console.log("ALL CREATED COOKIES: ", user_name_cookie, display_name_cookie, img_url_cookie);
-
     }));
