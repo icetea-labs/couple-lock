@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -8,33 +8,45 @@ class SideBar extends Component {
     super(props);
     this.state = {
       listUser: [],
+      proId: [],
     }
   }
 
   componentDidMount(){
-    axios.get('/api/propose/list?username=sotatek')
-    .then(res => {
-      this.setState({
-        listUser : res.data.data
+    Promise.all([
+      axios.get('/api/user/all'),
+      axios.get('/api/propose/list?username=sotatek')
+    ])
+    .then(([res1, res2]) =>  this.setState({
+        listUser: res1.data.data, 
+        proId: res2.data.data,
       })
-    })
+    );
+      
+    // axios.get('/api/propose/list?username=sotatek')
+    // .then(res => {
+    //   this.setState({
+    //     listUser : res.data.data
+    //   })
+    // })
   }
   
-  pageReload = (e) => {
-    e.preventDefault();
-    window.location.reload();
-  }
+  // pageReload = (e) => {
+  //   e.preventDefault();
+  //   window.location.reload();
+  // }
 
   render() {
+    const data = this.state.listUser.concat(this.state.proId);
     return (
       <div className="sidebar">
-        <button className="btn_add_promise" type="button"><span className="icon-ic-add"></span>Add Promise</button>
-        <h3 className="title_promise">Accepted promise</h3>
         {
-          this.state.listUser.length > 0 && this.state.listUser.map((item, index) =>{
-            return(
-              <div className="sidebar__item" key={index}>
-                <Link push="true" to={`/propose/${item.id}`} onClick={()=>this.pageReload()}>proposeId: {item.id}</Link>
+         data.length > 0 && data.map((item, index) =>{
+            return (
+              <div>
+                id: {item.id} <br/>
+                avatar: <img src={item.avatar} alt="" />
+                name: {item.username}
               </div>
             )
           })
