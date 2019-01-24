@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
-import { MetaTags } from 'react-meta-tags';
-import { Helmet } from 'react-helmet';
-
 
 class FormLogin extends Component {
 
