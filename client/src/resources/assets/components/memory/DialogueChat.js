@@ -11,9 +11,9 @@ class DialogueChat extends Component {
   }
   
   componentDidMount() {
-    const pid = this.props.pid;
-    axios.get(`/api/memory/list?proposeId=${pid}`)
-    // axios.get('/api/memory/list?proposeId=0')
+    // const pid = this.props.pid;
+    // axios.get(`/api/memory/list?proposeId=${pid}`)
+    axios.get('/api/memory/list?proposeId=0')
     .then(res => {
       const dataSort = res.data.data.sort(function(a, b) { return b.timestamp - a.timestamp })
       this.setState({ post: dataSort });
@@ -30,7 +30,7 @@ class DialogueChat extends Component {
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
               const num = parseInt(item.timestamp);
-              const date = moment(num).format("MM/DD/YYYY HH:mm");
+              const date = moment(num).format("MM/DD/YYYY");
               const className = (sender.username === item.sender) ? "sender" : "receiver";
               const avatar = (sender.username === item.sender) ? sender.avatar : receiver.avatar;
               const userName = (sender.username === item.sender) ? sender.username : item.sender;

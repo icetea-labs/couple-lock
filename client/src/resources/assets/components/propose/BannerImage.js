@@ -20,7 +20,6 @@ class BannerImage extends Component {
       <div>
          {
           this.state.post.length > 0 && this.state.post.map((item, index) => {
-          // const className = item.isClass ? 'box fl' : 'box fl -right';
           return (
             <div className="banner_container mg-auto" key={index}>
               <img src={item.s_attachments[0].url} alt="" />

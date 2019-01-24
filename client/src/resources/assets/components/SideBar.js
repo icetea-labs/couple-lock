@@ -28,6 +28,8 @@ class SideBar extends Component {
   render() {
     return (
       <div className="sidebar">
+        <button className="btn_add_promise" type="button"><span className="icon-ic-add"></span>Add Promise</button>
+        <h3 className="title_promise">Accepted promise</h3>
         {
           this.state.listUser.length > 0 && this.state.listUser.map((item, index) =>{
             return(

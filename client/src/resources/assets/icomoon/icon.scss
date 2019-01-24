@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('./fonts/icomoon.eot');
-  src:  url('./fonts/icomoon.eot') format('embedded-opentype'),
-    url('./fonts/icomoon.ttf') format('truetype'),
-    url('./fonts/icomoon.woff') format('woff'),
-    url('./fonts/icomoon.svg') format('svg');
+  src:  url('fonts/icomoon.eot?yxorlh');
+  src:  url('fonts/icomoon.eot?yxorlh#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?yxorlh') format('truetype'),
+    url('fonts/icomoon.woff?yxorlh') format('woff'),
+    url('fonts/icomoon.svg?yxorlh#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -50,5 +50,9 @@
 }
 .icon-today:before {
   content: "\e906";
+  color: #8250c8;
+}
+.icon-ic-add:before {
+  content: "\e907";
   color: #8250c8;
 }

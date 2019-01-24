@@ -159,20 +159,19 @@ img{
 }
 
 // end header
-#main_container {
+.main_container {
   margin-top: 113px;
+
 }
 
-#main{
-  .main__container-top{
-    margin-top: 33px;
-    padding: 30px;
-    border-radius: 10px;
-    background: $color-white;
-    -moz-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
-	  -webkit-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
-	  box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
-  }
+.propose{
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: $color-white;
+  -moz-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+  -webkit-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+  box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
 }
 .banner_container{
   border-radius: 10px;
@@ -263,10 +262,16 @@ img{
     }
   }
 }
+.col-left{
+  width: 280px;
+}
+.col-right{
+  width: 620px;
+  padding: 20px;
+}
 
 .memorypost{
-  width: 600px;
-  margin-top: 45px;
+  width: 100%;
   .post_container{
     display: inline-block;
     width: 100%;
@@ -518,13 +523,7 @@ img{
   .chat_content{
     width: 100%;
     display: inline-block;
-    margin-bottom: 18px;
-    &:nth-child(odd){
-      float: right;
-      .content_detail{
-        max-width: calc(100% - 58px - 15px);
-      }
-    }
+    margin-bottom: 47px;
     .sender, .receiver{
       display: inline-block;
     }
@@ -570,16 +569,33 @@ img{
 }
 
 .sidebar {
-  width: 220px;
+  width: 280px;
   border-radius: 10px;
-  box-shadow: 0 0 15px #ddd;
-  margin-left: 20px;
   padding: 20px;
-  background: #fff;
-  float: left;
-  position: fixed;
-  top: 95px;
-  z-index: 100;
+  background: $color-white;
+  .btn_add_promise{
+    width: 172px;
+    height: 46px;
+    background: $color-white;
+    border-radius: 23px;
+    font-weight: 600;
+    color: $color-violet;
+    border: 1px solid $color-violet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    .icon-ic-add{
+      margin-right: 10px;
+    }
+  }
+  .title_promise{
+    text-transform: uppercase;
+    font-size: $font-root;
+    font-weight: 600;
+    color: $color-black-min;
+    margin-bottom: 18px;
+  }
   &__item{
     display: flex;
     align-items: center;
@@ -595,10 +611,4 @@ img{
       margin-left: 10px;
     }
   }
-}
-
-.main__container{
-  // width: calc(100% - 330px);
-  // float: left;
-  // margin-left: 350px;
 }
