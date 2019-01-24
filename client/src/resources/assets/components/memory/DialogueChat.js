@@ -13,6 +13,7 @@ class DialogueChat extends Component {
   componentDidMount() {
     const pid = this.props.pid;
     axios.get(`/api/memory/list?proposeId=${pid}`)
+    // axios.get('/api/memory/list?proposeId=0')
     .then(res => {
       const dataSort = res.data.data.sort(function(a, b) { return b.timestamp - a.timestamp })
       this.setState({ post: dataSort });

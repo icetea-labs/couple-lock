@@ -22,6 +22,7 @@ class Home extends Component {
   componentDidMount() {
     const pid = this.state.proposeId;
     axios.get(`/api/propose/details?id=${pid}`)
+    // axios.get('/api/propose/details?id=0')
     .then(propose => {
       this.getUsers(propose.data.data.sender, propose.data.data.receiver);
       this.setState({ proposeList: propose.data.data });
@@ -43,8 +44,6 @@ class Home extends Component {
 
   
   render() {
-    // const pid = this.props.match.params.id;
-    // console.log(pid);
     return (
       <Layout>
         <div id="main">

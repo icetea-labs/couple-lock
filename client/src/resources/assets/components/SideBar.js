@@ -20,6 +20,11 @@ class SideBar extends Component {
     })
   }
   
+  pageReload = (e) => {
+    e.preventDefault();
+    window.location.reload();
+  }
+
   render() {
     return (
       <div className="sidebar">
@@ -27,7 +32,7 @@ class SideBar extends Component {
           this.state.listUser.length > 0 && this.state.listUser.map((item, index) =>{
             return(
               <div className="sidebar__item" key={index}>
-                <Link push="true" to={`/propose/${item.id}`}>proposeId: {item.id}</Link>
+                <Link push="true" to={`/propose/${item.id}`} onClick={()=>this.pageReload()}>proposeId: {item.id}</Link>
               </div>
             )
           })
