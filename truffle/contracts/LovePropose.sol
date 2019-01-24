@@ -17,7 +17,7 @@ contract LovePropose is Ownable {
     struct Propose {
         address sender;
         address receiver;
-        string proposeHash;
+        bytes32 infoHash;
     }
 
     Propose[] public lsPropose;
@@ -26,7 +26,7 @@ contract LovePropose is Ownable {
     mapping (bytes32 => uint) public idToIndex;
     //Map Propose: User -> Array Propose
     // mapping (address => uint[]) public userToPropose;
-    event NewPropose(bytes32 _id, string proposeHash);
+    event NewPropose(bytes32 _id, bytes32 infoHash);
 
     // Map comment: Propose ID -> Array comment 
     mapping (bytes32 => uint[]) public proIdToComment;
@@ -37,17 +37,17 @@ contract LovePropose is Ownable {
     event NewLike(bytes32 _id, address sender);
 
     constructor (IUserList _userList) public {
-        require(address(_userList) != address(0));
+        require(address(_userList) != address(0), "Contract UserList address must be different 0x0.");
         userList = _userList;
     }
 
     modifier onlyRegiter {
-        require(userList.isAddrRegistered(msg.sender));
+        require(userList.isAddrRegistered(msg.sender), "User must be regiter.");
         _;
     }
 
     modifier onlyJob {
-        require(userList.isJobAddr(msg.sender));
+        require(userList.isJobAddr(msg.sender), "Function only for job.");
         _;
     }
 
@@ -60,29 +60,31 @@ contract LovePropose is Ownable {
     }
 
     // Send Propose.
-    function addPropose(address _receiver, string memory _proposeHash) public onlyRegiter {
+    function addPropose(address _receiver, bytes32 _infoHash) public onlyRegiter {
         ///Do Sent Propose
-        doAddPropose(byte(0), msg.sender, _receiver, _proposeHash);
+        doAddPropose(byte(0), msg.sender, _receiver, _infoHash);
     }
 
     // Upload Propose.
-    function uploadPropose(bytes32 _id, address _sender, address _receiver, string memory _proposeHash) public onlyJob {
+    function uploadPropose(bytes32[] memory _id, address[] memory _sender, address[] memory _receiver, bytes32[] memory _infoHash) public onlyJob {
+        uint len = _id.length;
         ///Do Sent Propose
-        doAddPropose(_id, _sender, _receiver, _proposeHash);
+        for (uint i = 0; i < len; i++) {
+            doAddPropose(_id[i], _sender[i], _receiver[i], _infoHash[i]);
+        }
     }
 
-    function getAllPropose() public view returns(address[] memory lsSender, address[] memory lsReceiver, string memory proposeHash) {
+    function getAllPropose() public view returns(address[] memory lsSender, address[] memory lsReceiver, bytes32[] memory infoHash) {
         uint len = lsPropose.length;
-        bytes memory hashCollect;
         lsSender = new address[](len);
         lsReceiver = new address[](len);
+        infoHash = new bytes32[](len);
         
         for (uint i = 0; i < len; i++) {
             lsSender[i] = lsPropose[i].sender;
             lsReceiver[i] = lsPropose[i].receiver;
-            hashCollect = abi.encodePacked(hashCollect, bytes(lsPropose[i].proposeHash), byte(0));//byte(0)
+            infoHash[i] = lsPropose[i].infoHash;
         }
-        proposeHash = string(hashCollect);
     }
 
     // ****** Like ****** 
@@ -112,12 +114,12 @@ contract LovePropose is Ownable {
     }
 
     // Do Send Propose.
-    function doAddPropose(bytes32 _id, address _sender, address _receiver, string memory _proposeHash) private {
+    function doAddPropose(bytes32 _id, address _sender, address _receiver, bytes32 _infoHash) private {
         require(idToIndex[_id] == 0, "Propose id existed!");
         require(_sender != _receiver, "Sender must be different with receiver address!");
 
         //Create new pending
-        Propose memory newPro = Propose(_sender, _receiver, _proposeHash);
+        Propose memory newPro = Propose(_sender, _receiver, _infoHash);
         uint index = lsPropose.push(newPro);
         if (_id == byte(0))  
             _id = bytes32(index);
@@ -127,6 +129,6 @@ contract LovePropose is Ownable {
         // userToPropose[_receiver].push(index);
 
         //Rase event new pedding request.
-        emit NewPropose(_id, _proposeHash);
+        emit NewPropose(_id, _infoHash);
     }
 }
