@@ -52,15 +52,6 @@ class FormLogin extends Component {
 render() {
     return (
         <Grid className="form_login">
-            <MetaTags>
-                <meta name="google-signin-client_id" content="656940544950-kofdct0ehtdslu1uf461si4f2vlk5mn8.apps.googleusercontent.com" />
-            </MetaTags>
-            < Helmet>
-                <script src="https://apis.google.com/js/platform.js" async defer></script>
-                <script src="https://apis.google.com/js/client:platform.js" async defer>
-                </script>
-            </Helmet>
-
             <label> Change your information</label>
             <Col lg={6}>
                 <img src={this.state.img_url} id="avatar_login" width="100" height="100" />
