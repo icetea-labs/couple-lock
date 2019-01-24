@@ -15,7 +15,7 @@ module.exports = class BaseTask {
     constructor(CJSON, entity, keyName) {
         this.CJSON = CJSON;
         this.entity = entity;
-        this.keyName = keyName;
+        this.keyName = keyName || 'id';
         this.store = factory.getStore(entity);
     }
 
@@ -48,11 +48,11 @@ module.exports = class BaseTask {
             //       path: path,
             //       content:  ipfs.types.Buffer.from(JSON.stringify(item))
             //     }]
-            funcs[item.id] = (next) => {
+            funcs[item[this.keyName]] = (next) => {
                 ipfs.add(compressed,{ 
                     pin:networkName == 'Main',
                     progress: (prog) => console.log(` ->IPFS upload progress: ${prog} byte added to ipfs.`),
-                    // onlyHash: true
+                    onlyHash: true
                 },
             next)};
         }
@@ -74,8 +74,8 @@ module.exports = class BaseTask {
                 console.log(`Start upload ${this.entity} to blockchian.`);
                 let arrHash={};
                 for (const item of unchainedItems) {
-                    let hashConverted = utils.ipfs2multihash(results.upToIpfs[item.id][0].hash);
-                    arrHash[item.id] = hashConverted.digest;
+                    let hashConverted = utils.ipfs2multihash(results.upToIpfs[item[this.keyName]][0].hash);
+                    arrHash[item[this.keyName]] = hashConverted.digest;
                 }
                 let receipts = await this._doUploadSync(web3, contract, arrHash, unchainedItems);
                 // console.log(receipts);
@@ -86,7 +86,7 @@ module.exports = class BaseTask {
                 console.log(`Start sync ${this.entity} to database.`);
                 if(results.upToChain) {
                     for (const item of unchainedItems) {
-                        await this.store.update(item.id, {
+                        await this.store.update(item[this.keyName], {
                             chained: Date.now()
                         });
                     }

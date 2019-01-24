@@ -17,11 +17,13 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
+    "ipfs-api": "^26.1.2",
     "ipfs-mini": "^1.1.5",
     "level": "^4.0.0",
     "lodash": "^4.17.11",
     "msgpack": "^1.0.2",
     "multer": "^1.4.1",
+    "multihashes": "^0.4.14",
     "redis": "^2.8.0",
     "web3": "^1.0.0-beta.37"
   },

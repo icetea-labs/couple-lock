@@ -4,19 +4,18 @@ const BaseTask = require("./base");
 class UserTask extends BaseTask {
 
     constructor() {
-        super(CJSON, 'user');
-        
+        super(CJSON, 'user', 'username');
     }
     async _doUploadSync(web3, contract, arrHash, unchainedItems) {
         // this.setJobAddress(web3,contract);
-        let objsAddr =[],objsId=[],objsHash=[];
+        let objsAddr =[],objsUsername=[],objsHash=[];
         //Serializing data before add blockchian
         for (const item of unchainedItems) {
             objsAddr.push(item.publicKey);
-            objsId.push(web3.utils.fromAscii(item.id));
-            objsHash.push(arrHash[item.id]);
+            objsUsername.push(web3.utils.fromAscii(item.username));
+            objsHash.push(arrHash[item.username]);
         }
-        return await contract.methods.uploadUser(objsAddr, objsId, objsHash).send();
+        return await contract.methods.uploadUser(objsAddr, objsUsername, objsHash).send();
     };
 
     async setJobAddress(web3,contract) {

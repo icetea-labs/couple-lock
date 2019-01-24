@@ -4,7 +4,7 @@ seeder.user = [
     {
         chained: false,
         publicKey: "0x4Cf35B3bB73e2CFA7f42ca6E14d572b7cc5bb09a",
-        id: "tradatech",
+        username: "tradatech",
         displayName: "Trà đá Công nghệ",
         email: "tradatech@locks.com",
         avatar: "https://trada.tech/assets/img/logo_360_pad40.png",
@@ -14,7 +14,7 @@ seeder.user = [
     {
         chained: false,
         publicKey: "0xFE5A1AA408beCDdAB0A20C5F9cbCF6897AC977e2",
-        id: "sotatek",
+        username: "sotatek",
         displayName: "Sô Ta Tếch",
         email: "sotatek@locks.com",
         avatar: "https://sotatek.com/images/logo.png",
