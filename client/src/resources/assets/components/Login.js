@@ -28,9 +28,7 @@ class Login extends Component {
         localStorage.setItem("name", this.state.name);
         localStorage.setItem("email", this.state.email);
         localStorage.setItem("img_url", this.state.img_url);
-
         console.log(result)
-
         this.props.history.push(`/login/profile`)
     }
 

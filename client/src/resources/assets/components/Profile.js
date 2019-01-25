@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import Web3 from 'web3';
 import bip39 from 'bip39';
-import crytoJs from 'crypto-js';
-import { string } from 'prop-types';
-import _ from 'lodash';
+import thisrtparty from 'ethereumjs-wallet/thirdparty';
 
 
 class FormLogin extends Component {
@@ -29,6 +27,7 @@ class FormLogin extends Component {
         this.dnChange = this.dnChange.bind(this);
         this.createAccounts = this.createAccounts.bind(this);
         this.confirmPassWord = this.confirmPassWord.bind(this);
+
     }
 
     handleChange(event) {
@@ -61,26 +60,29 @@ class FormLogin extends Component {
             password: event.target.value
         })
     }
+
     /**
      *  @param createAccounts create account
      */
-    createAccounts = () => {
-        const web3 = new Web3(
+    createAccounts() {
+        var web3 = new Web3(
             new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
         )
+        
+        var test = bip39.generateMnemonic();
 
-        this.state.seedphase = bip39.mnemonicToSeedHex(this.state.password);
-        console.log(this.state.seedphase);
-        localStorage.setItem("seedphase", this.state.seedphase);
+        this.setState({
+            seedphase: test
+        })
+
+        console.log(test)
+        console.log(web3.eth.accounts.create(test));
     }
-
-
 
     render() {
         return (
             <Grid className="form_login">
                 <label> Change your information</label>
-
                 <Col>
                 </Col>
                 <Col lg={6}>
@@ -101,12 +103,24 @@ class FormLogin extends Component {
 
                 <p> Confirm</p>
                 <Col>
+                    <label>Enter your pass</label>
                     <input type="" placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} />
                 </Col>
                 <Col>
                     <button type="submit" onClick={this.createAccounts}>Submit</button>
                 </Col>
+
+                <Col>
+                    <label>Your seedphase is:</label>
+                </Col>
+                <input value={this.state.seedphase} style={{ width: 600 }} readOnly />
+
+                <Col>
+                    <button>import </button>
+                </Col>
             </Grid>
+
+
         )
     }
 }
