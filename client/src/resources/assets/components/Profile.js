@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import Web3 from 'web3';
 import bip39 from 'bip39';
+import crytoJs from 'crypto-js';
+import { string } from 'prop-types';
+import _ from 'lodash';
 
 
 class FormLogin extends Component {
@@ -17,8 +20,9 @@ class FormLogin extends Component {
             account: [],
             address: [],
             privatekey: [],
-            seed: [],
+            seedphase: [],
             password: [],
+            test: 0
         }
         this.handleChange = this.handleChange.bind(this);
         this.usnChange = this.usnChange.bind(this);
@@ -60,18 +64,17 @@ class FormLogin extends Component {
     /**
      *  @param createAccounts create account
      */
-    createAccounts() {
+    createAccounts = () => {
         const web3 = new Web3(
             new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
-        );
+        )
 
-        this.setState({
-            account: web3.eth.accounts.create(this.state.user_name),
-            seed: bip39.entropyToMnemonic(this.state.password),
-        })
-        localStorage.setItem("address", this.state.account.address);
-        console.log(this.state.account, this.state.seed);
+        this.state.seedphase = bip39.mnemonicToSeedHex(this.state.password);
+        console.log(this.state.seedphase);
+        localStorage.setItem("seedphase", this.state.seedphase);
     }
+
+
 
     render() {
         return (
@@ -98,7 +101,7 @@ class FormLogin extends Component {
 
                 <p> Confirm</p>
                 <Col>
-                    <input type="password" placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} />
+                    <input type="" placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} />
                 </Col>
                 <Col>
                     <button type="submit" onClick={this.createAccounts}>Submit</button>

@@ -58,7 +58,7 @@ router.route('/api/google/callback')
     .get(passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
         nodePersist.savedata(req.user)
             .then((result) => {
-                res.send(result);
+                res.redirect('/api/user/profile');
             })
     })
 
