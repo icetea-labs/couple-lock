@@ -7,10 +7,17 @@ class MemoryTask extends BaseTask {
         super(CJSON, 'memory');
     }
 
-    async _doUploadSync(web3, contract, item, hashValue) {
-        return await contract.methods.uploadMemory(web3.utils.fromAscii(item.id),web3.utils.fromAscii(item.proposeId),item.address,hashValue).send();
+    async _doUploadSync(web3, contract, arrHash, unchainedItems) {
+        let objsId=[], objsProposeId =[],objsAddrSender =[],objsHash=[];
+        //Serializing data before add blockchian
+        for (const item of unchainedItems) {
+            objsId.push(web3.utils.fromAscii(item.id));
+            objsProposeId.push(web3.utils.fromAscii(item.proposeId));
+            objsAddrSender.push(item.address);
+            objsHash.push(arrHash[item.id]);
+        }
+        return await contract.methods.uploadMemory(objsId, objsProposeId, objsAddrSender, objsHash).send();
     }
-
 };
 
 module.exports = new MemoryTask();

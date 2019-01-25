@@ -20,14 +20,14 @@ contract LoveMemory is Ownable {
     IUserList public userList;
     ILovePropose public lovePropose;
 
-    string[] public lsMemory;
+    bytes32[] public lsMemory;
     string[] public lsComment;
     //Map memory id -> index list memory:index = idToIndex -1;
     mapping (bytes32 => uint) public idToIndex;
 
     // Map memory: Propose ID -> Array Memory
     mapping (bytes32 => bytes32[]) public proIdToMemories;
-    event NewMemory(bytes32 memoId, bytes32 proId, string hashInfo);
+    event NewMemory(bytes32 memoId, bytes32 proId, bytes32 hashInfo);
     
     // Map comment: Memory ID -> Array comment 
     mapping (bytes32 => uint[]) public memoIdToComments;
@@ -60,22 +60,25 @@ contract LoveMemory is Ownable {
     }
 
     // ****** Memory ****** 
-    function addMemory(bytes32 _proId, string memory _hashInfo) public onlyRegiter {
+    function addMemory(bytes32 _proId, bytes32 _hashInfo) public onlyRegiter {
         doAddMemory(msg.sender, byte(0), _proId, _hashInfo);
     }
 
     // ****** Memory ****** 
-    function uploadMemory(bytes32 _memoId, bytes32 _proId, address _sender, string memory _hashInfo) public onlyJob {
-        doAddMemory(_sender, _memoId, _proId, _hashInfo);
+    function uploadMemory(bytes32[] memory _memoId, bytes32[] memory _proId, address[] memory _sender, bytes32[] memory _hashInfo) public onlyJob {
+        uint len = _memoId.length;
+        ///Do Sent Propose
+        for (uint i = 0; i < len; i++) {
+            doAddMemory(_sender[i], _memoId[i], _proId[i], _hashInfo[i]);
+        }
     }
 
-    function getAllMemory(bytes32 _id) public view returns (string memory _hashInfo) {
+    function getAllMemory(bytes32 _id) public view returns (bytes32[] memory memoriesHash) {
         uint len = proIdToMemories[_id].length;
-        bytes memory hashCollector;
+        memoriesHash = new bytes32[](len);
         for (uint i = 0; i < len; i++) {
-            hashCollector = abi.encodePacked(hashCollector, bytes(lsMemory[idToIndex[proIdToMemories[_id][i]] - 1]), byte(0));//byte(0)
+            memoriesHash[i] = lsMemory[idToIndex[proIdToMemories[_id][i]] - 1];
         }
-        _hashInfo = string(hashCollector);
     }
 
     // ****** Like ****** 
@@ -105,7 +108,7 @@ contract LoveMemory is Ownable {
     }
 
     // ****** Memory ****** 
-    function doAddMemory(address _sender, bytes32 _memoId, bytes32 _proId, string memory _hashInfo) private {
+    function doAddMemory(address _sender, bytes32 _memoId, bytes32 _proId, bytes32 _hashInfo) private {
         require(idToIndex[_memoId] == 0, "Memory id existed!");
         require(lovePropose.isOwnerPropose(_sender, _proId), "Sender must be owner propose!");
         uint index = lsMemory.push(_hashInfo);

@@ -11,8 +11,7 @@ const async = require('async');
     async.series([
         function (callback) {
             userTask.run(web3,callback);
-        }
-        ,
+        },
         function (callback) {
             proposeTask.run(web3,callback);
         },
