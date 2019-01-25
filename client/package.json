@@ -11,6 +11,7 @@
     "ethereumjs-testrpc": "^6.0.3",
     "ethereumjs-wallet": "^0.6.3",
     "ganache-cli": "^6.2.5",
+    "md5": "^2.2.1",
     "moment": "^2.23.0",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",

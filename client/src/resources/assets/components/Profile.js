@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import Web3 from 'web3';
 import bip39 from 'bip39';
-import thisrtparty from 'ethereumjs-wallet/thirdparty';
+import md5 from 'md5';
+import aesjs from 'aes-js';
 
 
 class FormLogin extends Component {
@@ -64,6 +65,7 @@ class FormLogin extends Component {
     /**
      *  @param createAccounts create account
      */
+
     createAccounts() {
         var web3 = new Web3(
             new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
@@ -75,8 +77,16 @@ class FormLogin extends Component {
             seedphase: test
         })
 
-        console.log(test)
-        console.log(web3.eth.accounts.create(test));
+        var passwordAes = aesjs.utils.utf8.toBytes(md5(this.state.password));
+        var seedphaseAes = aesjs.utils.utf8.toBytes(md5(test));
+        
+
+        var aesCbs = new aesjs.ModeOfOperation.cbc(passwordAes);
+        var encryptedBytes = aesCbs.encrypt(seedphaseAes);
+        var encryptHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+
+        localStorage.setItem("seed", encryptHex);
+        // console.log(web3.eth.accounts.create(test));
     }
 
     render() {
@@ -113,7 +123,7 @@ class FormLogin extends Component {
                 <Col>
                     <label>Your seedphase is:</label>
                 </Col>
-                <input value={this.state.seedphase} style={{ width: 600 }} readOnly />
+                <input value={this.state.seedphase} style={{ width: 600, color: "blue" }} readOnly />
 
                 <Col>
                     <button>import </button>
