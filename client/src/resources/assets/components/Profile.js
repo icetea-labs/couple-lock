@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Col } from 'react-bootstrap';
+import { Grid, Col, Row } from 'react-bootstrap';
 import Web3 from 'web3';
 import bip39 from 'bip39';
 import md5 from 'md5';
@@ -30,6 +30,11 @@ class FormLogin extends Component {
         this.confirmPassWord = this.confirmPassWord.bind(this);
 
     }
+
+    /**
+     * 
+     * @param NOEVENT change infor for the login input profile
+     */
 
     handleChange(event) {
 
@@ -63,14 +68,14 @@ class FormLogin extends Component {
     }
 
     /**
-     *  @param createAccounts create account
+     *  @param createAccounts Create account and 
      */
 
     createAccounts() {
         var web3 = new Web3(
             new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
         )
-        
+
         var test = bip39.generateMnemonic();
 
         this.setState({
@@ -79,8 +84,6 @@ class FormLogin extends Component {
 
         var passwordAes = aesjs.utils.utf8.toBytes(md5(this.state.password));
         var seedphaseAes = aesjs.utils.utf8.toBytes(md5(test));
-        
-
         var aesCbs = new aesjs.ModeOfOperation.cbc(passwordAes);
         var encryptedBytes = aesCbs.encrypt(seedphaseAes);
         var encryptHex = aesjs.utils.hex.fromBytes(encryptedBytes);
@@ -91,46 +94,44 @@ class FormLogin extends Component {
 
     render() {
         return (
-            <Grid className="form_login">
-                <label> Change your information</label>
-                <Col>
-                </Col>
-                <Col lg={6}>
-                    <img src={this.state.img_url} id="avatar_login" width="100" height="100" alt="" />
-                </Col>
-                <Col lg={6}>
-                    <input type="file" accept="img, mp4" onChange={this.handleChange} />
-                </Col>
-                <Col lg={6}>
-                    <input placeholder="User Name" value={this.state.user_name} onChange={this.usnChange} />
-                </Col>
-                <Col lg={6}>
-                    <input placeholder="Display Name" value={this.state.name} onChange={this.dnChange} />
-                </Col>
-                <Col>
-                    <input placeholder="Email" value={this.state.email} readOnly />
+            <Grid className="profile_form">
+
+                {/* <form action="" method=""> */}
+                <Col className="avatar_profile">
+                    <div className="avatar">
+                        <img src={this.state.img_url} id="avatar_login" width="120" height="120" alt="" />
+                    </div>
+                    <label for="upload" className="chose_file">
+                        <span className="label__file">Chose your image</span>
+                        <input type="file" id="upload" accept="img, mp4" onChange={this.handleChange} style={{ display: "none" }} />
+                    </label>
                 </Col>
 
-                <p> Confirm</p>
-                <Col>
-                    <label>Enter your pass</label>
-                    <input type="" placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} />
+                <Col className="infor_profile">
+                    <h2> Change your information</h2>
+                    <p className="infor__label">Username: </p>
+                    <input placeholder="User Name" value={this.state.user_name} onChange={this.usnChange} autoComplete="on" />
+                    <Col>
+                        <p className="infor__label">Yourname: </p>
+                        <input placeholder=" Display Name" value={this.state.name} onChange={this.dnChange} autoComplete="on" />
+                    </Col>
+                    <Col>
+                        <p className="infor__label">Your mail : </p>
+                        <input placeholder=" Email" value={this.state.email} readOnly />
+                    </Col>
+                    <Col>
+                        <p className="infor__label">Password :</p>
+                        <input type="" placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} autoComplete="on" />
+                    </Col>
+                    <button className="btn__profile" type="submit" onClick={this.createAccounts}>Submit</button>
                 </Col>
-                <Col>
-                    <button type="submit" onClick={this.createAccounts}>Submit</button>
+                {/* </form> */}
+                <Col className="seed_phase">
+                    <p>Save your seed seed phase if your forgot your password</p>
+                    <textarea value={this.state.seedphase} height="60px" readOnly></textarea>
                 </Col>
 
-                <Col>
-                    <label>Your seedphase is:</label>
-                </Col>
-                <input value={this.state.seedphase} style={{ width: 600, color: "blue" }} readOnly />
-
-                <Col>
-                    <button>import </button>
-                </Col>
             </Grid>
-
-
         )
     }
 }
