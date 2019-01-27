@@ -16,9 +16,16 @@ class Home extends Component {
       rightUser: [],
       proposeList: [],
       userName: [],
-      proposeId: this.props.match.params.id,
+      // proposeId: this.props.match.params.id,
     }
   }
+
+  proposeIdChanged = (newProposeId) => {
+    this.setState({
+      proposeId: newProposeId
+    })
+  }
+
   componentDidMount() {
     // const pid = this.state.proposeId;
     // axios.get(`/api/propose/details?id=${pid}`)
@@ -59,7 +66,7 @@ class Home extends Component {
               </div>
               <div className="col-right fr">
                 <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser}/>
-                <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} pid={this.state.proposeId}/>
+                <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} pid={this.state.proposeId} proposeId={this.state.proposeId}/>
               </div>
             </div>
             

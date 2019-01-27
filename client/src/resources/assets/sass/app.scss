@@ -599,16 +599,27 @@ img{
   &__item{
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
     &__avatar{
-      width: 58px;
-      height: 58px;
-      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       overflow: hidden;
     }
     &__detail{
       width: calc(100% - 58px - 10px);
       margin-left: 10px;
+      &__displayname{
+        font-size: $font-root;
+        color: $color-grey-shuttle;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+      &__username{
+        font-size: $font-smaller;
+        color: $color-violet;
+        font-weight: 500;
+      }
     }
   }
 }

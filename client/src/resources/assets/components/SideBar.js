@@ -26,10 +26,10 @@ class SideBar extends Component {
   }
 
   getUsers = (allUser, listPropose) => {
-    const login = "sotatek";
+    const userLogin = window.getLoginUser();
     const sidebarItems = {};
     listPropose.forEach(p => {
-      if (p.sender === login) {
+      if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
           proposeId: p.id
         }
@@ -46,19 +46,29 @@ class SideBar extends Component {
     this.setState({sidebarItems})
   }
 
-  getAll= () => {
+  getUserInfo= () => {
     const obj = this.state.sidebarItems;
     if(obj){
-      Object.keys(obj).forEach(function(key) {
-        console.log(key);
-      });
+     return(
+      Object.keys(obj).map(function(key, index) {
+        return  <div className="sidebar__item" key={index}>
+          <div className="sidebar__item__avatar"><img src={obj[key].user.avatar} alt="" /></div>
+          <div className="sidebar__item__detail">
+            <div className="sidebar__item__detail__displayname">{obj[key].user.displayName}</div>
+            <div className="sidebar__item__detail__username">{obj[key].user.username}</div>
+          </div>
+        </div>
+      })
+     )
     }
   }
-
+    
   render() {
     return (
       <div className="sidebar">
-        {this.getAll()}
+        <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
+        <h3 className="title_promise">Accepted promise</h3>
+        {this.getUserInfo()}
       </div>
     );
   }
