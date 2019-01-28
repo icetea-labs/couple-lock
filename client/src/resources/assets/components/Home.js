@@ -16,26 +16,17 @@ class Home extends Component {
       rightUser: [],
       proposeList: [],
       userName: [],
-      // proposeId: this.props.match.params.id,
+      proposeId: 0,
     }
   }
 
   proposeIdChanged = (newProposeId) => {
     this.setState({
-      proposeId: newProposeId
+      proposeId: newProposeId,
     })
   }
 
-  componentDidMount() {
-    // const pid = this.state.proposeId;
-    // axios.get(`/api/propose/details?id=${pid}`)
-    axios.get('/api/propose/details?id=0')
-    .then(propose => {
-      this.getUsers(propose.data.data.sender, propose.data.data.receiver);
-      this.setState({ proposeList: propose.data.data });
-    })
-  }
-
+  
   getUsers = (sender, receiver) => {
     const p1 = axios.get("/api/user/details?username=" + sender);
     const p2 = axios.get("/api/user/details?username=" + receiver);
@@ -48,13 +39,31 @@ class Home extends Component {
       });
     });
   }
+  
+  fetchProposeId = () =>{
+    const proposeId = this.state.proposeId;
+    axios.get(`/api/propose/details?id=${proposeId}`)
+    .then(propose => {
+      this.getUsers(propose.data.data.sender, propose.data.data.receiver);
+      this.setState({ proposeList: propose.data.data });
+    })
+  }
+  
+  componentDidMount() {
+    this.fetchProposeId();
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    const pId = this.state.proposeId;
+    if(pId !== prevState.proposeId){
+      this.fetchProposeId();
+    }
+  }
   
   render() {
     return (
       <Layout>
         <div>
-          
             <div className="propose">
               <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
               <RecentChat mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
@@ -62,11 +71,11 @@ class Home extends Component {
 
             <div className="memory">
               <div className="col-left fl">
-                <SideBar />
+                <SideBar proposeIdChanged={this.proposeIdChanged}/>
               </div>
               <div className="col-right fr">
                 <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser}/>
-                <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} pid={this.state.proposeId} proposeId={this.state.proposeId}/>
+                <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId}/>
               </div>
             </div>
             

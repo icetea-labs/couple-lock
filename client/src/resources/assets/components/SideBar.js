@@ -6,8 +6,7 @@ class SideBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // listUser: [],
-      // proUser: [],
+      data: [],
     }
   }
 
@@ -43,32 +42,44 @@ class SideBar extends Component {
     Object.keys(sidebarItems).forEach((key) => {
       sidebarItems[key].user = allUser.find(u => u.username === key);
     })
-    this.setState({sidebarItems})
+    this.setState({sidebarItems});
+    this.getUserInfo();
   }
 
-  getUserInfo= () => {
+  getUserInfo = () => {
     const obj = this.state.sidebarItems;
     if(obj){
-     return(
-      Object.keys(obj).map(function(key, index) {
-        return  <div className="sidebar__item" key={index}>
-          <div className="sidebar__item__avatar"><img src={obj[key].user.avatar} alt="" /></div>
-          <div className="sidebar__item__detail">
-            <div className="sidebar__item__detail__displayname">{obj[key].user.displayName}</div>
-            <div className="sidebar__item__detail__username">{obj[key].user.username}</div>
-          </div>
-        </div>
+      const res = Object.keys(obj).map(function(key, index) {
+        return { 
+          proposeId: obj[key].proposeId,
+          avatar:  obj[key].user.avatar,
+          username:  obj[key].user.username,
+          displayName:  obj[key].user.displayName,
+        }
       })
-     )
+      this.setState({ data: res})
     }
   }
-    
+  passingProposeId = pId =>{
+    this.props.proposeIdChanged(pId);
+  }
   render() {
+    const data = this.state.data;
     return (
       <div className="sidebar">
-        <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
-        <h3 className="title_promise">Accepted promise</h3>
-        {this.getUserInfo()}
+        {
+          data.length > 0 && data.map((item, index) =>{
+            return(
+              <div className="sidebar__item" key={index} onClick={() => this.passingProposeId(item.proposeId)}>
+                <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
+                <div className="sidebar__item__detail">
+                <div className="sidebar__item__detail__displayname">{item.displayName}</div>
+                <div className="sidebar__item__detail__username">{item.username}</div>
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
     );
   }
