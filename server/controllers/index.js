@@ -3,7 +3,8 @@ var express = require('express')
     , passport = require('passport')
     , session = require('express-session')
     , cookieParser = require('cookie-parser')
-    , nodePersist = require('./node-persist');
+    , nodePersist = require('./node-persist')
+    , fecth = require('node-fetch')
 
 router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
@@ -50,6 +51,9 @@ router.get('/api', function (req, res) {
     <li>
         <a href='/api/user/profile'>/api/user/profile</a>
     </li>
+    <li>
+        <a href='/test'> test </a>
+    </li>
   </ul>`
     );
 })
@@ -61,5 +65,14 @@ router.route('/api/google/callback')
                 res.redirect('/api/user/profile');
             })
     })
+
+router.route('/test')
+    .get((req, res) => {
+        res.send(
+            '<input name="test" value="OK" />'
+        )
+    })
+
+
 
 module.exports = router

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Grid, Col, Row } from 'react-bootstrap';
+import { Grid, Col, Row , Modal } from 'react-bootstrap';
+// import Popup from './Popup';
 import Web3 from 'web3';
 import bip39 from 'bip39';
 import md5 from 'md5';
@@ -21,14 +22,14 @@ class FormLogin extends Component {
             privatekey: [],
             seedphase: [],
             password: [],
-            test: 0
+            show: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.usnChange = this.usnChange.bind(this);
         this.dnChange = this.dnChange.bind(this);
         this.createAccounts = this.createAccounts.bind(this);
         this.confirmPassWord = this.confirmPassWord.bind(this);
-
+        this.handleClose = this.handleClose.bind(this);
     }
 
     /**
@@ -79,7 +80,8 @@ class FormLogin extends Component {
         var test = bip39.generateMnemonic();
 
         this.setState({
-            seedphase: test
+            seedphase: test,
+            show: true
         })
 
         var passwordAes = aesjs.utils.utf8.toBytes(md5(this.state.password));
@@ -89,19 +91,26 @@ class FormLogin extends Component {
         var encryptHex = aesjs.utils.hex.fromBytes(encryptedBytes);
 
         localStorage.setItem("seed", encryptHex);
-        // console.log(web3.eth.accounts.create(test));
+        console.log(web3.eth.accounts.create(test));
+        console.log(this.props);
+    }
+
+    handleClose  = (e) =>{
+        this.setState({
+            show: false,
+        })
     }
 
     render() {
         return (
             <Grid className="profile_form">
 
-                {/* <form action="" method=""> */}
+                <form action="" method="">
                 <Col className="avatar_profile">
                     <div className="avatar">
                         <img src={this.state.img_url} id="avatar_login" width="120" height="120" alt="" />
                     </div>
-                    <label for="upload" className="chose_file">
+                    <label htmlFor="upload" className="chose_file">
                         <span className="label__file">Chose your image</span>
                         <input type="file" id="upload" accept="img, mp4" onChange={this.handleChange} style={{ display: "none" }} />
                     </label>
@@ -110,7 +119,7 @@ class FormLogin extends Component {
                 <Col className="infor_profile">
                     <h2> Change your information</h2>
                     <p className="infor__label">Username: </p>
-                    <input placeholder="User Name" value={this.state.user_name} onChange={this.usnChange} autoComplete="on" />
+                    <input placeholder="User Name" value={this.state.user_name} onChange={this.usnChange} name="username" autoComplete="on" />
                     <Col>
                         <p className="infor__label">Yourname: </p>
                         <input placeholder=" Display Name" value={this.state.name} onChange={this.dnChange} autoComplete="on" />
@@ -125,12 +134,12 @@ class FormLogin extends Component {
                     </Col>
                     <button className="btn__profile" type="submit" onClick={this.createAccounts}>Submit</button>
                 </Col>
-                {/* </form> */}
+                </form>
                 <Col className="seed_phase">
                     <p>Save your seed seed phase if your forgot your password</p>
                     <textarea value={this.state.seedphase} height="60px" readOnly></textarea>
                 </Col>
-
+                {/* <Popup></Popup> */}
             </Grid>
         )
     }

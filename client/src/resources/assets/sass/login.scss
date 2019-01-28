@@ -48,6 +48,24 @@
                 .btn_google_login:hover{
                         background-color: rgba(230, 148, 71, 0.551);
                 }
+
+                .btn_user_login{
+                        background-color: rgba(98, 59, 226, 0.605);
+                        height: 50px;
+                        width: 200px;
+                        position: relative;
+                        top: 60px;
+                        left: 50px;
+                        color: white;
+                        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serifs;
+                        font-size: 20px;
+                        border: 2px solid rgba(85, 85, 85, 0.408);
+                        border-radius: 20px;
+                }
+
+                .btn_user_login:hover{
+                        background-color:cadetblue;
+                }
                 
                 .rule_login{
                         input{
