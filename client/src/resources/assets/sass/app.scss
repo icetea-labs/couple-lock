@@ -21,7 +21,7 @@ a{
 }
 input{
   color: $color-grey;
-  font:{
+  font{
     family: $font-body;
     size: $font-root;
     weight: 500;
@@ -142,6 +142,19 @@ img{
   }
   .user__name{
     margin-left: 20px;
+  }
+
+  .login__button{
+    a{
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      color: $color-white;
+      font-size: 15px;
+    }
+  
+    margin-left: 15px;
+    background-color: rgba(255, 255, 255, 0);
+  
   }
 }
 .explore{
