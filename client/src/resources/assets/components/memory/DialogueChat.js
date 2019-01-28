@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 
 class DialogueChat extends Component {
   constructor (props) {
@@ -9,25 +10,28 @@ class DialogueChat extends Component {
     }
   }
   
-  componentDidMount() {
-    fetch('/api/memory/list?proposeId=0')
-    .then(results => results.json())
-    .then(data => this.setState({ post: data.data.concat(data.data) })
-    )
+  componentWillReceiveProps(nextProps) {
+    if(this.props !== nextProps){
+      const proposeId = this.props.proposeId;
+      axios.get(`/api/memory/list?proposeId=${proposeId}`)
+      .then(res => {
+        const dataSort = res.data.data.sort(function(a, b) { return b.timestamp - a.timestamp })
+        this.setState({ post: dataSort });
+      });
+    }
   }
 
   
   render() {
     const sender = this.props.sender;
     const receiver = this.props.receiver;
-    console.log(sender.username);
-
     return (
       <div className="dialogue_chat mg-auto">
         <div className="box">
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
-              const date = moment(item.timestamp).format("MM/DD/YYYY");
+              const num = parseInt(item.timestamp);
+              const date = moment(num).format("MM/DD/YYYY");
               const className = (sender.username === item.sender) ? "sender" : "receiver";
               const avatar = (sender.username === item.sender) ? sender.avatar : receiver.avatar;
               const userName = (sender.username === item.sender) ? sender.username : item.sender;
@@ -39,6 +43,7 @@ class DialogueChat extends Component {
                       <span className="user_name color-violet" >{userName}</span>
                       <span className="time fr color-grey">{date}</span>
                       <p>{item.message}</p>
+                      <p><img src={item.attachments[0].url} alt="" /></p>
                     </div>
                   </div>
                 </div>

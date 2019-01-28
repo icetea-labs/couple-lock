@@ -71,6 +71,10 @@ img{
   width: 100%;
   height: 80px;
   background: $color-violet;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
   .header__container{
     margin: 0 auto;
     .logo{
@@ -155,17 +159,19 @@ img{
 }
 
 // end header
+.main_container {
+  margin-top: 113px;
 
-#main{
-  .main__container-top{
-    margin-top: 33px;
-    padding: 30px;
-    border-radius: 10px;
-    background: $color-white;
-    -moz-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
-	  -webkit-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
-	  box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
-  }
+}
+
+.propose{
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: $color-white;
+  -moz-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+  -webkit-box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
+  box-shadow: 0 4px 12px 0 rgba($color-black, 0.05);
 }
 .banner_container{
   border-radius: 10px;
@@ -256,10 +262,16 @@ img{
     }
   }
 }
+.col-left{
+  width: 280px;
+}
+.col-right{
+  width: 620px;
+  padding: 20px;
+}
 
 .memorypost{
-  width: 600px;
-  margin-top: 45px;
+  width: 100%;
   .post_container{
     display: inline-block;
     width: 100%;
@@ -362,7 +374,9 @@ img{
       }
     }
     .options{
-      display: inline-block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       float: right;
       margin-top: 15px;
       div{
@@ -376,6 +390,24 @@ img{
         }
         img{
           width: 24px;
+        }
+      }
+      .upload_img{
+        width: 24px;
+        height: 25px;
+        position: relative;
+        overflow: hidden;
+        input[type=file]{
+          width: 100%;
+          height: 25px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          overflow: hidden;
+        }
+        .icon-photo{
+          cursor: pointer;
         }
       }
     }
@@ -491,8 +523,11 @@ img{
   .chat_content{
     width: 100%;
     display: inline-block;
-    margin-bottom: 18px;
-    &:nth-child(odd){
+    margin-bottom: 47px;
+    .sender, .receiver{
+      display: inline-block;
+    }
+    .receiver{
       float: right;
       .user_photo{
         margin-right: 0;
@@ -500,15 +535,6 @@ img{
         display: inline-block;
         float: right;
       }
-      .content_detail{
-        max-width: calc(100% - 58px - 15px);
-      }
-    }
-    .sender, .receiver{
-      display: inline-block;
-    }
-    .receiver{
-      float: right;
     }
     .user_photo{
       display: block;
@@ -537,6 +563,63 @@ img{
       }
       p{
         margin-top: 5px;
+      }
+    }
+  }
+}
+
+.sidebar {
+  width: 280px;
+  border-radius: 10px;
+  padding: 20px;
+  background: $color-white;
+  .btn_add_promise{
+    width: 172px;
+    height: 46px;
+    background: $color-white;
+    border-radius: 23px;
+    font-weight: 600;
+    color: $color-violet;
+    border: 1px solid $color-violet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    .icon-ic-add{
+      margin-right: 10px;
+    }
+  }
+  .title_promise{
+    text-transform: uppercase;
+    font-size: $font-root;
+    font-weight: 600;
+    color: $color-black-min;
+    margin-bottom: 18px;
+  }
+  &__item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    cursor: pointer;
+    &__avatar{
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    &__detail{
+      width: calc(100% - 58px - 10px);
+      margin-left: 10px;
+      &__displayname{
+        font-size: $font-root;
+        color: $color-grey-shuttle;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+      &__username{
+        font-size: $font-smaller;
+        color: $color-violet;
+        font-weight: 500;
       }
     }
   }
