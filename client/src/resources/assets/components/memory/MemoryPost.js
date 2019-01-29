@@ -83,6 +83,13 @@ class MemoryPost extends Component {
     })
   }
 
+  isEnabledShare = () => {
+    const { m_message, selectFile } = this.state;
+    if(m_message.length > 0 || selectFile != null){
+      return "false" ;
+    }
+  }
+
   render() {
     const { selectedOption } = this.state;
     return (
@@ -115,7 +122,7 @@ class MemoryPost extends Component {
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
             </div>
-            <button type="button" onClick={ this.shareMemory }>Share</button>
+            <button type="button" disabled={! this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
           </div>
         </div>
       </div>

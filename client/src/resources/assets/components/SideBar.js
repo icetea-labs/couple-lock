@@ -67,6 +67,8 @@ class SideBar extends Component {
     const data = this.state.data;
     return (
       <div className="sidebar">
+        <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
+        <h3 className="title_promise">Accepted promise</h3>
         {
           data.length > 0 && data.map((item, index) =>{
             return(
