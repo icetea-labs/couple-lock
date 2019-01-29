@@ -7,6 +7,7 @@ class SideBar extends Component {
     super(props);
     this.state = {
       data: [],
+      activeUser: false,
     }
   }
 
@@ -61,6 +62,8 @@ class SideBar extends Component {
     }
   }
   passingProposeId = pId =>{
+    const { activeUser } = this.state;
+    this.setState({ activeUser : !activeUser })
     this.props.proposeIdChanged(pId);
   }
   render() {

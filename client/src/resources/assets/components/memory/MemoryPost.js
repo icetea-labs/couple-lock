@@ -54,10 +54,15 @@ class MemoryPost extends Component {
   }
 
   fileSelected = e => {
+    const img = {
+      imgUpload: e.target.files[0],
+      imgPreview: URL.createObjectURL(e.target.files[0]),
+    }
     this.setState({
-      selectFile: e.target.files[0],
+      selectFile: img ,
     })
   }
+
   getDate = (date) => {
     this.setState({
       startDate: date
@@ -73,7 +78,7 @@ class MemoryPost extends Component {
     formData.append('message', this.state.m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
-    formData.append('attachment', this.state.selectFile);
+    formData.append('attachment', this.state.selectFile.imgUpload);
 
     axios.post('/api/memory/create', formData)
     .then(res => {
@@ -83,6 +88,12 @@ class MemoryPost extends Component {
     })
   }
 
+  isImagePreview = () =>{
+    if(this.state.selectFile){
+      return this.state.selectFile.imgPreview || "";
+    }
+  }
+  
   isEnabledShare = () => {
     const { m_message, selectFile } = this.state;
     if(m_message.length > 0 || selectFile != null){
@@ -112,12 +123,13 @@ class MemoryPost extends Component {
               </div>
               <div className="upload_img">
                 <span className="icon-photo"></span>
-                <input type="file" onChange={ this.fileSelected }/>
+                <input type="file" accept="image/*" onChange={ this.fileSelected }/>
               </div>
               <div><span className="icon-today"></span><DatePicker selected={this.state.startDate} onChange={this.getDate} /></div>
               <div><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
+          <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
           <div className="action">
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
