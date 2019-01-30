@@ -18,6 +18,7 @@ class MemoryPost extends Component {
     super ();
     this.state ={
       selectedOption: { value: 'Public', label: 'Public' },
+      idVisible: null,
       isPlace : false,
       m_message: '',
       selectFile: null,
@@ -43,8 +44,21 @@ class MemoryPost extends Component {
   //   this.showInputPlaces();
   // }
 
-  setPrivacyMemory = (selectedOption) => {
+  setPrivacyMemory = selectedOption => {
     this.setState({ selectedOption });
+  }
+
+  getIdVisible () {
+    const id = this.state.selectedOption.value;
+    if(id === "Public"){
+      return 1;
+    }else if(id === "Unlisted"){
+      return 2;
+    }
+    else{
+      return 3;
+    }
+    
   }
   
   getMessageValue = (e) => {
@@ -54,26 +68,36 @@ class MemoryPost extends Component {
   }
 
   fileSelected = e => {
+    const img = {
+      imgUpload: e.target.files[0],
+      imgPreview: URL.createObjectURL(e.target.files[0]),
+    }
     this.setState({
-      selectFile: e.target.files[0],
+      selectFile: img ,
     })
   }
+
   getDate = (date) => {
     this.setState({
       startDate: date
     });
     console.log(this.state.startDate);
   }
+
+  
+
   shareMemory = (e) => {
     e.preventDefault();
     const sender = window.getLoginUser();
+    const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
     const formData = new FormData();
     formData.append('proposeId', 0);
+    formData.append('visibility', visibility);
     formData.append('message', this.state.m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
-    formData.append('attachment', this.state.selectFile);
+    formData.append('attachment', this.state.selectFile.imgUpload);
 
     axios.post('/api/memory/create', formData)
     .then(res => {
@@ -81,6 +105,19 @@ class MemoryPost extends Component {
       console.log(res.data);
       window.location.reload();
     })
+  }
+
+  isImagePreview = () =>{
+    if(this.state.selectFile){
+      return this.state.selectFile.imgPreview || "";
+    }
+  }
+  
+  isEnabledShare = () => {
+    const { m_message, selectFile } = this.state;
+    if(m_message.length > 0 || selectFile != null){
+      return "false" ;
+    }
   }
 
   render() {
@@ -105,17 +142,18 @@ class MemoryPost extends Component {
               </div>
               <div className="upload_img">
                 <span className="icon-photo"></span>
-                <input type="file" onChange={ this.fileSelected }/>
+                <input type="file" accept="image/*" onChange={ this.fileSelected }/>
               </div>
               <div><span className="icon-today"></span><DatePicker selected={this.state.startDate} onChange={this.getDate} /></div>
               <div><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
+          <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
           <div className="action">
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
             </div>
-            <button type="button" onClick={ this.shareMemory }>Share</button>
+            <button type="button" disabled={! this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
           </div>
         </div>
       </div>

@@ -7,13 +7,15 @@ class SideBar extends Component {
     super(props);
     this.state = {
       data: [],
+      activeUserId: null,
     }
   }
 
   componentDidMount(){
+    const userLogin = window.getLoginUser();
     Promise.all([
       axios.get('/api/user/all'),
-      axios.get('/api/propose/list?username=sotatek')
+      axios.get(`/api/propose/list?username=${userLogin}`)
     ])
     .then(([res1, res2]) =>  {
       this.getUsers(res1.data.data, res2.data.data)
@@ -27,7 +29,11 @@ class SideBar extends Component {
   getUsers = (allUser, listPropose) => {
     const userLogin = window.getLoginUser();
     const sidebarItems = {};
-    listPropose.forEach(p => {
+
+    listPropose.forEach((p, index) => {
+      if (index === 0) {
+        this.state.activeUserId = p.id;
+      }
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
           proposeId: p.id
@@ -61,16 +67,22 @@ class SideBar extends Component {
     }
   }
   passingProposeId = pId =>{
+    this.setState({ activeUserId : pId })
     this.props.proposeIdChanged(pId);
   }
   render() {
-    const data = this.state.data;
+    const {data} = this.state;
+
     return (
       <div className="sidebar">
+        <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
+        <h3 className="title_promise">Accepted promise</h3>
         {
           data.length > 0 && data.map((item, index) =>{
+            const {activeUserId} = this.state;
+            const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return(
-              <div className="sidebar__item" key={index} onClick={() => this.passingProposeId(item.proposeId)}>
+              <div className={ className } pid={item.proposeId}  key={index} onClick={() => this.passingProposeId(item.proposeId)}>
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                 <div className="sidebar__item__detail__displayname">{item.displayName}</div>
