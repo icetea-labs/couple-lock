@@ -18,6 +18,7 @@ class MemoryPost extends Component {
     super ();
     this.state ={
       selectedOption: { value: 'Public', label: 'Public' },
+      idVisible: null,
       isPlace : false,
       m_message: '',
       selectFile: null,
@@ -43,8 +44,21 @@ class MemoryPost extends Component {
   //   this.showInputPlaces();
   // }
 
-  setPrivacyMemory = (selectedOption) => {
+  setPrivacyMemory = selectedOption => {
     this.setState({ selectedOption });
+  }
+
+  getIdVisible () {
+    const id = this.state.selectedOption.value;
+    if(id === "Public"){
+      return 1;
+    }else if(id === "Unlisted"){
+      return 2;
+    }
+    else{
+      return 3;
+    }
+    
   }
   
   getMessageValue = (e) => {
@@ -69,12 +83,17 @@ class MemoryPost extends Component {
     });
     console.log(this.state.startDate);
   }
+
+  
+
   shareMemory = (e) => {
     e.preventDefault();
     const sender = window.getLoginUser();
+    const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
     const formData = new FormData();
     formData.append('proposeId', 0);
+    formData.append('visibility', visibility);
     formData.append('message', this.state.m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
