@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
+@import 'variables';
+@import 'common.scss';
+
+.seed_page{
+    width: 100%;
+    height: 1000px;
+    background-color: rgba(168, 240, 216, 0.537);
+
+    .header_seed{
+        position: relative;
+        top: 20px;
+        bottom: 20px;
+        height: 200px;
+        margin-left: 40%;
+        margin-right: 40%;
+        margin-bottom: 40px;
+        width: 20%;
+        min-width: 200px;
+        background-color: azure;
+        box-shadow:  0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+    }
+    h2{
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .backup_word{
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+
+    .create_seed{
+        .seed_word{
+            display: flex;
+            flex-wrap: nowrap;
+            position: relative;
+            min-width: 500px;
+          
+            .word{
+                font-weight: 600px;
+                position: relative;
+                padding-top: 4px;
+                width: 25%;
+                background-color: whitesmoke;
+                margin:5px;
+                border: solid gray 2px;
+                height: 30px;
+                border-radius: 25px;
+                text-align: center;
+            }
+    
+            span{
+                float: left;
+                margin-left: 10px;
+            }
+        }
+    
+        .seed_phase{
+            margin-top: 40px; 
+            display: flex;
+            flex-wrap: nowrap;
+            margin-bottom: 20px;
+            
+            textarea{
+                width: 70%;
+                height: 60px;
+                padding-top: 5px;
+                padding-left: 20px;
+                padding-right: 10px;
+                border-right: none;
+                font-style: oblique;
+                font-size: 15px;
+                font-weight: 700;
+                border: solid rgba(158, 46, 46, 0.619) 2px;
+                border-top-left-radius: 25px;
+                border-bottom-left-radius: 25px;
+                color: rgba(14, 14, 90, 0.823)
+            }
+
+            .btn_seed{
+                font-size: 17px;
+                font-family: $font-body;
+                width: 30%;
+                color: whitesmoke;
+                background-color: rgba(119, 25, 25, 0.877);
+                border: solid rgb(54, 36, 93) 2px;
+                border-top-right-radius: 25px;
+                border-bottom-right-radius: 25px;
+            }
+
+            .btn_seed:hover{
+                background-color: rgb(180, 68, 68);
+            }
+        }
+    
+        .btn_next{
+            width: 60px;
+            height: 30px;
+            float: center;
+            border: solid gray 2px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            float: right;
+        }
+    }
+}

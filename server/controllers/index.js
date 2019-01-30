@@ -71,6 +71,15 @@ router.route('/test')
         res.send(
             '<input name="test" value="OK" />'
         )
+
+        fecth('http://localhost:3000/')
+        .then((res) => {
+            res.json();
+        })
+        .then((json) => {
+            var test = document.getElementById("user_avatar").innerHTML;
+            console.log(test);
+        });
     })
 
 

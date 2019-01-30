@@ -17,18 +17,7 @@ class Login extends Component {
             googleApp: '656940544950-kofdct0ehtdslu1uf461si4f2vlk5mn8.apps.googleusercontent.com',
             isChecked: false
         }
-
-        this.userChecked = this.userChecked.bind(this);
     }
-
-    /**
-     * @param userChecked
-     * 
-     */
-
-     userChecked(){
-
-     }
 
     /**
      * @param showProfileGoogle collect information of user and send to profile
@@ -56,11 +45,9 @@ class Login extends Component {
         this.props.history.push(`/login/profile`)
     }
 
-
     render() {
         return (
             <Grid className="login_page">
-
                 <Col className="social_login">
                     <Col>
                         <h2> Chose the way to login</h2>
