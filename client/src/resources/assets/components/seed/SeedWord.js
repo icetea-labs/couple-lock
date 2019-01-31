@@ -46,7 +46,7 @@ class SeedWord extends Component {
         console.log(web3.eth.accounts.create(this.state.seed_phase));
         console.log(this.state.seed_phase);
         console.log(this.props);
-
+        this.props.history.push('/');
     }
 
     render() {
@@ -70,6 +70,8 @@ class SeedWord extends Component {
                     <div className="word"><span>11:</span>{this.state.seedphase[10]}</div>
                     <div className="word"><span>12:</span>{this.state.seedphase[11]}</div>
                 </div>
+                
+                <p> Seed là phương pháp duy nhất để lấy lại mật khẩu. Hãy ghi lại ở đâu đó nhé!</p>
                 <div className="seed_phase">
                     <textarea defaultValue={this.state.seed_phase} readOnly></textarea>
                     <CopyToClipboard text={this.state.seed_phase}
@@ -78,7 +80,7 @@ class SeedWord extends Component {
                     </CopyToClipboard>
                 </div>
                 {this.state.copied ? <span style={{ background: 'black', color: 'white' }}>Copied!</span> : null}
-                <button className="btn_next" onClick={this.createAccount}><a href={this.state.linkto}><strong>NEXT</strong></a></button>
+                <button className="btn_next" onClick={this.createAccount}><a href={this.state.linkto}><strong>next</strong></a></button>
             </div>
         )
     }

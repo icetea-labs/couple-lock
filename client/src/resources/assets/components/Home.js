@@ -6,6 +6,7 @@ import MemoryPost from './memory/MemoryPost';
 import DialogueChat from './memory/DialogueChat';
 import RecentChat from './propose/RecentChat';
 import SideBar from './SideBar';
+import ChatBox from './message/ChatBox';
 
 
 class Home extends Component {
@@ -78,7 +79,7 @@ class Home extends Component {
                 <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId}/>
               </div>
             </div>
-            
+            <ChatBox></ChatBox>
         </div>
       </Layout>
     );
