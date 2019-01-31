@@ -133,7 +133,7 @@ class MemoryPost extends Component {
           <div className="post_container clearfix">
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
-            <div><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
+            <div className="showdate"><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
           </div>
           <div className="custom_post">
             <div className="tags">

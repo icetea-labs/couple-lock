@@ -294,6 +294,12 @@ img{
       border-radius: 10px;
       overflow: hidden;
     }
+    .showdate{
+      input{
+        border: none;
+        background: none;
+      }
+    }
     .post_input{
       margin-left: 22px;
       font-size: $font-medium;
