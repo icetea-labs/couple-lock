@@ -23,6 +23,7 @@ class MemoryPost extends Component {
       m_message: '',
       selectFile: null,
       startDate: new Date(),
+      openPicker: false,
     }
   }
 
@@ -79,9 +80,9 @@ class MemoryPost extends Component {
 
   getDate = (date) => {
     this.setState({
-      startDate: date
+      startDate: date,
+      openPicker : !this.state.openPicker,
     });
-    console.log(this.state.startDate);
   }
 
   
@@ -107,6 +108,10 @@ class MemoryPost extends Component {
     })
   }
 
+  toggleOpenPicker = () => {
+    this.setState({ openPicker : !this.state.openPicker})
+  }
+
   isImagePreview = () =>{
     if(this.state.selectFile){
       return this.state.selectFile.imgPreview || "";
@@ -128,6 +133,7 @@ class MemoryPost extends Component {
           <div className="post_container clearfix">
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
+            <div className="showdate"><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
           </div>
           <div className="custom_post">
             <div className="tags">
@@ -144,7 +150,9 @@ class MemoryPost extends Component {
                 <span className="icon-photo"></span>
                 <input type="file" accept="image/*" onChange={ this.fileSelected }/>
               </div>
-              <div><span className="icon-today"></span><DatePicker selected={this.state.startDate} onChange={this.getDate} /></div>
+              <div className="picktime">
+                <span className="icon-today" onClick={this.toggleOpenPicker}></span><DatePicker open={this.state.openPicker} selected={this.state.startDate} onChange={this.getDate} />
+              </div>
               <div><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
