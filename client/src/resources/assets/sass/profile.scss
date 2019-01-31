@@ -11,6 +11,7 @@
         height: 25px;
     }
     p{
+        margin-top: 10px;
         size: 10px;
         color: white;
     }
@@ -58,9 +59,11 @@
             margin-right: 40%;
             margin-bottom: 30px;
             padding-bottom: 40px;
+
             .infor__label{
                 float: center;
             }
+
             .btn__profile{
                 position: relative;
                 top: 10px;
@@ -73,14 +76,14 @@
                 border: 2px solid rgba(85, 85, 85, 0.408);
                 border-radius: 20px;
                 margin-left: 50px;
-                a {
-                    color: aliceblue;
-                    size: 13px;
-                }
+                font-family: fantasy;
+                font-size: 15px;
+
             }
 
             .btn__profile:hover{
-                background-color: rgba(87, 40, 40, 0.795)
+                background-color: rgba(87, 40, 40, 0.795);
+                color: antiquewhite;
             }
 
             .infor__label{
