@@ -62,6 +62,11 @@ class FormLogin extends Component {
         })
     }
 
+    componentWillMount(){
+
+
+    }
+
     confirmPassWord(event) {
         this.setState({
             password: event.target.value
@@ -87,6 +92,8 @@ class FormLogin extends Component {
         localStorage.setItem("U_N", this.state.user_name);
         localStorage.setItem("P_W", this.state.password);
         localStorage.setItem("I_U", this.state.img_url);
+
+        this.props.history.push('/login/seed');
     }
 
     handleClose = (e) => {
@@ -127,7 +134,7 @@ class FormLogin extends Component {
                                 <p className="infor__label">Mật Khẩu :</p>
                                 <input type={this.state.hidden ? "password" : "text"} placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} autoComplete="on" />
                             </div>
-                            <button className="btn__profile" onClick={this.createAccounts}><a href="/login/seed">Đăng kí</a></button>
+                            <button className="btn__profile" onClick={this.createAccounts}>Đăng kí</button>
                         </div>
                     </form>
                 </div>

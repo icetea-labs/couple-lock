@@ -52,7 +52,7 @@ class Login extends Component {
                     <Col>
                         <h2> Chose the way to login</h2>
                         <Row className="rule_login">
-                            <textarea readOnly>By Login With Google, We only know your name and address :D</textarea>
+                            <textarea readOnly>By Login With Google, We only know your name and address  :D</textarea>
                         </Row>
                         <GoogleLogin
                             clientId={this.state.googleApp}

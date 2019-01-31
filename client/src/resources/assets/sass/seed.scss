@@ -3,26 +3,93 @@
 @import 'common.scss';
 
 .seed_page{
+    position: fixed;
+    top: 0px;
+    overflow-y: scroll;
     width: 100%;
     height: 1000px;
     background-color: rgba(168, 240, 216, 0.537);
 
     .header_seed{
         position: relative;
-        top: 20px;
+        top: 10px;
         bottom: 20px;
         height: 200px;
         margin-left: 40%;
         margin-right: 40%;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         width: 20%;
         min-width: 200px;
         background-color: azure;
         box-shadow:  0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+        .col_1{
+            border-left: solid gray 3px;
+            position: relative;
+            top: 10px;
+            left: 20px;
+            height: 30px;
+            width: 20%;
+            background-color: red;
+            transition-property: width;
+            transition-duration: 2s;
+            label{
+                color: white;
+                float: right;
+            }
+        }
+
+        .col_1:hover, .col_2:hover, .col_3:hover{
+            width: 80%;
+        }
+        .col_2{
+            border-left: solid rgb(46, 45, 45) 3px;
+            position: relative;
+            top: 10px;
+            left: 20px;
+            height: 30px;
+            width: 20%;
+            background-color: rgb(95, 85, 228);
+            transition-property: width;
+            transition-duration: 2s;
+            label{
+                color: khaki;
+                float: right;
+            }
+        }
+
+        .col_3{
+            border-left: solid rgb(39, 38, 38) 3px;
+            position: relative;
+            top: 10px;
+            left: 20px;
+            height: 30px;
+            width: 20%;
+            background-color: rgb(9, 156, 63);
+            transition-property: width;
+            transition-duration: 2s;
+            label{
+                color: rgb(251, 207, 207);
+                float: right;
+            }
+        }
+
+        p{  
+            position: relative;
+            
+            top: 3px;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
     }
     h2{
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 25px;
+    }
+
+    p{
+        text-align: center;
+        margin-bottom: 15px;
+        margin-top: 10px;
     }
 
     .backup_word{
@@ -84,7 +151,6 @@
                 width: 30%;
                 color: whitesmoke;
                 background-color: rgba(119, 25, 25, 0.877);
-                border: solid rgb(54, 36, 93) 2px;
                 border-top-right-radius: 25px;
                 border-bottom-right-radius: 25px;
             }
@@ -95,14 +161,17 @@
         }
     
         .btn_next{
-            width: 60px;
+            width: 80px;
             height: 30px;
             float: center;
-            border: solid gray 2px;
-            border-radius: 10px;
+            border-radius: 30px;
             font-size: 15px;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-family: $font-body;
             float: right;
+            a{
+                color: white;
+            }
+            background-color: rgba(212, 53, 80, 0.857);
         }
     }
 }
