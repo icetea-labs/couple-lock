@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ShoutBoard - Trada Academy</title>
+    <style>
+        body {background-color: #e6ecf0}
+        #wrapper { display: none }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <h3>Please register first.</h3>
+        <br>
+        <form id="registerForm">
+            <label><small id="addressLabel">Please login MetaMask.</small></label><br><br>
+            <input id="userName" class="input" type="text" autofocus required placeholder="User name"><br><br>
+            <div>
+                <img id="avatarImg" dummy src="https://img.icons8.com/ios/50/000000/image.png">
+            </div>
+            <input type='file' id="avatarFile" accept="image/*"><br><br>
+            <button type="submit" class="btn" id="registerBtn" disabled>&nbsp;&nbsp;Register&nbsp;&nbsp;</button><br>
+        </form>
+        <br>
+    </div>
+
+    <script src='register.bundle.js'></script>
+</body>
+
+</html>

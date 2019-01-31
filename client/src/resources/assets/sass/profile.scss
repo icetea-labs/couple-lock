@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
+@import 'variables';
+@import 'common.scss';
+
+.profile_form{
+    background:  linear-gradient(to bottom right, rgba(255, 192, 203, 0.687), rgba(165, 64, 160, 0.795)) !important;
+    width: 100%;
+    height: 1000px;
+    input{
+        width: 220px !important;
+        height: 25px;
+    }
+    p{
+        size: 10px;
+        color: white;
+    }
+    .form-control{
+        padding-top: 60px;
+        .avatar_profile{
+            h2{
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }    
+            width: 200px;
+            height: 220px;
+            display: block;
+            margin-left: 43%;
+            .avatar{
+                margin-top: 30px;
+                margin-bottom: 30px;
+                #avatar_login{
+                    border-radius: 50%;
+                    border: solid rgba(110, 74, 74, 0.285) 2px;
+                }
+        
+                #avatar_login:hover{
+                    transform: scale(1.50, 1.50);
+                    transition-duration: 0.5s;
+                }
+    
+                #avatar_login:not(:hover){
+                    transition-duration: 0.5s;
+                }
+
+                .chose_file{
+                    position: relative;
+                    left: 20px;
+                   label{
+                       border: solid gray 2px !important;
+                   }
+                }
+    
+            }
+        }
+    
+        .infor_profile{
+            width: 20%;
+            margin-left: 40%;
+            margin-right: 40%;
+            margin-bottom: 30px;
+            padding-bottom: 40px;
+            .infor__label{
+                float: center;
+            }
+            .btn__profile{
+                position: relative;
+                top: 10px;
+                background-color: rgba(65, 136, 115, 0.755);
+                float: center;
+                height: 30px;
+                width: 100px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serifs;
+                font-size: 15px;
+                border: 2px solid rgba(85, 85, 85, 0.408);
+                border-radius: 20px;
+                margin-left: 50px;
+                a {
+                    color: aliceblue;
+                    size: 13px;
+                }
+            }
+
+            .btn__profile:hover{
+                background-color: rgba(87, 40, 40, 0.795)
+            }
+
+            .infor__label{
+                width: 100px !important;
+            }
+        }
+    }
+   
+}
