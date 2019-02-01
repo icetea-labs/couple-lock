@@ -18,6 +18,7 @@ class Home extends Component {
       proposeList: [],
       userName: [],
       proposeId: 0,
+      test: 'abc',
     }
   }
 
@@ -66,7 +67,7 @@ class Home extends Component {
       <Layout>
         <div>
             <div className="propose">
-              <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
+              <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId} />
               <RecentChat mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
             </div>
 

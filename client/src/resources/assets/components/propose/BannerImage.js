@@ -6,16 +6,34 @@ class BannerImage extends Component {
     super(props);
     this.state = {
       post: [],
+      banner: null,
+      currentUser: window.getLoginUser(),
     }
   }
 
   componentDidMount() {
-    axios.get('/api/propose/list?username=tradatech')
+    const {currentUser} = this.state;
+    axios.get(`/api/propose/list?username=${currentUser}`)
     .then(res => { this.setState({ post: res.data.data }) }
     )
   }
+
   
-  render() {
+  componentWillMount() {
+    this.getBanner();
+  }
+  
+  
+  getBanner = () =>{
+    const {currentUser} = this.state;
+    //const pId = ;
+    const sender = this.props.sender;
+    const receiver = this.props.receiver;
+    return this.props.proposeId
+  }
+
+
+  render() {  
     return (
       <div>
          {

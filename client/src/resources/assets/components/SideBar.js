@@ -32,7 +32,7 @@ class SideBar extends Component {
 
     listPropose.forEach((p, index) => {
       if (index === 0) {
-        this.state.activeUserId = p.id;
+        this.setState({ activeUserId: p.id });
       }
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
