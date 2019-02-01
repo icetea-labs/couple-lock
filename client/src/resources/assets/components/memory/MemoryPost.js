@@ -27,23 +27,18 @@ class MemoryPost extends Component {
     }
   }
 
-  // showInputPlaces = () => {
-  //   if(this.state.isPlace) {
-  //     document.addEventListener('click', this.handleOutslideClick, false)
-  //   }else {
-  //     document.removeEventListener('click', this.handleOutslideClick, false)
-  //   }
-  //   this.setState( prevState => ({
-  //     isPlace : !prevState.isPlace
-  //   }));
-  // }
+  showInputPlaces = () => {
+    this.setState( prevState => ({
+      isPlace : !prevState.isPlace
+    }));
+  }
 
-  // handleOutslideClick = (e) => {
-  //   if (this.node.contains(e.target)) {
-  //     return;
-  //   }
-  //   this.showInputPlaces();
-  // }
+  handleOutslideClick = (e) => {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.showInputPlaces();
+  }
 
   setPrivacyMemory = selectedOption => {
     this.setState({ selectedOption });
@@ -93,7 +88,8 @@ class MemoryPost extends Component {
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
     const formData = new FormData();
-    formData.append('proposeId', 0);
+    const proposeId = this.props.proposeId;
+    formData.append('proposeId', proposeId);
     formData.append('visibility', visibility);
     formData.append('message', this.state.m_message);
     formData.append('sender', sender);
@@ -104,8 +100,9 @@ class MemoryPost extends Component {
     .then(res => {
       console.log(res);
       console.log(res.data);
-      window.location.reload();
     })
+
+    window.location.reload();
   }
 
   toggleOpenPicker = () => {
@@ -140,7 +137,7 @@ class MemoryPost extends Component {
               <TagsInput />
             </div>
             <div className="options">
-              <div className="place-wrapper" ref={node => { this.node = node }}>
+              <div className="place-wrapper">
                 <span className="icon-location" onClick={ this.showInputPlaces }></span>
                 {
                   this.state.isPlace && <LocationSearchInput />
@@ -148,7 +145,7 @@ class MemoryPost extends Component {
               </div>
               <div className="upload_img">
                 <span className="icon-photo"></span>
-                <input type="file" accept="image/*" onChange={ this.fileSelected }/>
+                <input type="file" accept=".png, .jpg, .jpeg" onChange={ this.fileSelected }/>
               </div>
               <div className="picktime">
                 <span className="icon-today" onClick={this.toggleOpenPicker}></span><DatePicker open={this.state.openPicker} selected={this.state.startDate} onChange={this.getDate} />
