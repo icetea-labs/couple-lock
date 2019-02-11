@@ -24,6 +24,7 @@ class MemoryPost extends Component {
       selectFile: null,
       startDate: new Date(),
       openPicker: false,
+      location: '',
     }
   }
 
@@ -122,6 +123,10 @@ class MemoryPost extends Component {
     }
   }
 
+  getLocation = add => {
+    this.setState({ location: add });
+  }
+
   render() {
     const { selectedOption } = this.state;
     return (
@@ -131,6 +136,7 @@ class MemoryPost extends Component {
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
             <div className="showdate"><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
+            <div className="showaddres">{this.state.location}</div>            
           </div>
           <div className="custom_post">
             <div className="tags">
@@ -140,7 +146,7 @@ class MemoryPost extends Component {
               <div className="place-wrapper">
                 <span className="icon-location" onClick={ this.showInputPlaces }></span>
                 {
-                  this.state.isPlace && <LocationSearchInput />
+                  this.state.isPlace && <LocationSearchInput getLocation={this.getLocation}/>
                 }
               </div>
               <div className="upload_img">

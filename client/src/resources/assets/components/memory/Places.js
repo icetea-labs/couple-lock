@@ -10,26 +10,29 @@ class LocationSearchInput extends React.Component {
     this.state = { address: '' };
   }
  
-  handleChange = address => {
+  changeAddress = address => {
     this.setState({ address });
   };
  
-  handleSelect = address => {
+  selectAddress = address => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => console.log('Success', latLng))
       .catch(error => console.error('Error', error));
+      this.setState({ address: address });
+      this.props.getLocation(address);
   };
+  
  
   render() {
     return (
       <PlacesAutocomplete
         value={this.state.address}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
+        onChange={this.changeAddress}
+        onSelect={this.selectAddress}
         googleCallbackName="myCallbackFunc"
       >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+        {({ getInputProps, suggestions, getSuggestionItemProps }) => (
           <div>
             <input
               {...getInputProps({
@@ -38,7 +41,6 @@ class LocationSearchInput extends React.Component {
               })}
             />
             <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
               {suggestions.map(suggestion => {
                 const className = suggestion.active
                   ? 'suggestion-item--active'
