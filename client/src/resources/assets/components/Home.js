@@ -18,7 +18,6 @@ class Home extends Component {
       proposeList: [],
       userName: [],
       proposeId: 0,
-      test: 'abc',
     }
   }
 

@@ -45,7 +45,7 @@ seeder.propose = [
         s_attachments: [
             {
                 type: 'photo',
-                url: "https://dq1eylutsoz4u.cloudfront.net/2018/01/25162144/relationship-tips-happy-couples.jpg",
+                url: "https://i.ibb.co/bNDWW6v/bitmap-copy-4-2x.jpg",
                 caption: "Remember where this photo taken?",
                 timestamp: Date.now(),
                 location: {
