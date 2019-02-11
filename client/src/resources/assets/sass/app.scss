@@ -396,6 +396,36 @@ img{
       .place-wrapper{
         display: inline-block;
         margin-right: 20px;
+        position: relative;
+        .location-search-input{
+          position: absolute;
+          left: -50px;
+          top: 30px;
+          height: 35px;
+          border: none;
+          border-radius: 10px;
+          padding: 0 5px;
+          box-shadow: 0 4px 12px 0 rgba($color-black, .04);
+        }
+        .autocomplete-dropdown-container{
+          position: absolute;
+          left: 0;
+          min-width: 300px;
+          font-size: $font-smaller;
+          left: -50px;
+          top: 70px;
+          z-index: 100;
+          border-radius: 10px;
+          background: $color-white;
+          box-shadow: 0 4px 12px 0 rgba($color-black, .04);
+          div{
+            padding: 5px;
+            span{
+              font-size: $font-smaller;
+              background: none;
+            }
+          }
+        }
       }
       display: flex;
       justify-content: center;
