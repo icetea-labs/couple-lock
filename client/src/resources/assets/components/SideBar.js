@@ -11,6 +11,7 @@ class SideBar extends Component {
       activeUserId: null,
       user: {},
       r_react: null,
+      loginUser: window.getLoginUser(),
     }
   }
 
@@ -86,12 +87,15 @@ class SideBar extends Component {
   render() {
     const {data} = this.state;
     const {user} = this.state;
+    const {loginUser} = this.state;
+    const sender = this.props.sender.username;
+    const receiver = this.props.receiver.username;
     return (
       <div className="sidebar">
         <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
         <h3 className="title title_promise">Accepted promise</h3>
         {
-          data.length > 0 && data.filter(i => i.r_react === 1).map((item, index) =>{
+          (loginUser === sender || loginUser === receiver) && data.length > 0 && data.filter(i => i.r_react === 1).map((item, index) =>{
             const {activeUserId} = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return(
