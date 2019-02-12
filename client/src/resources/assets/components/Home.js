@@ -72,7 +72,7 @@ class Home extends Component {
 
             <div className="memory">
               <div className="col-left fl">
-                <SideBar proposeIdChanged={this.proposeIdChanged}/>
+                <SideBar proposeIdChanged={this.proposeIdChanged} sender={this.state.leftUser} receiver={this.state.rightUser}/>
               </div>
               <div className="col-right fr">
                 <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId}/>

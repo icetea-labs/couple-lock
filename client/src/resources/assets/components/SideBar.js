@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Promises from './Promises';
 
 
 class SideBar extends Component {
@@ -8,6 +9,8 @@ class SideBar extends Component {
     this.state = {
       data: [],
       activeUserId: null,
+      user: {},
+      r_react: null,
     }
   }
 
@@ -36,13 +39,21 @@ class SideBar extends Component {
       }
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
-          proposeId: p.id
+          proposeId: p.id,
+          r_react: p.r_react
         }
       } else {
         sidebarItems[p.sender] = {
-          proposeId: p.id
+          proposeId: p.id,
+          r_react: p.r_react
         }
       }
+      this.setState({
+        user: {
+          sender: p.sender,
+          receiver: p.receiver,
+        },
+      });
     });
 
     Object.keys(sidebarItems).forEach((key) => {
@@ -58,6 +69,7 @@ class SideBar extends Component {
       const res = Object.keys(obj).map(function(key, index) {
         return { 
           proposeId: obj[key].proposeId,
+          r_react: obj[key].r_react,
           avatar:  obj[key].user.avatar,
           username:  obj[key].user.username,
           displayName:  obj[key].user.displayName,
@@ -70,15 +82,16 @@ class SideBar extends Component {
     this.setState({ activeUserId : pId })
     this.props.proposeIdChanged(pId);
   }
+
   render() {
     const {data} = this.state;
-
+    const {user} = this.state;
     return (
       <div className="sidebar">
         <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
-        <h3 className="title_promise">Accepted promise</h3>
+        <h3 className="title title_promise">Accepted promise</h3>
         {
-          data.length > 0 && data.map((item, index) =>{
+          data.length > 0 && data.filter(i => i.r_react === 1).map((item, index) =>{
             const {activeUserId} = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return(
@@ -92,6 +105,7 @@ class SideBar extends Component {
             )
           })
         }
+      <Promises user={user} userInfo={data}/>
       </div>
     );
   }
