@@ -21,20 +21,18 @@ class BannerImage extends Component {
   render() {
     return (
       <div>
-         {
+        {
           this.state.post.length > 0 && this.state.post.map((item, index) => {
-          const id = parseInt(item.id);
-          const proposeId = parseInt(this.props.proposeId);
-          if(id === proposeId){
-            return (
-              <div className="banner_container mg-auto" key={index}>
-                <img src={item.s_attachments[0].url} alt="" />
-                <p className="short_desc color-violet"><span className="icon-luggage"></span>
-                  {item.s_attachments[0].caption}
+            const id = parseInt(item.id);
+            const proposeId = parseInt(this.props.proposeId);
+            return(
+              (id === proposeId) && <div className="banner_container mg-auto" key={index}>
+              <img src={item.s_attachments[0].url} alt="" />
+              <p className="short_desc color-violet"><span className="icon-luggage"></span>
+                {item.s_attachments[0].caption}
                 </p>
               </div>
-              )
-            }
+            )
           })
         }
       </div>

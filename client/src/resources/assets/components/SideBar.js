@@ -12,6 +12,8 @@ class SideBar extends Component {
       user: {},
       r_react: null,
       loginUser: window.getLoginUser(),
+      acceptPromises: [],
+      deniedPromises: [],
     }
   }
 
@@ -76,7 +78,8 @@ class SideBar extends Component {
           displayName:  obj[key].user.displayName,
         }
       })
-      this.setState({ data: res})
+      this.setState({ data: res});
+      this.getPromises();
     }
   }
   passingProposeId = pId =>{
@@ -84,18 +87,28 @@ class SideBar extends Component {
     this.props.proposeIdChanged(pId);
   }
 
-  render() {
+  getPromises = () => {
     const {data} = this.state;
-    const {user} = this.state;
     const {loginUser} = this.state;
-    const sender = this.props.sender.username;
-    const receiver = this.props.receiver.username;
+    const sender = this.state.user.sender;
+    const receiver = this.state.user.receiver;
+    data.forEach((key) => {
+      if((loginUser === sender || loginUser === receiver) && key.r_react === 1){
+        this.state.acceptPromises.push(key);
+      }else if(!key.r_react || key.r_react === 2){
+        this.state.deniedPromises.push(key);
+      }
+    })
+  }
+
+  render() {
+    const {acceptPromises} = this.state;
     return (
       <div className="sidebar">
         <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
         <h3 className="title title_promise">Accepted promise</h3>
         {
-          (loginUser === sender || loginUser === receiver) && data.length > 0 && data.filter(i => i.r_react === 1).map((item, index) =>{
+          acceptPromises.length > 0 && acceptPromises.map((item, index) =>{
             const {activeUserId} = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return(
@@ -109,7 +122,7 @@ class SideBar extends Component {
             )
           })
         }
-      <Promises user={user} userInfo={data}/>
+      <Promises user={this.state.user} deniedPromises={this.state.deniedPromises}/>
       </div>
     );
   }
