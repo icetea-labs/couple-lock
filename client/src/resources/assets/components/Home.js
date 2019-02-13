@@ -66,16 +66,16 @@ class Home extends Component {
       <Layout>
         <div>
             <div className="propose">
-              <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
+              <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId} />
               <RecentChat mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
             </div>
 
             <div className="memory">
               <div className="col-left fl">
-                <SideBar proposeIdChanged={this.proposeIdChanged}/>
+                <SideBar proposeIdChanged={this.proposeIdChanged} sender={this.state.leftUser} receiver={this.state.rightUser}/>
               </div>
               <div className="col-right fr">
-                <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser}/>
+                <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId}/>
                 <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId}/>
               </div>
             </div>
