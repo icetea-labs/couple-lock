@@ -24,26 +24,22 @@ class MemoryPost extends Component {
       selectFile: null,
       startDate: new Date(),
       openPicker: false,
+      location: '',
     }
   }
 
-  // showInputPlaces = () => {
-  //   if(this.state.isPlace) {
-  //     document.addEventListener('click', this.handleOutslideClick, false)
-  //   }else {
-  //     document.removeEventListener('click', this.handleOutslideClick, false)
-  //   }
-  //   this.setState( prevState => ({
-  //     isPlace : !prevState.isPlace
-  //   }));
-  // }
+  showInputPlaces = () => {
+    this.setState( prevState => ({
+      isPlace : !prevState.isPlace
+    }));
+  }
 
-  // handleOutslideClick = (e) => {
-  //   if (this.node.contains(e.target)) {
-  //     return;
-  //   }
-  //   this.showInputPlaces();
-  // }
+  handleOutslideClick = (e) => {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.showInputPlaces();
+  }
 
   setPrivacyMemory = selectedOption => {
     this.setState({ selectedOption });
@@ -93,7 +89,8 @@ class MemoryPost extends Component {
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
     const formData = new FormData();
-    formData.append('proposeId', 0);
+    const proposeId = this.props.proposeId;
+    formData.append('proposeId', proposeId);
     formData.append('visibility', visibility);
     formData.append('message', this.state.m_message);
     formData.append('sender', sender);
@@ -104,8 +101,9 @@ class MemoryPost extends Component {
     .then(res => {
       console.log(res);
       console.log(res.data);
-      window.location.reload();
     })
+
+    window.location.reload();
   }
 
   toggleOpenPicker = () => {
@@ -125,6 +123,10 @@ class MemoryPost extends Component {
     }
   }
 
+  getLocation = add => {
+    this.setState({ location: add });
+  }
+
   render() {
     const { selectedOption } = this.state;
     return (
@@ -134,21 +136,22 @@ class MemoryPost extends Component {
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
             <div className="showdate"><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
+            <div className="showaddres">{this.state.location}</div>            
           </div>
           <div className="custom_post">
             <div className="tags">
               <TagsInput />
             </div>
             <div className="options">
-              <div className="place-wrapper" ref={node => { this.node = node }}>
+              <div className="place-wrapper">
                 <span className="icon-location" onClick={ this.showInputPlaces }></span>
                 {
-                  this.state.isPlace && <LocationSearchInput />
+                  this.state.isPlace && <LocationSearchInput getLocation={this.getLocation}/>
                 }
               </div>
               <div className="upload_img">
                 <span className="icon-photo"></span>
-                <input type="file" accept="image/*" onChange={ this.fileSelected }/>
+                <input type="file" accept=".png, .jpg, .jpeg" onChange={ this.fileSelected }/>
               </div>
               <div className="picktime">
                 <span className="icon-today" onClick={this.toggleOpenPicker}></span><DatePicker open={this.state.openPicker} selected={this.state.startDate} onChange={this.getDate} />

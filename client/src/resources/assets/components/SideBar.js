@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Promises from './Promises';
 
 
 class SideBar extends Component {
@@ -8,6 +9,11 @@ class SideBar extends Component {
     this.state = {
       data: [],
       activeUserId: null,
+      user: {},
+      r_react: null,
+      loginUser: window.getLoginUser(),
+      acceptPromises: [],
+      deniedPromises: [],
     }
   }
 
@@ -32,17 +38,25 @@ class SideBar extends Component {
 
     listPropose.forEach((p, index) => {
       if (index === 0) {
-        this.state.activeUserId = p.id;
+        this.setState({ activeUserId: p.id });
       }
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
-          proposeId: p.id
+          proposeId: p.id,
+          r_react: p.r_react
         }
       } else {
         sidebarItems[p.sender] = {
-          proposeId: p.id
+          proposeId: p.id,
+          r_react: p.r_react
         }
       }
+      this.setState({
+        user: {
+          sender: p.sender,
+          receiver: p.receiver,
+        },
+      });
     });
 
     Object.keys(sidebarItems).forEach((key) => {
@@ -58,27 +72,43 @@ class SideBar extends Component {
       const res = Object.keys(obj).map(function(key, index) {
         return { 
           proposeId: obj[key].proposeId,
+          r_react: obj[key].r_react,
           avatar:  obj[key].user.avatar,
           username:  obj[key].user.username,
           displayName:  obj[key].user.displayName,
         }
       })
-      this.setState({ data: res})
+      this.setState({ data: res});
+      this.getPromises();
     }
   }
   passingProposeId = pId =>{
     this.setState({ activeUserId : pId })
     this.props.proposeIdChanged(pId);
   }
-  render() {
-    const {data} = this.state;
 
+  getPromises = () => {
+    const {data} = this.state;
+    const {loginUser} = this.state;
+    const sender = this.state.user.sender;
+    const receiver = this.state.user.receiver;
+    data.forEach((key) => {
+      if((loginUser === sender || loginUser === receiver) && key.r_react === 1){
+        this.state.acceptPromises.push(key);
+      }else if(!key.r_react || key.r_react === 2){
+        this.state.deniedPromises.push(key);
+      }
+    })
+  }
+
+  render() {
+    const {acceptPromises} = this.state;
     return (
       <div className="sidebar">
         <button type="button" className="btn_add_promise"><span className="icon-ic-add"></span>Add Promise</button>
-        <h3 className="title_promise">Accepted promise</h3>
+        <h3 className="title title_promise">Accepted promise</h3>
         {
-          data.length > 0 && data.map((item, index) =>{
+          acceptPromises.length > 0 && acceptPromises.map((item, index) =>{
             const {activeUserId} = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return(
@@ -92,6 +122,7 @@ class SideBar extends Component {
             )
           })
         }
+      <Promises user={this.state.user} deniedPromises={this.state.deniedPromises}/>
       </div>
     );
   }
