@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Promises extends Component {
   constructor(props) {
@@ -6,6 +7,25 @@ class Promises extends Component {
     this.state = {
       loginUser: window.getLoginUser(),
     };
+  }
+
+  statusPromises = (pId) => {
+    const proposeId = pId;
+    const react = 1;
+    const message = "Ok, I'm Paulra, Nice to meet you.";
+    const dataValue = new FormData();
+    dataValue.append('id', proposeId);
+    dataValue.append('react', react);
+    dataValue.append('message', message);
+
+    axios.post('/api/propose/reply', dataValue)
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+
+    // this.props.fetchData();
+    window.location.reload();
   }
 
   render() {
@@ -20,7 +40,7 @@ class Promises extends Component {
           {
             deniedPromises.length > 0 && deniedPromises.map((item, index) =>{
               return(
-                <div className="request__items" key={index}>
+                <div className="request__items" key={index} pid={item.proposeId}>
                   <div className="request__items__avatar">
                     <img src={item.avatar} alt="" />
                   </div>
@@ -30,8 +50,8 @@ class Promises extends Component {
                     <div className="request__items__username">{item.username}</div>
                     {
                       (loginUser === receiver) && <div className="request__items__btn">
-                      <button className="request__items__btn__accept">Accept</button>
-                      <button className="request__items__btn__delete">Delete</button>
+                      <button type="button" className="request__items__btn__accept" onClick={() => this.statusPromises(item.proposeId) }>Accept</button>
+                      <button type="button" className="request__items__btn__delete">Delete</button>
                       </div>
                     }
                   </div>

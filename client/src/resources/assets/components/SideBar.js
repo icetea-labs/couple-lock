@@ -18,10 +18,14 @@ class SideBar extends Component {
   }
 
   componentDidMount(){
-    const userLogin = window.getLoginUser();
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    const {loginUser} = this.state;
     Promise.all([
       axios.get('/api/user/all'),
-      axios.get(`/api/propose/list?username=${userLogin}`)
+      axios.get(`/api/propose/list?username=${loginUser}`)
     ])
     .then(([res1, res2]) =>  {
       this.getUsers(res1.data.data, res2.data.data)
@@ -80,8 +84,10 @@ class SideBar extends Component {
       })
       this.setState({ data: res});
       this.getPromises();
+      
     }
   }
+
   passingProposeId = pId =>{
     this.setState({ activeUserId : pId })
     this.props.proposeIdChanged(pId);
@@ -92,7 +98,10 @@ class SideBar extends Component {
     const {loginUser} = this.state;
     const sender = this.state.user.sender;
     const receiver = this.state.user.receiver;
+    let pId = [];
     data.forEach((key) => {
+      pId.push(key.proposeId);
+      this.props.getProposeId(pId[0]);
       if((loginUser === sender || loginUser === receiver) && key.r_react === 1){
         this.state.acceptPromises.push(key);
       }else if(!key.r_react || key.r_react === 2){
@@ -122,7 +131,7 @@ class SideBar extends Component {
             )
           })
         }
-      <Promises user={this.state.user} deniedPromises={this.state.deniedPromises}/>
+      <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} fetchData = { this.fetchData }/>
       </div>
     );
   }

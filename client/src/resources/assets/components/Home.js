@@ -21,6 +21,12 @@ class Home extends Component {
     }
   }
 
+  getProposeId = (pId) => {
+    this.setState({
+      proposeId: pId,
+    })
+  }
+
   proposeIdChanged = (newProposeId) => {
     this.setState({
       proposeId: newProposeId,
@@ -62,6 +68,7 @@ class Home extends Component {
   }
   
   render() {
+    console.log(this.state.proposeId);
     return (
       <Layout>
         <div>
@@ -72,7 +79,7 @@ class Home extends Component {
 
             <div className="memory">
               <div className="col-left fl">
-                <SideBar proposeIdChanged={this.proposeIdChanged} sender={this.state.leftUser} receiver={this.state.rightUser}/>
+                <SideBar proposeIdChanged={this.proposeIdChanged} sender={this.state.leftUser} receiver={this.state.rightUser} getProposeId={this.getProposeId}/>
               </div>
               <div className="col-right fr">
                 <MemoryPost sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId}/>
