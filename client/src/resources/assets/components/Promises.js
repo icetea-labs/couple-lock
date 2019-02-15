@@ -1,31 +1,49 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 
 class Promises extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loginUser: window.getLoginUser(),
+      acceptPromisesModal: false,
+      promisesMessage: "",
+      promisesImage: null,
     };
   }
+  acceptPromisesModal = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
 
-  statusPromises = (pId) => {
+  getMessagePomises = e => {
+    this.setState({ promisesMessage: e.target.value,  });
+  }
+
+  promisesImage = e => {
+    this.setState({
+      promisesImage: e.target.files[0],
+    });
+  }
+
+  acceptPromises = (pId) => {
     const proposeId = pId;
     const react = 1;
-    const message = "Ok, I'm Paulra, Nice to meet you.";
+    const {promisesMessage} = this.state;
+    const {promisesImage} = this.state;
     const dataValue = new FormData();
     dataValue.append('id', proposeId);
     dataValue.append('react', react);
-    dataValue.append('message', message);
+    dataValue.append('message', promisesMessage);
+    dataValue.append('attachment', promisesImage);
 
     axios.post('/api/propose/reply', dataValue)
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
-
-    // this.props.fetchData();
-    window.location.reload();
   }
 
   render() {
@@ -40,7 +58,7 @@ class Promises extends Component {
           {
             deniedPromises.length > 0 && deniedPromises.map((item, index) =>{
               return(
-                <div className="request__items" key={index} pid={item.proposeId}>
+                <div className="request__items" key={index}>
                   <div className="request__items__avatar">
                     <img src={item.avatar} alt="" />
                   </div>
@@ -50,7 +68,24 @@ class Promises extends Component {
                     <div className="request__items__username">{item.username}</div>
                     {
                       (loginUser === receiver) && <div className="request__items__btn">
-                      <button type="button" className="request__items__btn__accept" onClick={() => this.statusPromises(item.proposeId) }>Accept</button>
+                      <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
+                      <Modal isOpen={this.state.modal} toggle={this.acceptPromisesModal} className={this.props.className}>
+                        <ModalHeader toggle={this.acceptPromisesModal}>Accept Promises</ModalHeader>
+                        <ModalBody>
+                          <p>
+                            <span>Message: </span>
+                            <Input type="textarea" name="text" id="exampleText" onChange={ this.getMessagePomises } />
+                          </p>
+                          <p>
+                            <span>Promises Images: </span>
+                            <Input type="file" accept=".png, .jpg, .jpeg" name="file" onChange={this.promisesImage} />
+                          </p>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button color="primary" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
+                          <Button color="secondary" onClick={this.acceptPromisesModal}>Cancel</Button>
+                        </ModalFooter>
+                      </Modal>
                       <button type="button" className="request__items__btn__delete">Delete</button>
                       </div>
                     }

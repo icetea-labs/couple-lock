@@ -131,7 +131,7 @@ class SideBar extends Component {
             )
           })
         }
-      <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} fetchData = { this.fetchData }/>
+      <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
       </div>
     );
   }

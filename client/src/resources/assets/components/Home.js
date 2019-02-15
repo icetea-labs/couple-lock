@@ -17,7 +17,7 @@ class Home extends Component {
       rightUser: [],
       proposeList: [],
       userName: [],
-      proposeId: 0,
+      proposeId: null,
     }
   }
 
@@ -35,6 +35,7 @@ class Home extends Component {
 
   
   getUsers = (sender, receiver) => {
+    const {proposeId} = this.state;
     const p1 = axios.get("/api/user/details?username=" + sender);
     const p2 = axios.get("/api/user/details?username=" + receiver);
     Promise.all([p1, p2])
@@ -49,11 +50,13 @@ class Home extends Component {
   
   fetchProposeId = () =>{
     const proposeId = this.state.proposeId;
-    axios.get(`/api/propose/details?id=${proposeId}`)
-    .then(propose => {
-      this.getUsers(propose.data.data.sender, propose.data.data.receiver);
-      this.setState({ proposeList: propose.data.data });
-    })
+    if(proposeId !== null){
+      axios.get(`/api/propose/details?id=${proposeId}`)
+      .then(propose => {
+        this.getUsers(propose.data.data.sender, propose.data.data.receiver);
+        this.setState({ proposeList: propose.data.data });
+      })
+    }
   }
   
   componentDidMount() {
@@ -68,13 +71,12 @@ class Home extends Component {
   }
   
   render() {
-    console.log(this.state.proposeId);
     return (
       <Layout>
         <div>
             <div className="propose">
               <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId} />
-              <RecentChat mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
+              <RecentChat propose={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser}/>
             </div>
 
             <div className="memory">
