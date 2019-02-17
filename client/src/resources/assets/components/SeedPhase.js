@@ -10,17 +10,8 @@ class Seed extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            seedphase: array[12]
+            seedphase: array[12],
         }
-
-        this.renderSeedPhase = this.renderSeedPhase.bind(this);
-    }
-    
-    /**
-     * @param renderSeedPhase create SeedPhase
-     */
-
-    renderSeedPhase() {
     }
 
     render() {
@@ -30,7 +21,7 @@ class Seed extends Component {
                 <div className="backup_word">
                     <h2>Nhớ SeedPhase và bạn không bao giờ phải lo lắng vì quên mật khẩu nữa </h2>
                     <p>couple-lock cam kết không sử dụng thông tin cá nhân của bạn cho các mục đích xấu và không có bất cứ ai có thể xâm nhập dữ liệu của bạn</p>
-                    <SeedWord></SeedWord>
+                    <SeedWord test={this.state.test}></SeedWord>
                 </div >
             </div>
         )

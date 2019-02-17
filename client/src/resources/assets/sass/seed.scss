@@ -3,7 +3,7 @@
 @import 'common.scss';
 
 .seed_page{
-    position: fixed;
+    
     top: 0px;
     overflow-y: scroll;
     width: 100%;
@@ -98,6 +98,7 @@
     }
 
     .create_seed{
+      
         .seed_word{
             display: flex;
             flex-wrap: nowrap;

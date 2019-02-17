@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
+@import 'variables';
+@import 'common.scss';
+
+.add_friend{
+    position: fixed;
+    z-index: 3;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(77, 77, 77, 0.68);
+
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    .modal-dialog{
+        
+        background: #ffffff;
+        margin-top: 15%;
+        margin-left: 30%;
+        width: 40%;
+        height: auto;
+        border: solid rgba(175, 55, 175, 0.816) 1px;
+        border-radius: 10px;
+
+        button{
+            margin-top: 10px;
+            margin-right: 10px;
+            float: right;
+        }
+
+        .modal-header{
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background-image: linear-gradient(to right, violet, rgba(152, 14, 250, 0.455) );
+            position: relative;
+            height: 50px;
+            h4 {
+                text-align: center;
+                margin: auto;
+                color: azure;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                font-size: 30px !important;
+            }
+
+            button{
+                background: none;
+                color: whitesmoke;
+                font-stretch: condensed;
+                font-size: 15px;
+            }
+        }
+
+        .modal-body{
+            position: relative;
+            height: 220px;
+            padding: 10px;
+
+            input{
+                height: 40px;
+                width: 90%;
+                border-radius: 5px;
+                border: solid 1px;
+                border-color: rgba(152, 14, 250, 0.707);
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+        }
+
+        .modal-footer{
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            background-color: whitesmoke;
+            height: 40px;
+
+            .btn_next{
+                background-color: rgba(175, 55, 175, 0.816) ;
+                margin-top:0px; 
+                color: white;
+                padding: 10px;
+                border-radius: 3px;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+        }
+    }
+}
+
+.add_promise{
+    position: fixed;
+    z-index: 3;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(37, 37, 37, 0.68);
+
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    .modal-dialog{
+
+        button{
+            float: center;
+        }
+        
+        background: #ffffff;
+        margin-top: 15%;
+        margin-left: 30%;
+        width: 40%;
+        height: auto;
+        border: solid rgba(175, 55, 175, 0.816) 1px;
+        border-radius: 10px;
+
+        .modal-header{
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background-image: linear-gradient(to right, violet, rgba(152, 14, 250, 0.455) );
+            position: relative;
+            height: 50px;
+            h4 {
+                text-align: center;
+                margin: auto;
+                color: azure;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                font-size: 25px !important;
+            }
+
+            button{
+                background: none;
+                color: whitesmoke;
+                font-stretch: condensed;
+                font-size: 15px;
+            }
+        }
+
+        .modal-body{
+            
+            position: relative;
+            height: auto;
+            padding: 10px;
+
+            .describe{
+                display: flex;
+                .avatar{
+                    width: 100px;
+                    height: 100px;
+                    #my_avatar{
+                        width: 90px;
+                        height: 90px;
+                        border-radius: 15px;
+                    }
+                }
+                .text_memory{
+                    width: 80%;
+                    textarea{
+                        width: 100%;
+                        height: 90px;
+                       border: none;
+                    }
+                }
+            }
+
+            .tag_friend{
+                display: flex;
+                .tag{
+                    width: 80%;
+                }
+                .to-avatar{
+                    width: 20%;
+                    display: flex;
+                    .image_friend{
+                        width: 40px !important;
+                        height: 40px !important;
+                    }
+                }
+            }
+
+            input{
+                height: 40px;
+                width: 90%;
+                border-radius: 5px;
+                border: solid 1px;
+                border-color: rgba(152, 14, 250, 0.707);
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+
+            .add_more{
+                display: flex;
+                .more-infor{
+                    border-radius: 50px;
+                    background-color: rgba(255, 127, 80, 0.204);
+                    border: solid white 1px;
+                    margin: 10px;
+                    margin-right: 5%;
+                    margin-left: 5%;
+                    padding: 5px;
+                    height: 35px;
+                    display: inline-flex;
+                }
+
+                .more-infor:hover {
+                    border: solid  rgba(152, 14, 250, 0.455) 1px;
+                }
+            }
+
+        }
+
+        .modal-footer{
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            background-color: whitesmoke;
+            height: 40px;
+
+            button{
+                float: center;
+            }
+            .button-send{
+                text-align:center;
+                width: 80%;
+                border-radius: 15px;
+                background-image: linear-gradient(to right, violet, rgba(152, 14, 250, 0.455));
+                height: 30px;
+                margin-left: 10%;
+                border: none;
+                color: azure;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                font-size: 17px;
+         }
+        }
+    }
+}

@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import bip39 from 'bip39';
 import md5 from 'md5';
 import aesjs from 'aes-js';
+import * as firebase from 'firebase';
 
 
 class FormLogin extends Component {
@@ -10,7 +11,7 @@ class FormLogin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_name: '',
+            user_name: null,
             name: localStorage.getItem("name"),
             img_url: localStorage.getItem("img_url"),
             email: localStorage.getItem("email"),
@@ -22,6 +23,7 @@ class FormLogin extends Component {
             password: [],
             show: false,
             hidden: true,
+            user: null
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,9 +34,10 @@ class FormLogin extends Component {
         this.handleClose = this.handleClose.bind(this);
     }
 
+
     /**
      * 
-     * @param NOEVENT change infor for the login input profile
+     * @param handle handle profile user 
      */
 
     handleChange(event) {
@@ -62,11 +65,6 @@ class FormLogin extends Component {
         })
     }
 
-    componentWillMount(){
-
-
-    }
-
     confirmPassWord(event) {
         this.setState({
             password: event.target.value
@@ -92,7 +90,6 @@ class FormLogin extends Component {
         localStorage.setItem("U_N", this.state.user_name);
         localStorage.setItem("P_W", this.state.password);
         localStorage.setItem("I_U", this.state.img_url);
-
         this.props.history.push('/login/seed');
     }
 
@@ -100,6 +97,24 @@ class FormLogin extends Component {
         this.setState({
             show: false,
         })
+    }
+
+    /**
+     * @param user firebase setup
+     */
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            this.setState({ user: localStorage.getItem('user_name') });
+        });
+    }
+
+    handleSignIn() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider);
+    }
+
+    handleLogOut() {
+        firebase.auth().signOut();
     }
 
     render() {
