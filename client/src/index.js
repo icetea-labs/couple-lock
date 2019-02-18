@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 
 window.getLoginUser = () => {
-  return "sotatek";
+  return "sugar";
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));

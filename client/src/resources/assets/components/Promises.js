@@ -44,6 +44,8 @@ class Promises extends Component {
       console.log(res);
       console.log(res.data);
     })
+
+    window.location.reload();
   }
 
   render() {
