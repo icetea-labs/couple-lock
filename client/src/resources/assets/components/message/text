@@ -1,0 +1,7 @@
+collection [],
+document {},
+
+chatroom{document}-id_room[collection]--id{collection}
+                                      --member[document]---id{collection}---id{}
+                                                                         ---name{}                         
+

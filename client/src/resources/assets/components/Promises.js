@@ -55,7 +55,7 @@ class Promises extends Component {
     const receiver = this.props.user.receiver;
     return (
       <div className="request_promises">
-        <h3 className="title title_promises">Pending promise</h3>
+        {deniedPromises.length > 0 && <h3 className="title title_promises">Pending promise</h3>}
         <div className="request">
           {
             deniedPromises.length > 0 && deniedPromises.map((item, index) =>{

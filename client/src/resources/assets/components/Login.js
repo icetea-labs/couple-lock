@@ -62,11 +62,12 @@ class Login extends Component {
                             buttonText="Login"
                             onSuccess={this.showProfileGoogle}
                         />
-                        <button  className="btn_user_login" onClick = {this.redirectToTarget}>No google, I hate it!</button>
+                        <button className="btn_user_login" onClick={this.redirectToTarget}>No google, I hate it!</button>
                     </Col>
                     <Col>
                     </Col>
                 </Col>
+
             </Grid>
         )
     }

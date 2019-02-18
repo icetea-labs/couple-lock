@@ -5,7 +5,7 @@ import array from 'prop-types';
 import md5 from 'md5';
 import aesjs from 'aes-js';
 import Web3 from 'web3';
-
+import axios from 'axios';
 
 class SeedWord extends Component {
 
@@ -15,20 +15,22 @@ class SeedWord extends Component {
             seedphase: array[12],
             seed_phase: [],
             copied: false,
-            linkto: "/"
+            linkto: "/",
+            test: 'abc'
         }
-
+        this.testData = this.testData.bind(this);
         this.createAccount = this.createAccount.bind(this);
     }
 
     componentWillMount() {
-
         var mnemonic = bip39.generateMnemonic();
         var seedword = mnemonic.split(" ");
         this.setState({
             seedphase: seedword,
             seed_phase: mnemonic
         })
+
+
     }
 
     createAccount() {
@@ -45,11 +47,16 @@ class SeedWord extends Component {
 
         console.log(web3.eth.accounts.create(this.state.seed_phase));
         console.log(this.state.seed_phase);
-        console.log(this.props);
-        this.props.history.push('/');
     }
 
+    testData(){
+        axios.get('/test', this.state.test)
+        .then(data =>{
+            console.log(data);
+        }).catch(err => console.log())
+    }
     render() {
+
         return (
             <div className="create_seed">
                 <div className="seed_word">
@@ -70,17 +77,17 @@ class SeedWord extends Component {
                     <div className="word"><span>11:</span>{this.state.seedphase[10]}</div>
                     <div className="word"><span>12:</span>{this.state.seedphase[11]}</div>
                 </div>
-                
                 <p> Seed là phương pháp duy nhất để lấy lại mật khẩu. Hãy ghi lại ở đâu đó nhé!</p>
                 <div className="seed_phase">
-                    <textarea defaultValue={this.state.seed_phase} readOnly></textarea>
+                    <textarea defaultValue={this.state.seed_phase} texttest='1' readOnly></textarea>
                     <CopyToClipboard text={this.state.seed_phase}
                         onCopy={() => this.setState({ copied: true })}>
                         <button className="btn_seed">Copy seed</button>
                     </CopyToClipboard>
                 </div>
                 {this.state.copied ? <span style={{ background: 'black', color: 'white' }}>Copied!</span> : null}
-                <button className="btn_next" onClick={this.createAccount}><a href={this.state.linkto}><strong>next</strong></a></button>
+                <button className="btn_next" onClick={this.createAccount}><strong><a href="/">next</a></strong></button>
+                <button onClick={this.testData}></button>
             </div>
         )
     }
