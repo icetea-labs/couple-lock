@@ -47,3 +47,11 @@ exports.stringSchema = (where = 'query') => {
         trim: true
     }
 }
+
+exports.intSchema = (where = 'query') => {
+    return {
+        in: [where],
+        isInt: true,
+        toInt: true
+    }
+}

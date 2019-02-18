@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Modal, Button } from 'react-bootstrap';
-import MaterialIcon, { colorPalette } from 'material-icons-react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
+import Promises from './Promises';
 
 class SideBar extends Component {
   constructor(props) {
@@ -11,7 +12,12 @@ class SideBar extends Component {
       activeUserId: null,
       show_friend: false,
       show_promise: false,
-      avatarUrl: localStorage.getItem("I_U")
+      avatarUrl: localStorage.getItem("I_U"),
+      user: {},
+      r_react: null,
+      loginUser: window.getLoginUser(),
+      acceptPromises: [],
+      deniedPromises: [],
     }
 
     this.handleShowListFriend = this.handleShowListFriend.bind(this);
@@ -39,12 +45,15 @@ class SideBar extends Component {
     })
   }
 
-
   componentDidMount() {
-    const userLogin = window.getLoginUser();
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    const { loginUser } = this.state;
     Promise.all([
       axios.get('/api/user/all'),
-      axios.get(`/api/propose/list?username=${userLogin}`)
+      axios.get(`/api/propose/list?username=${loginUser}`)
     ])
       .then(([res1, res2]) => {
         this.getUsers(res1.data.data, res2.data.data)
@@ -61,17 +70,25 @@ class SideBar extends Component {
 
     listPropose.forEach((p, index) => {
       if (index === 0) {
-        this.state.activeUserId = p.id;
+        this.setState({ activeUserId: p.id });
       }
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
-          proposeId: p.id
+          proposeId: p.id,
+          r_react: p.r_react
         }
       } else {
         sidebarItems[p.sender] = {
-          proposeId: p.id
+          proposeId: p.id,
+          r_react: p.r_react
         }
       }
+      this.setState({
+        user: {
+          sender: p.sender,
+          receiver: p.receiver,
+        },
+      });
     });
 
     Object.keys(sidebarItems).forEach((key) => {
@@ -87,51 +104,73 @@ class SideBar extends Component {
       const res = Object.keys(obj).map(function (key, index) {
         return {
           proposeId: obj[key].proposeId,
+          r_react: obj[key].r_react,
           avatar: obj[key].user.avatar,
           username: obj[key].user.username,
           displayName: obj[key].user.displayName,
         }
       })
-      this.setState({ data: res })
+      this.setState({ data: res });
+      this.getPromises();
+
     }
   }
+
   passingProposeId = pId => {
     this.setState({ activeUserId: pId })
     this.props.proposeIdChanged(pId);
   }
-  render() {
-    const { data } = this.state;
 
+  getPromises = () => {
+    const { data } = this.state;
+    const { loginUser } = this.state;
+    const sender = this.state.user.sender;
+    const receiver = this.state.user.receiver;
+    let pId = [];
+    data.forEach((key) => {
+      pId.push(key.proposeId);
+      this.props.getProposeId(pId[0]);
+      if ((loginUser === sender || loginUser === receiver) && key.r_react === 1) {
+        this.state.acceptPromises.push(key);
+      } else if (!key.r_react || key.r_react === 2) {
+        this.state.deniedPromises.push(key);
+      }
+    })
+  }
+
+  render() {
+    const { acceptPromises } = this.state;
     return (
 
       <div className="sidebar">
 
         <button type="button" className="btn_add_promise" onClick={this.handleShowListFriend}><span className="icon-ic-add"></span>Add Promise</button>
         {/* Chose friend */}
-        <Modal className="add_friend" show={this.state.show_friend} onHide={this.handleClose} >
-          <Modal.Header >
-            <button className="btn_close" onClick={this.handleClose}>X</button>
-            <Modal.Title><h4>Propose</h4></Modal.Title>
-          </Modal.Header>
-          <hr></hr>
-          <Modal.Body>
+        <Modal className="add_friend" isOpen={this.state.show_friend} toggle={this.toggle} >
+          <ModalHeader >
+            <div className="propose_header">Propose
+             <button className="btn_close" onClick={this.handleClose}>x</button>
+            </div>
+          </ModalHeader>
+          <ModalBody>
             <input placeholder="Search..." />
-          </Modal.Body>
-          <Modal.Footer>
+          </ModalBody>
+          <ModalFooter>
             <Button className="btn_next" onClick={this.handleShowToProMise}>Next</Button>
-          </Modal.Footer>
+          </ModalFooter>
         </Modal>
 
         {/* Add propose */}
-        <Modal className="add_promise" show={this.state.show_promise} onHide={this.handleClose} >
-          <Modal.Header >
-            <Modal.Title><h4>Add Memory</h4></Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <Modal className="add_promise" isOpen={this.state.show_promise} >
+          <ModalHeader >
+            <p className="header_add">Add Memory</p>
+            <button className="btn_close" onClick={this.handleClose}>x</button>
+          </ModalHeader>
+          <ModalBody>
             <div >
               <div className="describe">
                 <div className="avatar">
-                  <div class="my-avatar">
+                  <div className="my-avatar">
                     <img id="my_avatar" src={this.state.avatarUrl} />
                   </div>
                 </div>
@@ -139,44 +178,45 @@ class SideBar extends Component {
                   <textarea name="" id="" rows="3" placeholder="Describe your Memory..."></textarea>
                 </div>
               </div>
-              <div class="tag_friend">
-                <div class="tag">
-                  <input type="text" class="input-tag" placeholder="TAGS:    #honeymoon #travel" />
+              <div className="tag_friend">
+                <div className="tag">
+                  <input type="text" className="input-tag" placeholder="TAGS:    #honeymoon #travel" />
                 </div>
-                <div class="to-avatar">
-                  <MaterialIcon />
-                  <div class="friend-avatar">
-                    <img class="image_friend" src="http://pluspng.com/img-png/github-octocat-logo-vector-png--896.jpg" alt="" />
-                  </div>
-                  <div>
-                    <i class="material-icons col">&#xe24f;</i>
+                <div className="to-avatar">
+                  <div className="friend-avatar">
+                    <img className="image_friend" src="http://pluspng.com/img-png/github-octocat-logo-vector-png--896.jpg" alt="" />
                   </div>
                 </div>
               </div>
             </div>
-            <div class="add_more">
-              <span class="more-infor">
-                <i class="material-icons">&#xe432;</i>
+            <div className="add_more">
+              <span className="more-infor">
+                <MaterialIcon icon="image" width="10px" />
                 <p>Photo</p>
               </span>
-              <span class="more-infor">
-                <i class="material-icons">&#xe55f;</i>
+              <span className="more-infor">
+                <MaterialIcon icon="place" />
                 <p>Check-in</p>
               </span>
-              <span class="more-infor">
+              <span className="more-infor">
+                <MaterialIcon icon="arrow_drop_down" />
                 <p>Public</p>
-                <i class="material-icons">arrow_drop_down</i>
               </span>
             </div>
-          </Modal.Body>
-          <Modal.Footer>
+          </ModalBody>
+          <ModalFooter>
             <Button className="button-send" onClick={this.handleClose}>send</Button>
-          </Modal.Footer>
+          </ModalFooter>
         </Modal >
 
         <h3 className="title_promise">Accepted promise</h3>
         {
-          data.length > 0 && data.map((item, index) => {
+          this.state.data.length > 0 && this.state.data.map((item, index) => {
+            const { activeUserId } = this.state;
+          })}
+        {/* <h3 className="title title_promise">Accepted promise</h3> */}
+        {
+          acceptPromises.length > 0 && acceptPromises.map((item, index) => {
             const { activeUserId } = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return (
@@ -190,7 +230,8 @@ class SideBar extends Component {
             )
           })
         }
-      </div >
+        <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
+      </div>
     );
   }
 }

@@ -111,9 +111,6 @@ class ChatBox extends Component {
                 </div>
                 <div className="chat__content" style={{ display: this.state.seechat ? 'block' : 'none' }}>
                     <div>
-                        {/* {this.state.list.map((item, index) =>
-                            <Message key={item} message={index} />
-                        )} */}
                     </div>
 
                     <div className="inside_message">

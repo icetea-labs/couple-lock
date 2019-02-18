@@ -194,6 +194,7 @@ img{
   .short_desc{
     font-weight: 600;
     margin-top: 24px;
+    // display: none;
     .icon-luggage{
       font-size: 24px;
       margin-right: 16px;
@@ -294,6 +295,12 @@ img{
       border-radius: 10px;
       overflow: hidden;
     }
+    .showdate{
+      input{
+        border: none;
+        background: none;
+      }
+    }
     .post_input{
       margin-left: 22px;
       font-size: $font-medium;
@@ -387,14 +394,47 @@ img{
       }
     }
     .options{
+      .place-wrapper{
+        display: inline-block;
+        margin-right: 20px;
+        position: relative;
+        cursor: pointer;
+        .location-search-input{
+          position: absolute;
+          left: -50px;
+          top: 30px;
+          height: 35px;
+          border: none;
+          border-radius: 10px;
+          padding: 0 5px;
+          box-shadow: 0 4px 12px 0 rgba($color-black, .04);
+        }
+        .autocomplete-dropdown-container{
+          position: absolute;
+          left: 0;
+          min-width: 300px;
+          font-size: $font-smaller;
+          left: -50px;
+          top: 70px;
+          z-index: 100;
+          border-radius: 10px;
+          background: $color-white;
+          box-shadow: 0 4px 12px 0 rgba($color-black, .04);
+          div{
+            padding: 5px;
+            span{
+              font-size: $font-smaller;
+              background: none;
+            }
+          }
+        }
+      }
       display: flex;
       justify-content: center;
       align-items: center;
       float: right;
       margin-top: 15px;
       div{
-        display: inline-block;
-        margin-right: 20px;
         &:last-child{
           margin-right: 0;
         }
@@ -408,6 +448,8 @@ img{
       .upload_img{
         width: 24px;
         height: 25px;
+        display: inline-block;
+        margin-right: 20px;
         position: relative;
         overflow: hidden;
         input[type=file]{
@@ -421,6 +463,22 @@ img{
         }
         .icon-photo{
           cursor: pointer;
+        }
+      }
+      .picktime{
+        margin-right: 20px;
+        position: relative;
+        cursor: pointer;
+        .react-datepicker-wrapper{
+          .react-datepicker__input-container{
+            width: 0;
+            opacity: 0;
+            visibility: hidden;
+          }
+        }
+        .react-datepicker-popper{
+          top: 0 !important;
+          left: -62px !important;
         }
       }
     }
@@ -612,7 +670,7 @@ img{
       margin-right: 10px;
     }
   }
-  .title_promise{
+  .title{
     text-transform: uppercase;
     font-size: $font-root;
     font-weight: 600;
@@ -650,6 +708,72 @@ img{
         color: $color-violet;
         font-weight: 500;
       }
+    }
+  }
+  .request_promises{
+    .request__items{
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed $color-grey-gallery;
+      &:last-child{
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      &__avatar{
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        float: left;
+        overflow: hidden;
+      }
+      &__displayname{
+        font-size: 14px;
+        color: #5a5e67;
+        font-weight: 600;
+        text-transform: capitalize;
+        background: none;
+      }
+      &__pending{
+        font-size: $font-smaller;
+        color: $color-violet;
+        font-weight: 500;
+        margin-top: 2px;
+        border-radius: 10px;
+        padding: 2px 4px;
+        border: 1px solid;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+      }
+      &__username{
+        font-size: $font-smaller;
+        color: $color-violet;
+        font-weight: 500;
+      }
+      &__btn{
+        margin-top: 5px;
+        &__accept{
+          margin-right: 5px;
+        }
+        &__accept, &__delete{
+          background: $color-white;
+          color: $color-violet;
+          border: 1px solid $color-violet;
+          padding: 2px 6px;
+          border-radius: 10px;
+        }
+      }
+    }
+    .detail{
+      width: calc(100% - 36px);
+      float: left;
+      margin-left: 10px;
+      position: relative;
     }
   }
 }
