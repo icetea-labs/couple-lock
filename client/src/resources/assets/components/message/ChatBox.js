@@ -16,7 +16,7 @@ class ChatBox extends Component {
             userName_item: null,
             message_item: null,
             useName: 'tranviet',
-            seechat: true,
+            seechat: false,
             hidden: true,
             list: [
                 { item: 1, index: "test1" },
@@ -26,7 +26,7 @@ class ChatBox extends Component {
             message: null,
             avatarURL: localStorage.getItem("img_url"),
             test: null,
-            db : firebase.firestore().collection("chat_database").doc("couple").collection("chat_rooms")
+            db: firebase.firestore().collection("chat_database").doc("couple").collection("chat_rooms")
         }
 
         this.listenMessages = this.listenMessages.bind(this);
@@ -39,7 +39,7 @@ class ChatBox extends Component {
 
     componentWillMount() {
 
-        this.messageRef = this.state.db.doc("chat_room_1").collection("messages").get().then( snapShot => {
+        this.messageRef = this.state.db.doc("chat_room_1").collection("messages").get().then(snapShot => {
             console.log(snapShot)
         }).catch(error => {
             console.log(error);
@@ -121,8 +121,9 @@ class ChatBox extends Component {
                         {this.displayChat}
                     </div>
                 </div>
-                <hr></hr>
+
                 <div className="chat__send" style={{ display: this.state.seechat ? 'block' : 'none' }} >
+                    <hr></hr>
                     <textarea className="chat__input" placeholder="Type Message" onChange={this.handleChange} value={this.state.message_input} ></textarea>
                     <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button>
                 </div>

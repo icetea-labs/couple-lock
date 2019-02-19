@@ -105,10 +105,19 @@ body{
             .header_add {
                 float: center;
                 text-align: center;
-                margin: auto;
                 color: azure;
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
                 font-size: 25px !important;
+                display: flex;
+                padding-top: 10px;
+                i{
+                    cursor: pointer;
+                }
+                p{
+                    position: absolute;
+                    left: 40px;
+                    top: 5px;
+                }
             }
 
             .btn_close{
@@ -118,6 +127,7 @@ body{
                 font-size: 30px;
                 position: absolute;
                 right: 10px;
+                top: 3px;
             }
 
             button{

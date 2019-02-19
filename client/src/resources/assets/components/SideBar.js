@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
 import Promises from './Promises';
+import AddPropose from './sidebar/AddPropose';
 
 class SideBar extends Component {
   constructor(props) {
@@ -10,38 +11,20 @@ class SideBar extends Component {
     this.state = {
       data: [],
       activeUserId: null,
-      show_friend: false,
-      show_promise: false,
-      avatarUrl: localStorage.getItem("I_U"),
       user: {},
+      show_friend: true,
       r_react: null,
       loginUser: window.getLoginUser(),
       acceptPromises: [],
       deniedPromises: [],
     }
-
-    this.handleShowListFriend = this.handleShowListFriend.bind(this);
-    this.handleShowToProMise = this.handleShowToProMise.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-
   }
 
-  handleClose() {
-    this.setState({
-      show_friend: false,
-      show_promise: false,
-    });
-  }
-
-  handleShowListFriend() {
-    this.setState({
-      show_friend: true
-    });
-  }
-
-  handleShowToProMise() {
-    this.setState({
-      show_promise: true
+  componentWillMount() {
+    Promise.all([
+      axios.get('api/user/all')
+    ]).then(res => {
+      console.log(res);
     })
   }
 
@@ -141,80 +124,16 @@ class SideBar extends Component {
   render() {
     const { acceptPromises } = this.state;
     return (
-
       <div className="sidebar">
-
-        <button type="button" className="btn_add_promise" onClick={this.handleShowListFriend}><span className="icon-ic-add"></span>Add Promise</button>
+        
         {/* Chose friend */}
-        <Modal className="add_friend" isOpen={this.state.show_friend} toggle={this.toggle} >
-          <ModalHeader >
-            <div className="propose_header">Propose
-             <button className="btn_close" onClick={this.handleClose}>x</button>
-            </div>
-          </ModalHeader>
-          <ModalBody>
-            <input placeholder="Search..." />
-          </ModalBody>
-          <ModalFooter>
-            <Button className="btn_next" onClick={this.handleShowToProMise}>Next</Button>
-          </ModalFooter>
-        </Modal>
-
-        {/* Add propose */}
-        <Modal className="add_promise" isOpen={this.state.show_promise} >
-          <ModalHeader >
-            <p className="header_add">Add Memory</p>
-            <button className="btn_close" onClick={this.handleClose}>x</button>
-          </ModalHeader>
-          <ModalBody>
-            <div >
-              <div className="describe">
-                <div className="avatar">
-                  <div className="my-avatar">
-                    <img id="my_avatar" src={this.state.avatarUrl} />
-                  </div>
-                </div>
-                <div className="text_memory">
-                  <textarea name="" id="" rows="3" placeholder="Describe your Memory..."></textarea>
-                </div>
-              </div>
-              <div className="tag_friend">
-                <div className="tag">
-                  <input type="text" className="input-tag" placeholder="TAGS:    #honeymoon #travel" />
-                </div>
-                <div className="to-avatar">
-                  <div className="friend-avatar">
-                    <img className="image_friend" src="http://pluspng.com/img-png/github-octocat-logo-vector-png--896.jpg" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="add_more">
-              <span className="more-infor">
-                <MaterialIcon icon="image" width="10px" />
-                <p>Photo</p>
-              </span>
-              <span className="more-infor">
-                <MaterialIcon icon="place" />
-                <p>Check-in</p>
-              </span>
-              <span className="more-infor">
-                <MaterialIcon icon="arrow_drop_down" />
-                <p>Public</p>
-              </span>
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button className="button-send" onClick={this.handleClose}>send</Button>
-          </ModalFooter>
-        </Modal >
-
+        <AddPropose />
+      
         <h3 className="title_promise">Accepted promise</h3>
         {
           this.state.data.length > 0 && this.state.data.map((item, index) => {
             const { activeUserId } = this.state;
           })}
-        {/* <h3 className="title title_promise">Accepted promise</h3> */}
         {
           acceptPromises.length > 0 && acceptPromises.map((item, index) => {
             const { activeUserId } = this.state;
