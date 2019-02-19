@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 
 class Promises extends Component {
@@ -41,11 +42,14 @@ class Promises extends Component {
 
     axios.post('/api/propose/reply', dataValue)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
+      PubSub.publish('listen');
     })
 
-    window.location.reload();
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
 
   render() {

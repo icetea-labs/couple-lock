@@ -3,6 +3,7 @@ import Select from 'react-select';
 import TagsInput from './TagsInput';
 import LocationSearchInput from './Places';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -99,11 +100,10 @@ class MemoryPost extends Component {
 
     axios.post('/api/memory/create', formData)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
+      PubSub.publish('listen');
     })
-
-    window.location.reload();
   }
 
   toggleOpenPicker = () => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 import Layout from './Layout';
 import BannerImage from './propose/BannerImage';
 import MemoryPost from './memory/MemoryPost';
@@ -35,7 +36,6 @@ class Home extends Component {
 
   
   getUsers = (sender, receiver) => {
-    const {proposeId} = this.state;
     const p1 = axios.get("/api/user/details?username=" + sender);
     const p2 = axios.get("/api/user/details?username=" + receiver);
     Promise.all([p1, p2])
@@ -49,7 +49,7 @@ class Home extends Component {
   }
   
   fetchProposeId = () =>{
-    const proposeId = this.state.proposeId;
+    const {proposeId} = this.state;
     if(proposeId !== null){
       axios.get(`/api/propose/details?id=${proposeId}`)
       .then(propose => {
@@ -61,6 +61,12 @@ class Home extends Component {
   
   componentDidMount() {
     this.fetchProposeId();
+  }
+
+  componentWillMount() {
+    PubSub.subscribe('shareMemory', () => {
+      this.fetchProposeId();
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {

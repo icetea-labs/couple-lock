@@ -1,19 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
 @import 'variables';
 @import 'common.scss';
+body{
+    overflow: inherit;
+}
 
 .add_friend{
-    position: fixed;
-    z-index: 3;
-    top: 0px;
-    left: 0px;
     background-color: rgba(77, 77, 77, 0.68);
-
     width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-
-    .modal-dialog{
         
         background: #ffffff;
         margin-top: 15%;
@@ -23,32 +17,33 @@
         border: solid rgba(175, 55, 175, 0.816) 1px;
         border-radius: 10px;
 
-        button{
-            margin-top: 10px;
-            margin-right: 10px;
-            float: right;
-        }
-
         .modal-header{
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             background-image: linear-gradient(to right, violet, rgba(152, 14, 250, 0.455) );
             position: relative;
             height: 50px;
-            h4 {
+            padding: 2px;
+
+            .propose_header {
+                width: 300px;
+                right: 40px;
                 text-align: center;
                 margin: auto;
                 color: azure;
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
                 font-size: 30px !important;
+                
+                .btn_close{
+                    background: none;
+                    color: whitesmoke;
+                    font-stretch: condensed;
+                    font-size: 30px;
+                    position: absolute;
+                    right: 10px;
+                }
             }
 
-            button{
-                background: none;
-                color: whitesmoke;
-                font-stretch: condensed;
-                font-size: 15px;
-            }
         }
 
         .modal-body{
@@ -70,7 +65,7 @@
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
             background-color: whitesmoke;
-            height: 40px;
+            height: 60px;
 
             .btn_next{
                 background-color: rgba(175, 55, 175, 0.816) ;
@@ -81,7 +76,6 @@
                 font-family: Arial, Helvetica, sans-serif;
             }
         }
-    }
 }
 
 .add_promise{
@@ -90,17 +84,8 @@
     top: 0px;
     left: 0px;
     background-color: rgba(37, 37, 37, 0.68);
-
     width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-
-    .modal-dialog{
-
-        button{
-            float: center;
-        }
-        
+    
         background: #ffffff;
         margin-top: 15%;
         margin-left: 30%;
@@ -115,12 +100,24 @@
             background-image: linear-gradient(to right, violet, rgba(152, 14, 250, 0.455) );
             position: relative;
             height: 50px;
-            h4 {
+            padding: 2px;
+            
+            .header_add {
+                float: center;
                 text-align: center;
                 margin: auto;
                 color: azure;
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
                 font-size: 25px !important;
+            }
+
+            .btn_close{
+                background: none;
+                color: whitesmoke;
+                font-stretch: condensed;
+                font-size: 30px;
+                position: absolute;
+                right: 10px;
             }
 
             button{
@@ -132,7 +129,7 @@
         }
 
         .modal-body{
-            
+            height: 220px;
             position: relative;
             height: auto;
             padding: 10px;
@@ -167,8 +164,8 @@
                     width: 20%;
                     display: flex;
                     .image_friend{
-                        width: 40px !important;
-                        height: 40px !important;
+                        width: 40px;
+                        height: 40px;
                     }
                 }
             }
@@ -207,23 +204,19 @@
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
             background-color: whitesmoke;
-            height: 40px;
-
-            button{
-                float: center;
-            }
+        
             .button-send{
+                margin-right: 20%;
+                margin-left: 20%;
+                width: 250px;
+                height: 35px;
                 text-align:center;
-                width: 80%;
                 border-radius: 15px;
                 background-image: linear-gradient(to right, violet, rgba(152, 14, 250, 0.455));
-                height: 30px;
-                margin-left: 10%;
                 border: none;
                 color: azure;
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
                 font-size: 17px;
          }
         }
-    }
 }

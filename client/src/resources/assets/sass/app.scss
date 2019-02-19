@@ -4,7 +4,7 @@
 
 *{margin: 0; padding: 0; box-sizing: border-box}
 
-body{
+html, body{
   font-family: $font-body;
   font-size: $font-root;
   font-weight: 500;
@@ -17,7 +17,7 @@ body{
   width: 960px;
 }
 a{
-  text-decoration: none;
+  text-decoration: none !important;
 }
 input{
   color: $color-grey;
