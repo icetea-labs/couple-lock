@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
-import Promises from './Promises';
-import AddPropose from './sidebar/AddPropose';
+import Promises from '../Promises';
+import AddPropose from './AddPropose';
 
 class SideBar extends Component {
   constructor(props) {
@@ -12,20 +12,11 @@ class SideBar extends Component {
       data: [],
       activeUserId: null,
       user: {},
-      show_friend: true,
       r_react: null,
       loginUser: window.getLoginUser(),
       acceptPromises: [],
       deniedPromises: [],
     }
-  }
-
-  componentWillMount() {
-    Promise.all([
-      axios.get('api/user/all')
-    ]).then(res => {
-      console.log(res);
-    })
   }
 
   componentDidMount() {
@@ -127,8 +118,7 @@ class SideBar extends Component {
       <div className="sidebar">
         
         {/* Chose friend */}
-        <AddPropose />
-      
+        <AddPropose sender={window.getLoginUser()} />
         <h3 className="title_promise">Accepted promise</h3>
         {
           this.state.data.length > 0 && this.state.data.map((item, index) => {

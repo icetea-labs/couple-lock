@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
+import LocationSearchInput from '../memory/Places';
 
 class AddPropose extends Component {
 
@@ -11,7 +13,97 @@ class AddPropose extends Component {
             avatarUrl: localStorage.getItem("I_U"),
             show_friend: true,
             show_promise: false,
+            list_user: [],
+            receiver: "",
+            items: {},
+            person_infor: [],
+            person_filter: [],
+            username: [],
+            avatar_target: [],
+            isPlace: false,
+            location: '',
+            url: '',
+            sender: window.getLoginUser(),
+            message: '',
+            s_attachments: [],
+            selectFile: {
+                imgPreview: '',
+                imgUpload: ''
+            },
         }
+    }
+    componentWillMount() {
+        this.filterData();
+        this.fetchDataSender();
+    }
+
+    showInputPlaces = () => {
+        this.setState(prevState => ({
+            isPlace: !prevState.isPlace
+        }));
+    }
+
+    getLocation = add => {
+        this.setState({ location: add });
+    }
+
+    filterData = () => {
+        Promise.all([
+            axios.get("/api/user/all")
+        ]).then(([user]) => {
+
+            var data_size = user.data.data.length
+            for (let i = 0; i < data_size; i++) {
+                this.state.list_user.push(user.data.data[i]);
+                this.state.person_infor.push(
+                    <li className="label__search" key={i} onClick={this.handleChosePerson.bind(this, this.state.list_user[i])}>{this.state.list_user[i].username}
+                        <img src={this.state.list_user[i].avatar} className="filter_img" alt="Friend" />
+                    </li>)
+                this.state.username[i] = this.state.list_user[i].username;
+                console.log(this.state.list_user[i]);
+            }
+        })
+    }
+
+    fetchDataSender = () => {
+        Promise.all([axios.get(`/api/user/details?username=${this.props.sender}`)])
+            .then(([dataSender]) => {
+                this.setState({
+                    sender: dataSender.data.data.username,
+                    s_address: dataSender.data.data.publickey,
+                    s_timestamp: Date.now(),
+                    s_receiverCanChangeVisibility: 1,
+                })
+            })
+    }
+
+    handleChosePerson = (result) => {
+        this.setState({
+            avatar_target: result.avatar,
+            receiver: result.username,
+            r_address: result.publickey,
+        })
+    }
+
+    handleSearch = (e) => {
+
+        this.state.person_filter = [];
+        if (e.target.value == '') {
+            this.setState({
+                person_filter: []
+            })
+        }
+
+        this.setState({
+            receiver: e.target.value
+        })
+
+        for (let i = 0; i < this.state.username.length; i++) {
+            if (this.state.username[i].search(e.target.value) !== -1) {
+                this.state.person_filter.push(this.state.person_infor[i]);
+            }
+        }
+
     }
 
     handleShowListFriend = () => {
@@ -20,16 +112,33 @@ class AddPropose extends Component {
         })
     }
 
-    handleComeback = () =>{
+    handleComeback = () => {
         this.setState({
             show_promise: false
+        })
+    }
+
+    handleUploadImg = (event) => {
+        let selectFile = Object.assign({}, this.state.selectFile);
+        selectFile.imgUpload = event.target.files[0];
+        selectFile.imgPreview = URL.createObjectURL(event.target.files[0]);
+
+        this.setState({
+            selectFile
         })
     }
 
     handleClose = () => {
         this.setState({
             show_promise: false,
-            show_friend: false
+            show_friend: false,
+            person_filter: [],
+        })
+    }
+
+    handleMessage = (event) => {
+        this.setState({
+            message: event.target.value
         })
     }
 
@@ -39,22 +148,38 @@ class AddPropose extends Component {
         })
     }
 
+    handleSendPromise = (e) => {
+        e.preventDefault();
+        var formData = new FormData();
+        this.state.s_attachments.push(this.state.url, this.state.message, this.state.location);
+        formData.append('sender', this.state.sender);
+        formData.append('s_attachments', this.state.s_attachments);
+        formData.append('receiver', this.state.receiver);
+        formData.append('r_address', this.state.publickey);
+        formData.append('message', this.state.message);
+        formData.append('attachment', this.state.selectFile.imgUpload);
+        console.log(formData);
+
+        axios.post('/api/propose/request', formData)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+    }
+
     render() {
         return (
             <div>
                 <button type="button" className="btn_add_promise" onClick={this.handleShowListFriend}><span className="icon-ic-add"></span>Add Promise</button>
                 <Modal className="add_friend" isOpen={this.state.show_friend} toggle={this.toggle} >
                     <ModalHeader >
-
                         <div className="propose_header">Propose <button className="btn_close" onClick={this.handleClose}>x</button>
                         </div>
                     </ModalHeader>
                     <ModalBody>
-                        <input placeholder="Search..." />
+                        <input placeholder="Search..." value={this.state.receiver} onChange={this.handleSearch} />
                         <ul>
-                            <li>
-
-                            </li>
+                            {this.state.person_filter}
                         </ul>
                     </ModalBody>
                     <ModalFooter>
@@ -78,7 +203,7 @@ class AddPropose extends Component {
                                     </div>
                                 </div>
                                 <div className="text_memory">
-                                    <textarea name="" id="" rows="3" placeholder="Describe your Memory..."></textarea>
+                                    <textarea name="" id="" rows="3" placeholder="Describe your Memory..." onChange={this.handleMessage} value={this.state.message}></textarea>
                                 </div>
                             </div>
                             <div className="tag_friend">
@@ -87,28 +212,40 @@ class AddPropose extends Component {
                                 </div>
                                 <div className="to-avatar">
                                     <div className="friend-avatar">
-                                        <img className="image_friend" src="http://pluspng.com/img-png/github-octocat-logo-vector-png--896.jpg" alt="" />
+                                        <img className="image_friend" src={this.state.avatar_target} alt="" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="add_more">
-                            <span className="more-infor">
-                                <MaterialIcon icon="image" width="10px" />
-                                <p>Photo</p>
-                            </span>
-                            <span className="more-infor">
-                                <MaterialIcon icon="place" />
-                                <p>Check-in</p>
-                            </span>
-                            <span className="more-infor">
+                            <label className="more-infor" htmlFor="upload">
+                                <span className="icon-photo"></span>
+                                <label htmlFor="upload" >Photo</label>
+                                <input type="file" id="upload" accept="img, mp4" onChange={this.handleUploadImg} style={{ display: "none" }} />
+                            </label>
+
+                            <label className="more-infor" onClick={this.showInputPlaces} >
+                                <span className="icon-location" ></span>
+                                <label>Check-in</label>
+                            </label>
+
+                            <label className="more-infor">
                                 <MaterialIcon icon="arrow_drop_down" />
-                                <p>Public</p>
-                            </span>
+                                <label>Public</label>
+                            </label>
+                        </div>
+                        {
+                            this.state.isPlace && <LocationSearchInput getLocation={this.getLocation} />
+                        }
+                        <div style={{ color: "red", fontSize: "12px" }} >
+                            {this.state.location}
+                        </div>
+                        <div>
+                            <img src={this.state.selectFile.imgPreview} alt="" />
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button className="button-send" onClick={this.handleClose}>send</Button>
+                        <Button className="button-send" onClick={this.handleSendPromise}>send</Button>
                     </ModalFooter>
                 </Modal >
             </div>
