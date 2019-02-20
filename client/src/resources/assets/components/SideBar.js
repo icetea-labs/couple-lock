@@ -224,7 +224,7 @@ class SideBar extends Component {
           </ModalFooter>
         </Modal >
 
-        <h3 className="title title_promise">Accepted promise</h3>
+        {acceptPromises.length > 0 && <h3 className="title title_promise">Accepted promise</h3>}
         {
           acceptPromises.length > 0 && acceptPromises.map((item, index) => {
             const { activeUserId } = this.state;
@@ -234,7 +234,7 @@ class SideBar extends Component {
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>
-                  <div className="sidebar__item__detail__username">{item.username}</div>
+                  <div className="sidebar__item__detail__username">@{item.username}</div>
                 </div>
               </div>
             )

@@ -156,7 +156,7 @@ class MemoryPost extends Component {
               <div className="picktime">
                 <span className="icon-today" onClick={this.toggleOpenPicker}></span><DatePicker open={this.state.openPicker} selected={this.state.startDate} onChange={this.getDate} />
               </div>
-              <div><img src={this.props.receiver.avatar} alt="" /></div>
+              <div className="avatar_receiver"><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
           <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
@@ -164,7 +164,7 @@ class MemoryPost extends Component {
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
             </div>
-            <button type="button" disabled={! this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
+            <button type="button" disabled={!this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
           </div>
         </div>
       </div>

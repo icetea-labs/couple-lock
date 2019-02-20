@@ -29,11 +29,17 @@ class Promises extends Component {
     });
   }
 
+  isDisableAccept = () =>{
+    const { promisesMessage, promisesImage } = this.state;
+    if(promisesMessage.length > 0 || promisesImage != null){
+      return "false" ;
+    }
+  }
+
   acceptPromises = (pId) => {
     const proposeId = pId;
     const react = 1;
-    const {promisesMessage} = this.state;
-    const {promisesImage} = this.state;
+    const {promisesMessage, promisesImage} = this.state;
     const dataValue = new FormData();
     dataValue.append('id', proposeId);
     dataValue.append('react', react);
@@ -71,7 +77,7 @@ class Promises extends Component {
                   <div className="detail">
                     <button className="request__items__displayname"> {item.displayName} </button>
                     { (loginUser === sender) && <div className="request__items__pending">Pending</div> }
-                    <div className="request__items__username">{item.username}</div>
+                    <div className="request__items__username">@{item.username}</div>
                     {
                       (loginUser === receiver) && <div className="request__items__btn">
                       <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
@@ -88,8 +94,8 @@ class Promises extends Component {
                           </p>
                         </ModalBody>
                         <ModalFooter>
-                          <Button color="primary" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
-                          <Button color="secondary" onClick={this.acceptPromisesModal}>Cancel</Button>
+                          <Button disabled={!this.isDisableAccept()} className="accept_promises_request" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
+                          <Button className="cancel_promises_request" color="info" onClick={this.acceptPromisesModal}>Cancel</Button>
                         </ModalFooter>
                       </Modal>
                       <button type="button" className="request__items__btn__delete">Delete</button>
