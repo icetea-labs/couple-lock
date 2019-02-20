@@ -307,10 +307,29 @@ img{
       border-radius: 10px;
       overflow: hidden;
     }
+    .showaddres{
+      display: inline-block;
+      width: 100%;
+      font-size: $font-smaller;
+      color: $color-violet;
+      margin-top: 10px;
+      span{
+        color: $color-grey;
+      }
+    }
     .showdate{
+      display: inline-block;
+      width: 100%;
+      font-size: $font-smaller;
+      color: $color-violet;
+      margin-top: 10px;
+      span{
+        color: $color-grey;
+      }
       input{
         border: none;
         background: none;
+        color: $color-violet;
       }
     }
     .post_input{
@@ -328,7 +347,7 @@ img{
   }
   .custom_post{
       min-height: 55px;
-      margin-top: 20px;
+      margin-top: 10px;
       display: flex;
       align-items: center;
       border-top: 1px solid $color-grey-mercury;
@@ -406,6 +425,10 @@ img{
       }
     }
     .options{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
       .place-wrapper{
         display: inline-block;
         height: 24px;
@@ -442,9 +465,6 @@ img{
           }
         }
       }
-      display: flex;
-      justify-content: center;
-      align-items: center;
       div{
         &:last-child{
           margin-right: 0;
@@ -500,9 +520,14 @@ img{
     }
   }
   .img_preview{
-    display: inline-block;
+    display: inline-flex;
+    width: 100px;
+    max-height: 100px;
+    margin-top: 10px;
+    overflow: hidden;
     img{
-      width: 80px;
+      height: auto;
+      object-fit: cover;
     }
   }
   .action{
@@ -660,6 +685,11 @@ img{
       }
       p{
         margin-top: 5px;
+      }
+      .attachments{
+        img{
+          max-width: 350px;
+        }
       }
     }
   }

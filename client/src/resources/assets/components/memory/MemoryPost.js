@@ -23,7 +23,7 @@ class MemoryPost extends Component {
       isPlace : false,
       m_message: '',
       selectFile: null,
-      startDate: new Date(),
+      startDate: null,
       openPicker: false,
       location: '',
     }
@@ -112,13 +112,13 @@ class MemoryPost extends Component {
 
   isImagePreview = () =>{
     if(this.state.selectFile){
-      return this.state.selectFile.imgPreview || "";
+      return this.state.selectFile.imgPreview;
     }
   }
   
   isEnabledShare = () => {
     const { m_message, selectFile } = this.state;
-    if(m_message.length > 0 || selectFile != null){
+    if(m_message.length > 0 && selectFile != null){
       return "false" ;
     }
   }
@@ -135,8 +135,15 @@ class MemoryPost extends Component {
           <div className="post_container clearfix">
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
-            <div className="showdate"><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
-            <div className="showaddres">{this.state.location}</div>            
+            {
+              (this.state.location.length > 0 && <div className="showaddres"><span>— in </span> {this.state.location}</div>)
+            }
+            {
+              (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
+            }
+            {
+              (this.state.startDate != null && <div className="showdate"><span>— date </span><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>)
+            }
           </div>
           <div className="custom_post">
             <div className="tags">
@@ -159,7 +166,6 @@ class MemoryPost extends Component {
               <div className="avatar_receiver"><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
-          <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
           <div className="action">
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
