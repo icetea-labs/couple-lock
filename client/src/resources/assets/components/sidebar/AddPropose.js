@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 import moment from 'moment';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
@@ -11,7 +12,7 @@ class AddPropose extends Component {
         super(props);
         this.state = {
             avatarUrl: localStorage.getItem("I_U"),
-            show_friend: true,
+            show_friend: false,
             show_promise: false,
             list_user: [],
             receiver: "",
@@ -158,13 +159,17 @@ class AddPropose extends Component {
         formData.append('r_address', this.state.publickey);
         formData.append('message', this.state.message);
         formData.append('attachment', this.state.selectFile.imgUpload);
-        console.log(formData);
 
         axios.post('/api/propose/request', formData)
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-            })
+        .then(res => {
+            // console.log(res);
+            // console.log(res.data);
+            PubSub.publish('sendPromise');
+        })
+
+        this.setState({
+            show_promise: false
+        })
     }
 
     render() {

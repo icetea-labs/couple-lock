@@ -39,7 +39,10 @@ class SideBar extends Component {
   }
 
   componentWillMount() {
-    PubSub.subscribe('listen', () => {
+    PubSub.subscribe('acceptPromise', () => {
+      this.fetchData();
+    });
+    PubSub.subscribe('sendPromise', () => {
       this.fetchData();
     });
   }
@@ -203,11 +206,9 @@ class SideBar extends Component {
         
         {/* Chose friend */}
         <AddPropose sender={window.getLoginUser()} />
+
+        {/* Show list Accepted Promise */}
         {acceptPromises.length > 0 && <h3 className="title title_promise">Accepted promise</h3>}
-        {
-          this.state.data.length > 0 && this.state.data.map((item, index) => {
-            const { activeUserId } = this.state;
-          })}
         {
           acceptPromises.length > 0 && acceptPromises.map((item, index) => {
             const { activeUserId } = this.state;
@@ -223,6 +224,7 @@ class SideBar extends Component {
             )
           })
         }
+        {/* End Show list Accepted Promise */}
         <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
       </div>
     );

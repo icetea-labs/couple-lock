@@ -50,11 +50,11 @@ class Promises extends Component {
     .then(res => {
       // console.log(res);
       // console.log(res.data);
-      PubSub.publish('listen');
+      PubSub.publish('acceptPromise');
     })
 
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
     }));
   }
 

@@ -86,6 +86,7 @@ class MemoryPost extends Component {
 
   shareMemory = (e) => {
     e.preventDefault();
+    const {m_message, selectFile} = this.state;
     const sender = window.getLoginUser();
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
@@ -93,22 +94,23 @@ class MemoryPost extends Component {
     const proposeId = this.props.proposeId;
     formData.append('proposeId', proposeId);
     formData.append('visibility', visibility);
-    formData.append('message', this.state.m_message);
+    formData.append('message', m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
-    formData.append('attachment', this.state.selectFile.imgUpload);
+    formData.append('attachment', (selectFile) ? selectFile.imgUpload : null);
 
     axios.post('/api/memory/create', formData)
     .then(res => {
       // console.log(res);
       // console.log(res.data);
-      PubSub.publish('listen');
+      PubSub.publish('shareMemory');
     })
 
     this.setState({
       m_message: "",
       selectFile: null,
       location: "",
+      startDate: new Date(),
     });
   }
 
@@ -124,7 +126,7 @@ class MemoryPost extends Component {
   
   isEnabledShare = () => {
     const { m_message, selectFile } = this.state;
-    if(m_message.length > 0 && selectFile != null){
+    if(m_message.length > 0 || selectFile != null){
       return "false" ;
     }
   }

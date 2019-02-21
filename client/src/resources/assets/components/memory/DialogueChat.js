@@ -43,7 +43,11 @@ class DialogueChat extends Component {
                       <span className="user_name color-violet" >{userName}</span>
                       <span className="time fr color-grey">{date}</span>
                       <p>{item.message}</p>
-                      <p className="attachments"><img src={item.attachments[0].url} alt="Trong ảnh có động vật" /></p>
+                      {
+                        (item.attachments[0] && item.attachments.length > 0) && <p className="attachments">
+                          <img src={item.attachments[0].url} alt="" />
+                        </p>
+                      }
                     </div>
                   </div>
                 </div>
