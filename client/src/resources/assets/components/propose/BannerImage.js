@@ -19,7 +19,6 @@ class BannerImage extends Component {
   }
 
   render() {
-    const {loginUser} = this.state;
     return (
       <div>
         {
@@ -27,7 +26,7 @@ class BannerImage extends Component {
             const id = item.id;
             const proposeId = this.props.proposeId;
             return(
-              (id === proposeId) && <div className="banner_container mg-auto" key={index}>
+              (id === proposeId && item.s_attachments.length > 0) && <div className="banner_container mg-auto" key={index}>
                 <img src={item.s_attachments[0].url} alt="" />
                 <p className="short_desc color-violet"><span className="icon-luggage"></span>
                   {item.s_attachments[0].caption}

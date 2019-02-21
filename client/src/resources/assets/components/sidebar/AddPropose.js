@@ -11,7 +11,7 @@ class AddPropose extends Component {
         super(props);
         this.state = {
             avatarUrl: localStorage.getItem("I_U"),
-            show_friend: true,
+            show_friend: false,
             show_promise: false,
             list_user: [],
             receiver: "",

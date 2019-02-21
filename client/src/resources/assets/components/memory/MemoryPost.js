@@ -3,6 +3,7 @@ import Select from 'react-select';
 import TagsInput from './TagsInput';
 import LocationSearchInput from './Places';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -22,7 +23,7 @@ class MemoryPost extends Component {
       isPlace : false,
       m_message: '',
       selectFile: null,
-      startDate: new Date(),
+      startDate: null,
       openPicker: false,
       location: '',
     }
@@ -99,11 +100,10 @@ class MemoryPost extends Component {
 
     axios.post('/api/memory/create', formData)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
+      PubSub.publish('listen');
     })
-
-    window.location.reload();
   }
 
   toggleOpenPicker = () => {
@@ -112,13 +112,13 @@ class MemoryPost extends Component {
 
   isImagePreview = () =>{
     if(this.state.selectFile){
-      return this.state.selectFile.imgPreview || "";
+      return this.state.selectFile.imgPreview;
     }
   }
   
   isEnabledShare = () => {
     const { m_message, selectFile } = this.state;
-    if(m_message.length > 0 || selectFile != null){
+    if(m_message.length > 0 && selectFile != null){
       return "false" ;
     }
   }
@@ -135,8 +135,15 @@ class MemoryPost extends Component {
           <div className="post_container clearfix">
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
             <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
-            <div className="showdate"><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>
-            <div className="showaddres">{this.state.location}</div>            
+            {
+              (this.state.location.length > 0 && <div className="showaddres"><span>— in </span> {this.state.location}</div>)
+            }
+            {
+              (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
+            }
+            {
+              (this.state.startDate != null && <div className="showdate"><span>— date </span><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>)
+            }
           </div>
           <div className="custom_post">
             <div className="tags">
@@ -156,15 +163,14 @@ class MemoryPost extends Component {
               <div className="picktime">
                 <span className="icon-today" onClick={this.toggleOpenPicker}></span><DatePicker open={this.state.openPicker} selected={this.state.startDate} onChange={this.getDate} />
               </div>
-              <div><img src={this.props.receiver.avatar} alt="" /></div>
+              <div className="avatar_receiver"><img src={this.props.receiver.avatar} alt="" /></div>
             </div>
           </div>
-          <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
           <div className="action">
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
             </div>
-            <button type="button" disabled={! this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
+            <button type="button" disabled={!this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
 import Promises from '../Promises';
@@ -16,6 +17,9 @@ class SideBar extends Component {
       loginUser: window.getLoginUser(),
       acceptPromises: [],
       deniedPromises: [],
+      show_friend: false,
+      show_promise: false,
+      avatarUrl: localStorage.getItem("I_U"),
     }
   }
 
@@ -29,9 +33,40 @@ class SideBar extends Component {
       axios.get('/api/user/all'),
       axios.get(`/api/propose/list?username=${loginUser}`)
     ])
-      .then(([res1, res2]) => {
-        this.getUsers(res1.data.data, res2.data.data)
-      });
+    .then(([res1, res2]) => {
+      this.getUsers(res1.data.data, res2.data.data)
+    }); 
+  }
+
+  componentWillMount() {
+    PubSub.subscribe('listen', () => {
+      this.fetchData();
+    });
+  }
+
+  getPromises = () => {
+    const { data } = this.state;
+    const { loginUser } = this.state;
+    const sender = this.state.user.sender;
+    const receiver = this.state.user.receiver;
+    let pId = [];
+    const acceptPromises = [];
+    const deniedPromises = [];
+
+    data.forEach((obj) => {
+      pId.push(obj.proposeId);
+      this.props.getProposeId(pId[0]);
+      if ((loginUser === sender || loginUser === receiver) && obj.r_react === 1) {
+        acceptPromises.push(obj);
+      } else if (!obj.r_react || obj.r_react === 2) {
+        deniedPromises.push(obj);
+      }
+    });
+
+    this.setState({
+      acceptPromises: [...acceptPromises],
+      deniedPromises: [...deniedPromises],
+    });
   }
 
   extractUserInfo = (username, allUser) => {
@@ -95,22 +130,7 @@ class SideBar extends Component {
     this.props.proposeIdChanged(pId);
   }
 
-  getPromises = () => {
-    const { data } = this.state;
-    const { loginUser } = this.state;
-    const sender = this.state.user.sender;
-    const receiver = this.state.user.receiver;
-    let pId = [];
-    data.forEach((key) => {
-      pId.push(key.proposeId);
-      this.props.getProposeId(pId[0]);
-      if ((loginUser === sender || loginUser === receiver) && key.r_react === 1) {
-        this.state.acceptPromises.push(key);
-      } else if (!key.r_react || key.r_react === 2) {
-        this.state.deniedPromises.push(key);
-      }
-    })
-  }
+  
 
   render() {
     const { acceptPromises } = this.state;
@@ -133,7 +153,7 @@ class SideBar extends Component {
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>
-                  <div className="sidebar__item__detail__username">{item.username}</div>
+                  <div className="sidebar__item__detail__username">@{item.username}</div>
                 </div>
               </div>
             )
