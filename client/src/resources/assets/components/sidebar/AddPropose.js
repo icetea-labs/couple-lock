@@ -165,6 +165,10 @@ class AddPropose extends Component {
                 console.log(res);
                 console.log(res.data);
             })
+        
+        this.setState({
+            show_promise: false
+        })
     }
 
     render() {
@@ -241,7 +245,7 @@ class AddPropose extends Component {
                             {this.state.location}
                         </div>
                         <div>
-                            <img src={this.state.selectFile.imgPreview} alt="" />
+                            <img src={this.state.selectFile.imgPreview} alt="" width="100px" height="100px" />
                         </div>
                     </ModalBody>
                     <ModalFooter>
