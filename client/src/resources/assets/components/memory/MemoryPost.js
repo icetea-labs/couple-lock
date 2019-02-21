@@ -134,7 +134,9 @@ class MemoryPost extends Component {
   }
 
   render() {
-    const { selectedOption } = this.state;
+    const { selectedOption, startDate } = this.state;
+    const currentDate = moment(this.state.startDate).format("MM/DD/YYYY");
+    const selectDate = moment(Date.now()).format("MM/DD/YYYY");
     return (
       <div className="memorypost mg-auto">
         <div className="memorypost__content">
@@ -148,7 +150,7 @@ class MemoryPost extends Component {
               (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
             }
             {
-              (this.state.startDate != null && <div className="showdate"><span>— date </span><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>)
+              (selectDate != currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
             }
           </div>
           <div className="custom_post">

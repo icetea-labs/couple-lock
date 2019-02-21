@@ -4,6 +4,7 @@ import PubSub from 'pubsub-js';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
 import Promises from './Promises';
+import AddPropose from './AddPropose';
 
 class SideBar extends Component {
   constructor(props) {
@@ -20,30 +21,6 @@ class SideBar extends Component {
       show_promise: false,
       avatarUrl: localStorage.getItem("I_U"),
     }
-
-    this.handleShowListFriend = this.handleShowListFriend.bind(this);
-    this.handleShowToProMise = this.handleShowToProMise.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-
-  }
-
-  handleClose() {
-    this.setState({
-      show_friend: false,
-      show_promise: false,
-    });
-  }
-
-  handleShowListFriend() {
-    this.setState({
-      show_friend: true
-    });
-  }
-
-  handleShowToProMise() {
-    this.setState({
-      show_promise: true
-    })
   }
 
   componentDidMount() {
@@ -159,7 +136,7 @@ class SideBar extends Component {
     const { acceptPromises } = this.state;
     return (
       <div className="sidebar">
-        <button type="button" className="btn_add_promise" onClick={this.handleShowListFriend}><span className="icon-ic-add"></span>Add Promise</button>
+        {/* <button type="button" className="btn_add_promise" onClick={this.handleShowListFriend}><span className="icon-ic-add"></span>Add Promise</button> */}
         {/* Chose friend */}
         <Modal className="add_friend" isOpen={this.state.show_friend} toggle={this.toggle} >
           <ModalHeader >
@@ -223,8 +200,14 @@ class SideBar extends Component {
             <Button className="button-send" onClick={this.handleClose}>send</Button>
           </ModalFooter>
         </Modal >
-
+        
+        {/* Chose friend */}
+        <AddPropose sender={window.getLoginUser()} />
         {acceptPromises.length > 0 && <h3 className="title title_promise">Accepted promise</h3>}
+        {
+          this.state.data.length > 0 && this.state.data.map((item, index) => {
+            const { activeUserId } = this.state;
+          })}
         {
           acceptPromises.length > 0 && acceptPromises.map((item, index) => {
             const { activeUserId } = this.state;

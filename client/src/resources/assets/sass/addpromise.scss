@@ -59,6 +59,43 @@ body{
                 border-color: rgba(152, 14, 250, 0.707);
                 font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             }
+
+            input::placeholder{
+                margin-left: 10px;
+            }
+
+            ul{
+                padding: 10px;
+                background-color: gainsboro;
+                margin-top: 10px;
+                list-style-type: none;
+                overflow-y: auto;
+                position: absolute;
+                width: 90%;
+                max-height: 70%;
+                .label__search{
+                    background-color: cadetblue;
+                    color: white;
+                    border-radius: 3px;
+                    border: solid gray 1px;
+                    width: 50%;
+                    margin-top: 10px;
+                    padding-left: 20px;
+                    height: 35px;
+                    
+                }
+
+                .label__search:hover{
+                    cursor: pointer;
+                }
+            }
+            .filter_img{
+                width: 30px;
+                height: 30px;
+                float: right;
+                border: gray solid 1px;
+                border-radius: 50%;
+            }
         }
 
         .modal-footer{
@@ -105,10 +142,19 @@ body{
             .header_add {
                 float: center;
                 text-align: center;
-                margin: auto;
                 color: azure;
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
                 font-size: 25px !important;
+                display: flex;
+                padding-top: 10px;
+                i{
+                    cursor: pointer;
+                }
+                p{
+                    position: absolute;
+                    left: 40px;
+                    top: 5px;
+                }
             }
 
             .btn_close{
@@ -118,6 +164,7 @@ body{
                 font-size: 30px;
                 position: absolute;
                 right: 10px;
+                top: 3px;
             }
 
             button{
@@ -188,9 +235,21 @@ body{
                     margin: 10px;
                     margin-right: 5%;
                     margin-left: 5%;
-                    padding: 5px;
+                    padding-right:  10px;
+                    padding-left:10px;
                     height: 35px;
                     display: inline-flex;
+
+                    span{
+                        width: 20px;
+                        height: 20px;
+                        position: relative;
+                        top: 6px;
+                    }
+
+                    label{
+                        margin-top: 5px;
+                    }
                 }
 
                 .more-infor:hover {

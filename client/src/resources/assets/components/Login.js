@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../sass/login.scss';
 import GoogleLogin from 'react-google-login';
 import { Grid, Col, Row } from 'react-bootstrap';
+import MaterialIcon, { mail } from 'material-icons-react';
 
 class Login extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class Login extends Component {
                         <GoogleLogin
                             clientId={this.state.googleApp}
                             render={renderProps => (
-                                <button className="btn_google_login" onClick={renderProps.onClick} >Login with Google</button>
+                                <button className="btn_google_login" onClick={renderProps.onClick} ><MaterialIcon icon="mail" width="20px" height="20px" color="white" />Login with Google</button>
                             )}
                             buttonText="Login"
                             onSuccess={this.showProfileGoogle}
