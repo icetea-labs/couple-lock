@@ -8,6 +8,7 @@ import DialogueChat from './memory/DialogueChat';
 import RecentChat from './propose/RecentChat';
 import SideBar from './sidebar/SideBar';
 import ChatBox from './message/ChatBox';
+import FriendList from './friendlist/FriendList';
 
 
 class Home extends Component {
@@ -104,8 +105,10 @@ class Home extends Component {
             </div>
           </div>
           <ChatBox></ChatBox>
+          <FriendList />
         </div>
       </Layout>
+      
     );
   }
 }

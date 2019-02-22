@@ -246,7 +246,7 @@ class AddPropose extends Component {
                             {this.state.location}
                         </div>
                         <div>
-                            <img src={this.state.selectFile.imgPreview} alt="" />
+                            <img src={this.state.selectFile.imgPreview} alt="" width="100px" height="100px" />
                         </div>
                     </ModalBody>
                     <ModalFooter>
