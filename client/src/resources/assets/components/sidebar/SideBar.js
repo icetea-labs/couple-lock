@@ -5,6 +5,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
 import Promises from './Promises';
 import AddPropose from './AddPropose';
+import PopularTag from './PopularTag';
 
 class SideBar extends Component {
   constructor(props) {
@@ -226,6 +227,7 @@ class SideBar extends Component {
         }
         {/* End Show list Accepted Promise */}
         <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
+        <PopularTag />
       </div>
     );
   }

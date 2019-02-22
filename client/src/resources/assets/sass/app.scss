@@ -677,11 +677,11 @@ img{
       .user_name{
         font-size: $font-root;
         font-weight: 600;
-        margin-right: 15px;
         text-transform: capitalize;
       }
       .time{
         padding-top: 2px;
+        margin-left: 15px;
       }
       p{
         margin-top: 5px;
@@ -689,6 +689,13 @@ img{
       .attachments{
         img{
           max-width: 350px;
+        }
+      }
+      .location{
+        i{
+          color: $color-violet;
+          font-size: $font-root;
+          font-style: normal;
         }
       }
     }
@@ -757,6 +764,7 @@ img{
     }
   }
   .request_promises{
+    margin-bottom: 18px;
     .request__items{
       display: flex;
       align-items: center;
@@ -769,11 +777,12 @@ img{
         border-bottom: none;
       }
       &__avatar{
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        float: left;
-        overflow: hidden;
+          width: 36px;
+        img{
+          border-radius: 50%;
+          float: left;
+          overflow: hidden;
+        }
       }
       &__displayname{
         font-size: 14px;
@@ -832,5 +841,23 @@ img{
   .cancel_promises_request{
     border: none;
     color: $color-white;
+  }
+}
+
+.popular_tags{
+  .popular_tags__list{
+    ul{
+      display: inline-block;
+      margin-bottom: 0;
+    }
+    li{
+      list-style: none;
+      font-size: $font-smaller;
+      font-weight: 600;
+      line-height: 1.75;
+      margin-right: 10px;
+      color: $color-violet;
+      float: left;
+    }
   }
 }

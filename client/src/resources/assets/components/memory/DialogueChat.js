@@ -30,8 +30,9 @@ class DialogueChat extends Component {
         <div className="box">
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
+              // console.log(item.attachments[0].location && item.attachments[0].location.name.length > 0)
               const num = parseInt(item.timestamp);
-              const date = moment(num).format("MM/DD/YYYY - h:mm:ss a");
+              const date = moment(num).format("MM/DD/YYYY");
               const className = (sender.username === item.sender) ? "sender" : "receiver";
               const avatar = (sender.username === item.sender) ? sender.avatar : receiver.avatar;
               const userName = (sender.username === item.sender) ? sender.username : item.sender;
@@ -41,6 +42,9 @@ class DialogueChat extends Component {
                     <div className="user_photo fl"><img src={avatar} alt="" /></div>
                     <div className="content_detail fl clearfix">
                       <span className="user_name color-violet" >{userName}</span>
+                      {
+                        (item.attachments[0] && item.attachments[0].location) && <span className="location"> is at <i>{item.attachments[0].location.name}</i></span>
+                      }
                       <span className="time fr color-grey">{date}</span>
                       <p>{item.message}</p>
                       {

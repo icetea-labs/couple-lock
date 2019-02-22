@@ -86,7 +86,7 @@ class MemoryPost extends Component {
 
   shareMemory = (e) => {
     e.preventDefault();
-    const {m_message, selectFile} = this.state;
+    const {m_message, selectFile, location} = this.state;
     const sender = window.getLoginUser();
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
@@ -98,6 +98,7 @@ class MemoryPost extends Component {
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
     formData.append('attachment', (selectFile) ? selectFile.imgUpload : null);
+    // formData.append('location', location)
 
     axios.post('/api/memory/create', formData)
     .then(res => {
@@ -152,7 +153,7 @@ class MemoryPost extends Component {
               (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
             }
             {
-              (selectDate != currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
+              (selectDate !== currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
             }
           </div>
           <div className="custom_post">
