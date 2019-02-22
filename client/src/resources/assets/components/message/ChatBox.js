@@ -26,7 +26,8 @@ class ChatBox extends Component {
             message: null,
             avatarURL: localStorage.getItem("img_url"),
             test: null,
-            db: firebase.firestore().collection("chat_database").doc("couple").collection("chat_rooms")
+            db: firebase.firestore().collection("chat_data_bases").doc("couple").collection("chat_rooms"),
+            id: localStorage.getItem("U_I")
         }
 
         this.listenMessages = this.listenMessages.bind(this);
@@ -38,9 +39,11 @@ class ChatBox extends Component {
     }
 
     componentWillMount() {
+    
 
-        this.messageRef = this.state.db.doc("chat_room_1").collection("messages").get().then(snapShot => {
-            console.log(snapShot)
+        this.messageRef = this.state.db.doc("chat_room_1").collection("messages");
+        this.messageRef.doc("message_1").get().then(snapShot => {
+            console.log(snapShot.data())
         }).catch(error => {
             console.log(error);
         })
@@ -90,8 +93,11 @@ class ChatBox extends Component {
             message_item: this.state.message,
         }
 
-        this.displayChat.push(<p id="lb_message">{this.state.message_input}</p>);
-        this.messageRef.put(newItem);
+        this.displayChat.push(<p id="my_message">{this.state.message_input}</p>);
+        this.messageRef.doc("message_1").set({
+            content: this.state.message,
+            owner: this.state.id,
+        })
         this.setState({
             message_input: ''
         })
@@ -106,16 +112,15 @@ class ChatBox extends Component {
             <div className="chat_box" style={{ display: this.state.hidden ? 'block' : 'none' }}>
 
                 <div className="header__box" onClick={this.hiddenMessage} >
-                    <label>Sotatek</label>
+                    <label>Paulra</label>
                     <button className="btn_close" onClick={this.hiddenChat}>x</button>
                 </div>
                 <div className="chat__content" style={{ display: this.state.seechat ? 'block' : 'none' }}>
                     <div>
                     </div>
-
                     <div className="inside_message">
                         <img src={this.state.avatarURL} />
-                        <label> Chào người anh em </label>
+                        <p id="friend_message" >Chào người anh em</p>
                     </div>
                     <div className="chat-container">
                         {this.displayChat}

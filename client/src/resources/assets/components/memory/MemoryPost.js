@@ -23,7 +23,7 @@ class MemoryPost extends Component {
       isPlace : false,
       m_message: '',
       selectFile: null,
-      startDate: null,
+      startDate: new Date(),
       openPicker: false,
       location: '',
     }
@@ -104,6 +104,12 @@ class MemoryPost extends Component {
       // console.log(res.data);
       PubSub.publish('listen');
     })
+
+    this.setState({
+      m_message: "",
+      selectFile: null,
+      location: "",
+    });
   }
 
   toggleOpenPicker = () => {
@@ -128,13 +134,15 @@ class MemoryPost extends Component {
   }
 
   render() {
-    const { selectedOption } = this.state;
+    const { selectedOption, startDate } = this.state;
+    const currentDate = moment(this.state.startDate).format("MM/DD/YYYY");
+    const selectDate = moment(Date.now()).format("MM/DD/YYYY");
     return (
       <div className="memorypost mg-auto">
         <div className="memorypost__content">
           <div className="post_container clearfix">
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
-            <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue }></textarea>
+            <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue } value={this.state.m_message}></textarea>
             {
               (this.state.location.length > 0 && <div className="showaddres"><span>— in </span> {this.state.location}</div>)
             }
@@ -142,7 +150,7 @@ class MemoryPost extends Component {
               (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
             }
             {
-              (this.state.startDate != null && <div className="showdate"><span>— date </span><input value={moment(this.state.startDate).format("MM/DD/YYYY")} disabled="disabled"/></div>)
+              (selectDate != currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
             }
           </div>
           <div className="custom_post">

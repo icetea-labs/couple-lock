@@ -7,6 +7,7 @@ import './resources/assets/sass/login.scss';
 import './resources/assets/sass/seed.scss';
 import './resources/assets/sass/chatbox.scss';
 import './resources/assets/sass/addpromise.scss';
+import './resources/assets/sass/list_friend.scss';
 import Home from './resources/assets/components/Home';
 import Login from './resources/assets/components/Login';
 import Profile from './resources/assets/components/Profile';

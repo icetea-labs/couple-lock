@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import moment from 'moment';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
 import LocationSearchInput from '../memory/Places';
@@ -60,7 +59,7 @@ class AddPropose extends Component {
                         <img src={this.state.list_user[i].avatar} className="filter_img" alt="Friend" />
                     </li>)
                 this.state.username[i] = this.state.list_user[i].username;
-                console.log(this.state.list_user[i]);
+                // console.log(this.state.list_user[i]);
             }
         })
     }

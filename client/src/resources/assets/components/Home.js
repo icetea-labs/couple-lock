@@ -8,6 +8,7 @@ import DialogueChat from './memory/DialogueChat';
 import RecentChat from './propose/RecentChat';
 import SideBar from './sidebar/SideBar';
 import ChatBox from './message/ChatBox';
+import FriendList from './friendlist/FriendList';
 
 
 class Home extends Component {
@@ -52,10 +53,10 @@ class Home extends Component {
     const {proposeId} = this.state;
     if(proposeId !== null){
       axios.get(`/api/propose/details?id=${proposeId}`)
-        .then(propose => {
-          this.getUsers(propose.data.data.sender, propose.data.data.receiver);
-          this.setState({ proposeList: propose.data.data });
-        })
+      .then(propose => {
+        this.getUsers(propose.data.data.sender, propose.data.data.receiver);
+        this.setState({ proposeList: propose.data.data });
+      })
     }
   }
 
@@ -95,8 +96,10 @@ class Home extends Component {
             </div>
           </div>
           <ChatBox></ChatBox>
+          <FriendList />
         </div>
       </Layout>
+      
     );
   }
 }

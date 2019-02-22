@@ -31,7 +31,7 @@ class DialogueChat extends Component {
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
               const num = parseInt(item.timestamp);
-              const date = moment(num).format("MM/DD/YYYY");
+              const date = moment(num).format("MM/DD/YYYY - h:mm:ss a");
               const className = (sender.username === item.sender) ? "sender" : "receiver";
               const avatar = (sender.username === item.sender) ? sender.avatar : receiver.avatar;
               const userName = (sender.username === item.sender) ? sender.username : item.sender;

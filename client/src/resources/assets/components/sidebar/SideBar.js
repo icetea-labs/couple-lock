@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
-import Promises from '../Promises';
+import Promises from './Promises';
 import AddPropose from './AddPropose';
+import FriendList from '../friendlist/FriendList';
 
 class SideBar extends Component {
   constructor(props) {
@@ -33,9 +32,9 @@ class SideBar extends Component {
       axios.get('/api/user/all'),
       axios.get(`/api/propose/list?username=${loginUser}`)
     ])
-    .then(([res1, res2]) => {
-      this.getUsers(res1.data.data, res2.data.data)
-    }); 
+      .then(([res1, res2]) => {
+        this.getUsers(res1.data.data, res2.data.data)
+      });
   }
 
   componentWillMount() {
@@ -130,16 +129,16 @@ class SideBar extends Component {
     this.props.proposeIdChanged(pId);
   }
 
-  
+
 
   render() {
     const { acceptPromises } = this.state;
     return (
       <div className="sidebar">
-        
+
         {/* Chose friend */}
         <AddPropose sender={window.getLoginUser()} />
-        <h3 className="title_promise">Accepted promise</h3>
+        {acceptPromises.length > 0 && <h3 className="title title_promise">Accepted promise</h3>}
         {
           this.state.data.length > 0 && this.state.data.map((item, index) => {
             const { activeUserId } = this.state;
