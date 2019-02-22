@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import Config from '../firebase/Config';
 import Message from './Message';
-import { error } from 'util';
-
+import PubSub from 'pubsub-js';
 firebase.initializeApp(Config);
 // Initialize Cloud Firestore through Firebase
 
@@ -23,38 +22,37 @@ class ChatBox extends Component {
                 { item: 2, index: "test2" }
             ],
             message_input: '',
-            message: null,
             avatarURL: localStorage.getItem("img_url"),
-            test: null,
             db: firebase.firestore().collection("chat_data_bases").doc("couple").collection("chat_rooms"),
-            id: localStorage.getItem("U_I")
+            id: localStorage.getItem("U_I"),
+            messageRef: '',
+            load_message: [],
+            ramdom_id_message: "",
+            possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+            messages: [],
         }
-
-        this.listenMessages = this.listenMessages.bind(this);
-        this.displayChat = []
-        this.handleSend = this.handleSend.bind(this);
+        this.displayChat = [];
         this.hiddenMessage = this.hiddenMessage.bind(this);
-        this.hiddenChat = this.hiddenChat.bind(this);
         this.handleChange = this.handleChange.bind(this);
+
     }
 
     componentWillMount() {
-    
-
         this.messageRef = this.state.db.doc("chat_room_1").collection("messages");
-        this.messageRef.doc("message_1").get().then(snapShot => {
-            console.log(snapShot.data())
-        }).catch(error => {
-            console.log(error);
-        })
-    }
+        // this.messageRef.get().then(snapShot => {
+        //     console.log(snapShot.data())
+        // }).catch(error => {
+        //     console.log(error);
+        // })
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.user) {
-            this.setState({
-                userName: nextProps.user.displayName
-            })
-        }
+        this.messageRef.get()
+            .then(querySnapDocument => {
+                querySnapDocument.forEach((doc) => {
+                    this.state.messages = doc.data();
+                    console.log(this.state.messages);
+                    this.displayChat.push(<div key={doc.data().id} id="my_message"><span>{this.state.messages.content}</span></div>);
+                })
+            });
     }
 
     hiddenMessage() {
@@ -67,10 +65,9 @@ class ChatBox extends Component {
                 seechat: true
             })
         }
-
     }
 
-    hiddenChat() {
+    hiddenChat = () => {
         this.setState({
             hidden: false
         })
@@ -82,31 +79,33 @@ class ChatBox extends Component {
         })
     }
 
-    handleSend() {
-        this.setState({
-            userName: this.state.userName,
-            message: this.state.message_input
-        })
+    handleSend = () => {
 
-        var newItem = {
-            userName_item: this.state.userName,
-            message_item: this.state.message,
+        for (let i = 0; i < 20; i++) {
+            this.state.ramdom_id_message += this.state.possible.charAt(Math.floor(Math.random() * 20));
         }
 
-        this.displayChat.push(<p id="my_message">{this.state.message_input}</p>);
-        this.messageRef.doc("message_1").set({
-            content: this.state.message,
+        this.messageRef.doc(this.state.ramdom_id_message).set({
+            content: this.state.message_input,
             owner: this.state.id,
-        })
+            timestamp: Date.now(),
+            id: this.state.ramdom_id_message,
+        });
+
+        this.state.messages = [];
+        this.messageRef.get()
+            .then((querySnapDocument) => {
+                this.displayChat = [];
+                querySnapDocument.forEach(
+                    (doc) => {
+                        this.state.messages = doc.data();
+                        this.displayChat.push(<div key={doc.data().id} id="my_message"><span>{this.state.messages.content}</span></div>);
+                    })
+            });
         this.setState({
             message_input: ''
         })
     }
-
-    listenMessages() {
-        console.log(this.state.list)
-    }
-
     render() {
         return (
             <div className="chat_box" style={{ display: this.state.hidden ? 'block' : 'none' }}>
@@ -120,11 +119,15 @@ class ChatBox extends Component {
                     </div>
                     <div className="inside_message">
                         <img src={this.state.avatarURL} />
-                        <p id="friend_message" >Chào người anh em</p>
+                        <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
+
                     </div>
-                    <div className="chat-container">
+
+                    <div className="content_message">
                         {this.displayChat}
                     </div>
+
+
                 </div>
 
                 <div className="chat__send" style={{ display: this.state.seechat ? 'block' : 'none' }} >
