@@ -17,8 +17,12 @@ router.get('/list', checkSchema({ proposeId: route.stringSchema() }), (req, res)
 router.post('/create', upload.single("attachment"), checkSchema({
   proposeId: route.stringSchema('body'),
   sender: route.stringSchema('body'),
-  message: route.stringSchema('body')
+  //message: route.stringSchema('body')
 }), (req, res) => {
+
+  if (!req.body.message && !req.file && !req.body.locationName) {
+    return res.status(400).send('Memory must have a message or attachment.');
+  }
 
   const item = {
     proposeId: req.body.proposeId,
@@ -36,6 +40,15 @@ router.post('/create', upload.single("attachment"), checkSchema({
     item.attachments.push({
       type: 'photo',
       url: "/uploads/" + req.file.filename,
+    })
+  }
+
+  if (req.body.locationName) {
+    item.attachments.push({
+      type: 'location',
+      name: req.body.locationName,
+      lat: req.body.locationLat,
+      long: req.body.locationLong
     })
   }
 
