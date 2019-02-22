@@ -73,25 +73,45 @@
         }
     }
 
-    #my_message{
-        border: rgba(137, 43, 226, 0.455);
-        background-color: rgba(127, 255, 212, 0.68);
-        border-radius: 15px;
-        padding: 6px;
-        margin-left: 150px;
-        margin-top: 2px;
-        width: auto;
-        max-width: 150px;
+    .content_message{
+        height: auto;
+        position: inherit;
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+       height: 100%;
+    
+
+        #friend_message{
+            border: rgba(137, 43, 226, 0.455);
+            background-color: rgba(168, 127, 255, 0.68);
+            border-radius: 15px;
+            padding: 6px;
+            margin-left: 10px;
+            margin-top: 2px;
+            width: auto;
+            max-width: 150px;
+        }
     }
 
-    #friend_message{
+    #my_message{
+        float: right;
+        top: 5px;
+        right: 5px;
         border: rgba(137, 43, 226, 0.455);
-        background-color: rgba(168, 127, 255, 0.68);
-        border-radius: 15px;
-        padding: 6px;
-        margin-left: 10px;
+      
+        width: 150px !important;
+        padding: 3px;
         margin-top: 2px;
         width: auto;
-        max-width: 150px;
+        height: auto;
+        span{
+            float: right;
+            padding: 10px;
+            background-color: rgba(127, 255, 212, 0.68);
+            border-radius: 15px;
+        }
     }
+
+  
 }

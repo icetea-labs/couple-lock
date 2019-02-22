@@ -11,7 +11,7 @@
     z-index: 2;
     right: 3%;
     top: 100px;
-    p{
+    label{
         border-radius: 3px;
         background-color: rgba(128, 128, 128, 0.557);
         border: solid black 1px;
@@ -27,14 +27,18 @@
     box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     margin-top: 15px;
-
-    ._is_online{
+    span{
         width: 10px;
         height: 10px;
-        border-radius: 50%;
+    }
+
+    ._is_online{
         position: relative;
         top: 10px;
         left: 10px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
     }
 
 }

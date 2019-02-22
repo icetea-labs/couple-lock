@@ -15,8 +15,8 @@ class FriendList extends Component {
     render() {
         return (
             <div className="list_friend">
-                <p><div className="_is_online" style={ this.state._is_online ? {backgroundColor: "red"} : {backgroundColor: "green"} }></div>Paula</p>
-                <p><div className="_is_online" style={ this.state._is_online ? {backgroundColor: "red"} : {backgroundColor: "green"}}></div>Sota</p>
+                <label><div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>Paula</label>
+                <label><div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>Sota</label>
             </div>
         )
     }
