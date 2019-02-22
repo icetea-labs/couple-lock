@@ -25,7 +25,7 @@ router.post('/create', upload.single("attachment"), checkSchema({
     visibility: req.body.visibility || 1,
     timestamp: req.body.timestamp || Date.now(),
     sender: req.body.sender,
-    message: req.body.message || null,
+    message: req.body.message,
     attachments: [] || null,
   }
 

@@ -51,6 +51,7 @@ class Promises extends Component {
       // console.log(res);
       // console.log(res.data);
       PubSub.publish('acceptPromise');
+      PubSub.publish('refreshProposeDetail');
     })
 
     this.setState(prevState => ({
