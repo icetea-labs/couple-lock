@@ -98,12 +98,14 @@ class MemoryPost extends Component {
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
     formData.append('attachment', (selectFile) ? selectFile.imgUpload : null);
-    // formData.append('location', location)
+    formData.append('locationName', location);
+    formData.append('locationLat', 10);
+    formData.append('locationLong', 10);
 
     axios.post('/api/memory/create', formData)
     .then(res => {
-      // console.log(res);
-      // console.log(res.data);
+      console.log(res);
+      console.log(res.data);
       PubSub.publish('shareMemory');
     })
 
