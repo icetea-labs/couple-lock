@@ -93,6 +93,7 @@ class ChatBox extends Component {
         });
 
         this.state.messages = [];
+        
         this.messageRef.get()
             .then((querySnapDocument) => {
                 this.displayChat = [];
@@ -106,6 +107,7 @@ class ChatBox extends Component {
             message_input: ''
         })
     }
+
     render() {
         return (
             <div className="chat_box" style={{ display: this.state.hidden ? 'block' : 'none' }}>
