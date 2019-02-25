@@ -37,9 +37,11 @@ class BannerImage extends Component {
                 </p>
               </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments.length > 0) && <div className="banner_container mg-auto" key={index}>
                 <img src={item.r_attachments[0].url} alt="" />
-                <p className="short_desc color-violet"><span className="icon-luggage"></span>
+                {
+                  (item.r_attachments[0].caption) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
                   {item.r_attachments[0].caption}
-                </p>
+                  </p>
+                }
               </div>
             )
           })
