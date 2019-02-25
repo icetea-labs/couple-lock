@@ -49,7 +49,7 @@ class ChatBox extends Component {
             .then(querySnapDocument => {
                 querySnapDocument.forEach((doc) => {
                     this.state.messages = doc.data();
-                    console.log(this.state.messages);
+                    // console.log(this.state.messages);
                     this.displayChat.push(<div key={doc.data().id} id="my_message"><span>{this.state.messages.content}</span></div>);
                 })
             });
