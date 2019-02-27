@@ -861,3 +861,49 @@ img{
     }
   }
 }
+
+.promise_popup{
+  .request__items{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+    &__avatar{
+      width: 80px;
+      height: 80px;
+      border:1px solid $color-violet;
+      border-radius: 3px;
+      padding: 3px;
+      margin-right: 15px;
+      overflow: hidden;
+    }
+    &__displayname{
+      font-size: $font-root;
+      color: $color-grey-shuttle;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    &__username{
+      font-size: $font-smaller;
+      color: $color-violet;
+      font-weight: 500;
+    }
+    &__btn__accept, &__btn__delete{
+      background: $color-violet;
+      color: $color-white;
+      font-weight: 600;
+      padding: 3px 6px;
+      border-radius: 3px;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    &__btn__delete{
+      background: $color-grey-dark;
+    }
+  }
+  button{
+    background: none;
+  }
+}

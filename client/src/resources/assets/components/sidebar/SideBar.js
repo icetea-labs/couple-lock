@@ -4,6 +4,7 @@ import PubSub from 'pubsub-js';
 import Promises from './Promises';
 import AddPropose from './AddPropose';
 import PopularTag from './PopularTag';
+import PopupPromise from './PopupPromise';
 
 class SideBar extends Component {
   constructor(props) {
@@ -161,7 +162,8 @@ class SideBar extends Component {
         }
         {/* End Show list Accepted Promise */}
         <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
-        <PopularTag />
+        <PopupPromise user={this.state.user} deniedPromises={this.state.deniedPromises}/>
+        <PopularTag deniedPromises={this.state.deniedPromises}/>
       </div>
     );
   }
