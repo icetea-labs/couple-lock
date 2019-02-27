@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import Config from '../firebase/Config';
 import Message from './Message';
 import PubSub from 'pubsub-js';
+import { number, string, object } from 'prop-types';
 firebase.initializeApp(Config);
 // Initialize Cloud Firestore through Firebase
 
@@ -17,42 +18,65 @@ class ChatBox extends Component {
             useName: 'tranviet',
             seechat: false,
             hidden: true,
-            list: [
-                { item: 1, index: "test1" },
-                { item: 2, index: "test2" }
-            ],
             message_input: '',
             avatarURL: localStorage.getItem("img_url"),
-            db: firebase.firestore().collection("chat_data_bases").doc("couple").collection("chat_rooms"),
             id: localStorage.getItem("U_I"),
-            messageRef: '',
             load_message: [],
             ramdom_id_message: "",
             possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
             messages: [],
+            list_message: [],
         }
         this.displayChat = [];
         this.hiddenMessage = this.hiddenMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
 
     }
 
-    componentWillMount() {
-        this.messageRef = this.state.db.doc("chat_room_1").collection("messages");
-        // this.messageRef.get().then(snapShot => {
-        //     console.log(snapShot.data())
-        // }).catch(error => {
-        //     console.log(error);
-        // })
+    fetchMessageData() {
+        var arrayMessage = [];
+        var messages = [];
+        var temp = 0;
+        firebase.firestore()
+            .collection("chat_data_bases")
+            .doc("couple")
+            .collection("chat_rooms")
+            .doc("chat_room_1")
+            .collection("messages")
+            .get().then((querySnapDocument) => {
+                querySnapDocument.forEach(
+                    (doc) => {
+                        messages.push(doc.data());
+                        arrayMessage.push(doc.data().timestamp);
+                    });
 
-        this.messageRef.get()
-            .then(querySnapDocument => {
-                querySnapDocument.forEach((doc) => {
-                    this.state.messages = doc.data();
-                    console.log(this.state.messages);
-                    this.displayChat.push(<div key={doc.data().id} id="my_message"><span>{this.state.messages.content}</span></div>);
-                })
-            });
+                arrayMessage.sort();
+                console.log(querySnapDocument.docs.length);
+
+                for (let i = 0; i < querySnapDocument.docs.length; i++) {
+                    var sortMessage = messages.filter(
+                        (value) => {
+                            return value.timestamp === arrayMessage[i]
+                        }
+                    );
+                    console.log('sm:' + sortMessage);
+                    this.state.list_message.push(sortMessage[0]);
+                }
+
+                for (let i = 0; i < querySnapDocument.docs.length; i++) {
+                    this.displayChat.push(<div key={this.state.list_message[i].id} id="my_message"><span>{this.state.list_message[i].content}</span></div>);
+                }
+            })
+
+        console.log(temp);
+        console.log('all mess', messages);
+        console.log('sorted', arrayMessage);
+        console.log('list', this.state.list_message);
+    }
+
+    componentWillMount() {
+        PubSub.subscribe('reload', this.fetchMessageData());
     }
 
     hiddenMessage() {
@@ -85,27 +109,21 @@ class ChatBox extends Component {
             this.state.ramdom_id_message += this.state.possible.charAt(Math.floor(Math.random() * 20));
         }
 
-        this.messageRef.doc(this.state.ramdom_id_message).set({
-            content: this.state.message_input,
-            owner: this.state.id,
-            timestamp: Date.now(),
-            id: this.state.ramdom_id_message,
-        });
-
-        this.state.messages = [];
-        
-        this.messageRef.get()
-            .then((querySnapDocument) => {
-                this.displayChat = [];
-                querySnapDocument.forEach(
-                    (doc) => {
-                        this.state.messages = doc.data();
-                        this.displayChat.push(<div key={doc.data().id} id="my_message"><span>{this.state.messages.content}</span></div>);
-                    })
+        firebase.firestore()
+            .collection("chat_data_bases")
+            .doc("couple")
+            .collection("chat_rooms")
+            .doc("chat_room_1")
+            .collection("messages")
+            .doc(this.state.ramdom_id_message).set({
+                content: this.state.message_input,
+                owner: this.state.id,
+                timestamp: Date.now(),
+                id: this.state.ramdom_id_message,
             });
-        this.setState({
-            message_input: ''
-        })
+        // TODO: Reload database in message
+
+        PubSub.publish('reload');
     }
 
     render() {
@@ -122,14 +140,11 @@ class ChatBox extends Component {
                     <div className="inside_message">
                         <img src={this.state.avatarURL} />
                         <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
-
                     </div>
 
                     <div className="content_message">
-                        {this.displayChat}
+                        <Message owner= {window.getLoginUser()}  />
                     </div>
-
-
                 </div>
 
                 <div className="chat__send" style={{ display: this.state.seechat ? 'block' : 'none' }} >
