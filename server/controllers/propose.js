@@ -6,11 +6,13 @@ var express = require('express')
 
   const upload = require('../helpers/upload');
 
-  router.get('/details', async (req, res) => {
-    route.tryJson(res, Propose.one, req.query.id);
+  router.get('/details', checkSchema({
+    id: route.stringSchema(),
+  }), (req, res) => {
+    route.validateTryJson(req, res, validationResult, Propose.one, req.query.id);
   })
   
-  router.get('/list', async (req, res) => {
+  router.get('/list', (req, res) => {
     route.tryJson(res, Propose.list, req.query.username);
   })
 
@@ -68,6 +70,17 @@ var express = require('express')
     console.log(item);
   
     route.validateTryJson(req, res, validationResult, Propose.update, req.body.id, item);
+  })
+
+  router.get('/viewed', checkSchema({
+    id: route.stringSchema(),
+  }), (req, res) => {
+  
+    const item = {
+      viewed: true
+    }
+  
+    route.validateTryJson(req, res, validationResult, Propose.update, req.query.id, item);
   })
 
 module.exports = router
