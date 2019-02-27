@@ -10,7 +10,7 @@ exports.list = async (username, cb) => {
     return store.list({
         sender: username,
         receiver: username
-    })
+    }, cb)
 }
 
 exports.insert = async (data, cb) => {
