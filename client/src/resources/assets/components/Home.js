@@ -9,7 +9,8 @@ import RecentChat from './propose/RecentChat';
 import SideBar from './sidebar/SideBar';
 import ChatBox from './message/ChatBox';
 import FriendList from './friendlist/FriendList';
-
+import ChangUser from './test/ChangeUser';
+import Redux from 'redux';
 
 class Home extends Component {
   constructor(props) {
@@ -20,7 +21,11 @@ class Home extends Component {
       proposeList: [],
       userName: [],
       proposeId: null,
+      max_chat: 3,
+      test: process.env.MONGO_DB_URI,
     }
+
+    this.listChat = [];
   }
 
   getProposeId = (pId) => {
@@ -48,15 +53,15 @@ class Home extends Component {
         });
       });
   }
-  
-  fetchProposeId = () =>{
-    const {proposeId} = this.state;
-    if(proposeId !== null){
+
+  fetchProposeId = () => {
+    const { proposeId } = this.state;
+    if (proposeId !== null) {
       axios.get(`/api/propose/details?id=${proposeId}`)
-      .then(propose => {
-        this.getUsers(propose.data.data.sender, propose.data.data.receiver);
-        this.setState({ proposeList: propose.data.data });
-      })
+        .then(propose => {
+          this.getUsers(propose.data.data.sender, propose.data.data.receiver);
+          this.setState({ proposeList: propose.data.data });
+        })
     }
   }
 
@@ -65,9 +70,17 @@ class Home extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props)
     PubSub.subscribe('shareMemory', () => {
       this.fetchProposeId();
     });
+
+    for (let i = 0; i < 3; i++) {
+      this.listChat.push(
+          <ChatBox key={i} />
+      )
+    }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -95,12 +108,17 @@ class Home extends Component {
               <DialogueChat sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId} />
             </div>
           </div>
-          <ChatBox></ChatBox>
-          <FriendList />
+          <div className="list_chatbox">
+            {
+              this.listChat
+            }
+          </div>
+        <FriendList />
+        <ChangUser />
         </div>
-      </Layout>
-      
-    );
+      </Layout >
+
+      );
   }
 }
 

@@ -128,9 +128,7 @@ class SideBar extends Component {
     this.setState({ activeUserId: pId })
     this.props.proposeIdChanged(pId);
   }
-
-
-
+  
   render() {
     const { acceptPromises } = this.state;
     return (

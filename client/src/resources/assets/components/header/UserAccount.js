@@ -36,10 +36,6 @@ class UserAccount extends Component {
           <span className="user__photo"><img src={this.state.avatar} alt="ảnh đại diện" /></span>
           <button className="login__button"><a href={this.state.redirect}>{this.state.linkto}</a></button>
         </div>
-        <div className="explore">
-          <div className="explore__box">Explore</div>
-          <span className="explore__icon icon-expand-more"></span>
-        </div>
       </div>
     );
   }

@@ -131,8 +131,10 @@ img{
 }
 
 .user{
+  position: absolute;
+  right: 30%;
   display: inline-block;
-  margin-top: 18px;
+  top: 20px;
   span{
     vertical-align: middle;
     display: inline-block;
@@ -428,7 +430,7 @@ img{
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 10;
+      z-index: 0;
       .place-wrapper{
         display: inline-block;
         height: 24px;

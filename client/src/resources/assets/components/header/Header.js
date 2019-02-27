@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import UserAccount from './UserAccount';
+import Notification  from './Notification';
 
 class Header extends Component {
   render() {
@@ -11,6 +12,7 @@ class Header extends Component {
           <div className="logo"><Link to="/"><img src="./images/heart-logo.svg" alt="Couple Lock" /><span>LoveLock</span></Link></div>
           <SearchBox />
           <UserAccount />
+          <Notification />
         </div>
       </div>
     );

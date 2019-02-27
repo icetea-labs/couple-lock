@@ -21,9 +21,7 @@ class ChatBox extends Component {
             message_input: '',
             avatarURL: localStorage.getItem("img_url"),
             id: localStorage.getItem("U_I"),
-            load_message: [],
             ramdom_id_message: "",
-            possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
             messages: [],
             list_message: [],
         }
@@ -35,44 +33,7 @@ class ChatBox extends Component {
     }
 
     fetchMessageData() {
-        var arrayMessage = [];
-        var messages = [];
-        var temp = 0;
-        firebase.firestore()
-            .collection("chat_data_bases")
-            .doc("couple")
-            .collection("chat_rooms")
-            .doc("chat_room_1")
-            .collection("messages")
-            .get().then((querySnapDocument) => {
-                querySnapDocument.forEach(
-                    (doc) => {
-                        messages.push(doc.data());
-                        arrayMessage.push(doc.data().timestamp);
-                    });
 
-                arrayMessage.sort();
-                console.log(querySnapDocument.docs.length);
-
-                for (let i = 0; i < querySnapDocument.docs.length; i++) {
-                    var sortMessage = messages.filter(
-                        (value) => {
-                            return value.timestamp === arrayMessage[i]
-                        }
-                    );
-                    console.log('sm:' + sortMessage);
-                    this.state.list_message.push(sortMessage[0]);
-                }
-
-                for (let i = 0; i < querySnapDocument.docs.length; i++) {
-                    this.displayChat.push(<div key={this.state.list_message[i].id} id="my_message"><span>{this.state.list_message[i].content}</span></div>);
-                }
-            })
-
-        console.log(temp);
-        console.log('all mess', messages);
-        console.log('sorted', arrayMessage);
-        console.log('list', this.state.list_message);
     }
 
     componentWillMount() {
@@ -122,37 +83,41 @@ class ChatBox extends Component {
                 id: this.state.ramdom_id_message,
             });
         // TODO: Reload database in message
+        this.setState({
+            message_input: ''
+        })
 
         PubSub.publish('reload');
     }
 
     render() {
         return (
-            <div className="chat_box" style={{ display: this.state.hidden ? 'block' : 'none' }}>
-
-                <div className="header__box" onClick={this.hiddenMessage} >
-                    <label>Paulra</label>
-                    <button className="btn_close" onClick={this.hiddenChat}>x</button>
-                </div>
-                <div className="chat__content" style={{ display: this.state.seechat ? 'block' : 'none' }}>
-                    <div>
+            <div className="display_chatbox div_tr" style={{ display: this.state.hidden ? 'block' : 'none', width: this.state.seechat ? '300px' : '200px'}}>
+                <div className="chat_box" style= {{width: this.state.seechat ? '300px' : '200px'}}>
+                    <div className="header__box" onClick={this.hiddenMessage} >
+                        <label>Paulra</label>
+                        <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
-                    <div className="inside_message">
-                        <img src={this.state.avatarURL} />
-                        <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
-                    </div>
+                    <div className="chat__content" style={{ display: this.state.seechat ? 'block' : 'none' }}>
+                        <div>
+                        </div>
+                        <div className="inside_message">
+                            <img src={this.state.avatarURL} />
+                            <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
+                        </div>
 
-                    <div className="content_message">
-                        <Message owner= {window.getLoginUser()}  />
+                        <div className="content_message">
+                            <Message owner={window.getLoginUser()} />
+                        </div>
                     </div>
-                </div>
-
-                <div className="chat__send" style={{ display: this.state.seechat ? 'block' : 'none' }} >
-                    <hr></hr>
-                    <textarea className="chat__input" placeholder="Type Message" onChange={this.handleChange} value={this.state.message_input} ></textarea>
-                    <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button>
+                    <div className="chat__send" style={{ display: this.state.seechat ? 'block' : 'none' }} >
+                        <hr></hr>
+                        <textarea className="chat__input" placeholder="Type Message" onChange={this.handleChange} value={this.state.message_input} ></textarea>
+                        <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button>
+                    </div>
                 </div>
             </div>
+
         )
     }
 }

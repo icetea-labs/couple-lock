@@ -8,11 +8,12 @@ import './resources/assets/sass/seed.scss';
 import './resources/assets/sass/chatbox.scss';
 import './resources/assets/sass/addpromise.scss';
 import './resources/assets/sass/list_friend.scss';
+import './resources/assets/sass/notification.scss';
 import Home from './resources/assets/components/Home';
 import Login from './resources/assets/components/Login';
 import Profile from './resources/assets/components/Profile';
 import SeedPhase from './resources/assets/components/SeedPhase';
-import User from './resources/assets/components/User';
+import User from './resources/assets/components/user/User';
 
 class App extends Component {
   render() {
