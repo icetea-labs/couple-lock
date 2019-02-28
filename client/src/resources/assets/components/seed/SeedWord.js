@@ -12,36 +12,51 @@ class SeedWord extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            seedphase: array[12],
-            seed_phase: [],
+            seedphase: [],
+            seed_phase: array[12],
             copied: false,
             linkto: "/",
-            test: 'abc'
+            mnemonic: ''
         }
-        this.testData = this.testData.bind(this);
         this.createAccount = this.createAccount.bind(this);
     }
 
     componentWillMount() {
+
         var mnemonic = bip39.generateMnemonic();
         var seedword = mnemonic.split(" ");
         this.setState({
             seedphase: seedword,
             seed_phase: mnemonic
         })
-
-
     }
 
-    createAccount() {
+    test = () => {
         var web3 = new Web3(
             new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
         )
+        console.log(web3.eth.accounts.create(this.state.seed_phase));
+    }
 
+    createAccount = () => {
+
+        var web3 = new Web3(
+            new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
+        )
+        
+        // get password and tran to bytes
         var passwordAes = aesjs.utils.utf8.toBytes(md5(localStorage.getItem("P_W")));
+
+        // get seed and tran to bytes
         var seedphaseAes = aesjs.utils.utf8.toBytes(md5(this.state.seed_phase));
+
+        // create new key  from pw bytes
         var aesCbs = new aesjs.ModeOfOperation.cbc(passwordAes);
+
+        // encryte seed  to Bytes.
         var encryptedBytes = aesCbs.encrypt(seedphaseAes);
+
+        // encryte seed byte to  hexstring and save in localstorage
         var encryptHex = aesjs.utils.hex.fromBytes(encryptedBytes);
         localStorage.setItem("S_H", encryptHex);
 
@@ -49,12 +64,6 @@ class SeedWord extends Component {
         console.log(this.state.seed_phase);
     }
 
-    testData(){
-        axios.get('/test', this.state.test)
-        .then(data =>{
-            console.log(data);
-        }).catch(err => console.log())
-    }
     render() {
 
         return (
@@ -86,8 +95,8 @@ class SeedWord extends Component {
                     </CopyToClipboard>
                 </div>
                 {this.state.copied ? <span style={{ background: 'black', color: 'white' }}>Copied!</span> : null}
-                <button className="btn_next" onClick={this.createAccount}><strong><a href="/">next</a></strong></button>
-                <button onClick={this.testData}></button>
+                <button className="btn_next" onClick={this.createAccount}><strong>next</strong></button>
+                <button onClick={this.test}>test</button>
             </div>
         )
     }

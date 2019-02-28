@@ -16,6 +16,7 @@ import SeedPhase from './resources/assets/components/SeedPhase';
 import User from './resources/assets/components/user/User';
 
 class App extends Component {
+
   render() {
     return (
       <Router>

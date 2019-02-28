@@ -3,11 +3,15 @@ import firebase from 'firebase';
 import Config from '../firebase/Config';
 import Message from './Message';
 import PubSub from 'pubsub-js';
+import { getState } from 'redux';
 import { number, string, object } from 'prop-types';
+
+
 firebase.initializeApp(Config);
 // Initialize Cloud Firestore through Firebase
 
 class ChatBox extends Component {
+
 
     constructor(props) {
         super(props);
@@ -16,21 +20,28 @@ class ChatBox extends Component {
             userName_item: null,
             message_item: null,
             useName: 'tranviet',
-            seechat: false,
-            hidden: true,
+            see_chat: false,
+            is_hidden: true,
             message_input: '',
             avatarURL: localStorage.getItem("img_url"),
             id: localStorage.getItem("U_I"),
             ramdom_id_message: "",
             messages: [],
             list_message: [],
+
+            // Redux test
+
         }
         this.displayChat = [];
         this.hiddenMessage = this.hiddenMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
-
     }
+
+    // TODO: test redux
+
+
+    // TODO: feaching data and handle message
 
     fetchMessageData() {
 
@@ -41,20 +52,20 @@ class ChatBox extends Component {
     }
 
     hiddenMessage() {
-        if (this.state.seechat) {
+        if (this.state.see_chat) {
             this.setState({
-                seechat: false
+                see_chat: false
             })
         } else {
             this.setState({
-                seechat: true
+                see_chat: true
             })
         }
     }
 
     hiddenChat = () => {
         this.setState({
-            hidden: false
+            is_hidden: false
         })
     }
 
@@ -92,13 +103,13 @@ class ChatBox extends Component {
 
     render() {
         return (
-            <div className="display_chatbox div_tr" style={{ display: this.state.hidden ? 'block' : 'none', width: this.state.seechat ? '300px' : '200px'}}>
-                <div className="chat_box" style= {{width: this.state.seechat ? '300px' : '200px'}}>
+            <div className="display_chatbox " style={{ display: this.state.is_hidden ? 'block' : 'none', width: this.state.see_chat ? '300px' : '200px' }}>
+                <div className="chat_box" style={{ width: this.state.see_chat ? '300px' : '200px' }}>
                     <div className="header__box" onClick={this.hiddenMessage} >
                         <label>Paulra</label>
                         <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
-                    <div className="chat__content" style={{ display: this.state.seechat ? 'block' : 'none' }}>
+                    <div className="chat__content" style={{ display: this.state.see_chat ? 'block' : 'none' }}>
                         <div>
                         </div>
                         <div className="inside_message">
@@ -110,7 +121,7 @@ class ChatBox extends Component {
                             <Message owner={window.getLoginUser()} />
                         </div>
                     </div>
-                    <div className="chat__send" style={{ display: this.state.seechat ? 'block' : 'none' }} >
+                    <div className="chat__send" style={{ display: this.state.see_chat ? 'block' : 'none' }} >
                         <hr></hr>
                         <textarea className="chat__input" placeholder="Type Message" onChange={this.handleChange} value={this.state.message_input} ></textarea>
                         <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button>

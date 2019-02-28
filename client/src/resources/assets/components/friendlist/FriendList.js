@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import MaterialIcon, { exit } from 'material-icons-react';
 import axios from 'axios';
+import ReduxAction from '../redux/action';
+import { subscribe, dispatch } from 'redux';
+import createChat from '../redux/function';
+
 
 class FriendList extends Component {
 
@@ -12,12 +16,30 @@ class FriendList extends Component {
             amountChatBox: 0,
             targetChat: [],
             see_list: false,
-            target: 'show'
+            target: 'show',
+            user1: 'puala',
+            user2: 'richard'
         }
     }
 
-    addChatBox = () => {
-        //TODO : onclick add user to chatbox
+    componentWillMount() {
+        console.log(ReduxAction.getState());
+    }
+
+
+    testRedux() {
+        let data = {
+            form: 'chat_room',
+            location: 'listfriend',
+            status: {
+                see_chat: true,
+                is_hidden: true,
+            },
+            receiver: 'paula',
+        }
+
+
+        console.log(ReduxAction.dispatch(createChat(data)));
     }
 
     hiddenListFriend = () => {
@@ -37,16 +59,20 @@ class FriendList extends Component {
 
     render() {
         return (
-            <div className="list_friend div_tr" style={{height: this.state.see_list ? '500px' : '40px'}}>
+            <div className="list_friend div_tr" style={{ height: this.state.see_list ? '500px' : '40px' }}>
                 <span className="btn_hidden" onClick={this.hiddenListFriend}> {this.state.target}</span>
-                <div className="online_friend" style={{display: this.state.see_list ? 'block' : 'none'}}>
+                <div className="online_friend" style={{ display: this.state.see_list ? 'block' : 'none' }}>
                     <label >
-                        <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
-                        <span>Puala</span>
+                        <div>
+                            <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
+                            <span type="button" onClick={this.testRedux}>{this.state.user1}</span>
+                        </div>
                     </label>
                     <label>
-                        <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
-                        <span>Sota</span>
+                        <div>
+                            <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
+                            <span>{this.state.user2}</span>
+                        </div>
                     </label>
                 </div>
 

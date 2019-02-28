@@ -47,7 +47,6 @@ export default class Message extends Component {
           });
 
         arrayMessage.sort();
-        console.log(querySnapDocument.docs.length);
 
         for (let i = 0; i < querySnapDocument.docs.length; i++) {
           var sortMessage = messages.filter(

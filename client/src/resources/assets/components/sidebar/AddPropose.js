@@ -170,6 +170,8 @@ class AddPropose extends Component {
         this.setState({
             show_promise: false
         })
+
+        axios.post('api/noti/create', formData )
     }
 
     render() {

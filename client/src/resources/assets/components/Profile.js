@@ -13,7 +13,7 @@ class FormLogin extends Component {
         super(props);
         this.state = {
             user_name: null,
-            name: localStorage.getItem("name"),
+            display_name: localStorage.getItem("name"),
             img_url: localStorage.getItem("img_url"),
             email: localStorage.getItem("email"),
             file: 'null',
@@ -24,7 +24,8 @@ class FormLogin extends Component {
             password: [],
             show: false,
             hidden: true,
-            user: null
+            user: null,
+            brand: true,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -56,11 +57,11 @@ class FormLogin extends Component {
 
     dnChange(event) {
         this.setState({
-            name: event.target.value
+            display_name: event.target.value
         })
     }
 
-    setData() {
+    imgChange() {
         this.setState({
             img_url: localStorage.getItem("img_url")
         })
@@ -81,16 +82,20 @@ class FormLogin extends Component {
             new Web3.providers.WebsocketProvider("ws://127.0.0.1:7545")
         )
 
-        var seed_phase = bip39.generateMnemonic();
-
         this.setState({
-            seedphase: seed_phase,
             show: true
         })
 
         localStorage.setItem("U_N", this.state.user_name);
         localStorage.setItem("P_W", this.state.password);
         localStorage.setItem("I_U", this.state.img_url);
+        localStorage.setItem("D_N", this.state.display_name);
+
+        if( this.state.user_name !== null && this.state.display_name !== null ){
+            this.setState({
+                brand: false
+            })
+        }
         this.props.history.push('/login/seed');
     }
 
@@ -118,6 +123,16 @@ class FormLogin extends Component {
         firebase.auth().signOut();
     }
 
+    brandCreate = () => {
+        if( this.state.user_name !== null && this.state.display_name !== null ){
+            this.setState({
+                brand: false
+            })
+        }
+
+        return this.state.brand;
+    }
+
     render() {
         return (
             <div className="profile_form">
@@ -143,13 +158,13 @@ class FormLogin extends Component {
                         </div>
                         <div>
                             <p className="infor__label">Email: </p>
-                            <input placeholder=" Email" value={this.state.email} autoComplete="on" />
+                            <input placeholder=" Email" defaultValue={this.state.email} autoComplete="on" />
                         </div>
                         <div>
                             <p className="infor__label">Mật Khẩu :</p>
                             <input type={this.state.hidden ? "password" : "text"} placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} autoComplete="on" />
                         </div>
-                        <button className="btn__profile" onClick={this.createAccounts}>Đăng kí</button>
+                        <button className="btn__profile" onClick={this.createAccounts} disabled={this.brandCreate}>Đăng kí</button>
                     </div>
                 </form>
             </div>

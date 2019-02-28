@@ -78,6 +78,7 @@ img{
   top: 0;
   left: 0;
   z-index: 2;
+  display: flex;
   .header__container{
     margin: 0 auto;
     .logo{
@@ -98,15 +99,15 @@ img{
 
 .search_box {
   display: inline-block;
-  width: 295px;
+  width: 25%;
   height: 36px;
   margin: 22px 0 0 35px;
   padding: 5px;
-  position: relative;
+  position: absolute;
   background: $color-white;
   border-radius: 18px;
-  float: left;
   overflow: hidden;
+
   .icon-search{
     display: inline-block;
     font-size: 20px;

@@ -3,6 +3,12 @@ ul {
     cursor: pointer;
   }
 
+li{
+  width: 120px;
+  height: 40px;
+  
+}
+
 .div_tr{
   transition: 0.7s;
 }
@@ -29,5 +35,5 @@ ul {
   width: auto;
   height: auto;
   background: #ffffff;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.564);
+ box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.564);
 }
