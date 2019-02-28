@@ -3,13 +3,35 @@
 @import 'common.scss';
 
 
+.list_chatbox{
+    position: fixed;
+    height: auto;
+    bottom: 0px;
+    right: 0px;
+    width: auto;
+    z-index: 10;
+    // background-color: rgba(128, 128, 128, 0.326);
+    display: flex;
+}
+
+.display_chatbox{
+    display: relative;
+    margin: 10px;
+    right: 10px;
+    width: 300px;
+    height: 40px !important;
+    float: right;
+}
+
 .chat_box{
+    
     width: 300px;
     position: fixed;
-    z-index: 999;
-    bottom: 0px;
-    right: 10px;
+    bottom: 15px;
+    z-index: 10px;
+    float: right;
     background-color: rgba(228, 235, 233, 0.693);
+    border: solid rgba(36, 35, 35, 0.23) 1px;
     border-top-left-radius: 5px;
     .header__box{
         color: whitesmoke;
@@ -30,7 +52,8 @@
             top: -5px;
             right: -5px;
             text-align: center;
-            font-size: 11px;
+            font-size: 9px;
+            border: solid 2px black;
         }
 
         .btn_close:hover{

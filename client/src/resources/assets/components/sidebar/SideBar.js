@@ -86,12 +86,14 @@ class SideBar extends Component {
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
           proposeId: p.id,
-          r_react: p.r_react
+          r_react: p.r_react,
+          viewed: p.viewed
         }
       } else {
         sidebarItems[p.sender] = {
           proposeId: p.id,
-          r_react: p.r_react
+          r_react: p.r_react,
+          viewed: p.viewed
         }
       }
       this.setState({
@@ -115,6 +117,7 @@ class SideBar extends Component {
       const res = Object.keys(obj).map(function (key, index) {
         return {
           proposeId: obj[key].proposeId,
+          viewed:  obj[key].viewed,
           r_react: obj[key].r_react,
           avatar: obj[key].user.avatar,
           username: obj[key].user.username,
@@ -131,9 +134,7 @@ class SideBar extends Component {
     this.setState({ activeUserId: pId })
     this.props.proposeIdChanged(pId);
   }
-
-
-
+  
   render() {
     const { acceptPromises } = this.state;
     return (

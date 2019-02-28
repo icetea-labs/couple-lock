@@ -3,7 +3,8 @@ var express = require('express')
   , User = require('../models/user')
   , route = require('../helpers/route')
   , session = require('express-session')
-  , nodePersist = require('./node-persist');
+  , nodePersist = require('./node-persist')
+  , { validationResult, checkSchema } = require('express-validator/check');
 
 router.use(session({
   secret: process.env || null,
@@ -21,6 +22,12 @@ router.get('/details', (req, res) => {
 
 router.get('/all', (req, res) => {
   route.tryJson(res, User.all);
+})
+
+router.post('/create', checkSchema({
+  username: route.stringSchema('body')
+}), (req, res) => {
+    route.validateTryJson(req, res, validationResult, User.insert, req.body);
 })
 
 router.route('/profile')

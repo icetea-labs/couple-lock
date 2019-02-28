@@ -131,8 +131,10 @@ img{
 }
 
 .user{
+  position: absolute;
+  right: 30%;
   display: inline-block;
-  margin-top: 18px;
+  top: 20px;
   span{
     vertical-align: middle;
     display: inline-block;

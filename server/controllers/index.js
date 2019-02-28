@@ -10,6 +10,7 @@ router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
 router.use('/api/propose', require('./propose'))
 router.use('/api/memory', require('./memory'))
+router.use('/api/noti', require('./noti'))
 router.use(cookieParser());
 router.use(session({
     secret: process.env || null,
