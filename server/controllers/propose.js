@@ -77,7 +77,7 @@ var express = require('express')
   }), (req, res) => {
   
     const item = {
-      viewed: true
+      viewed: true,
     }
   
     route.validateTryJson(req, res, validationResult, Propose.update, req.query.id, item);

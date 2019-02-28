@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import axios from 'axios';
 
 class PendingPromise extends Component {
   constructor(props) {
@@ -7,20 +8,37 @@ class PendingPromise extends Component {
     this.state = {
       acceptPromisesModal: false,
       loginUser: window.getLoginUser(),
+      viewed: false,
     }
   }
 
-  componentDidMount() {
-    this.acceptPromisesModal();
+  componentWillReceiveProps(nextProps){
+    const deniedPromises = this.props.deniedPromises;
+    const receiver = this.props.user.receiver;
+    const {loginUser} = this.state;
+    if(this.props !== nextProps && deniedPromises.length > 0 && loginUser===receiver){
+      this.popupPromises();
+    }
+  }
+
+  popupPromises = () => {
+    setTimeout(() => {
+      this.setState({ modal: true })
+    }, 3000);
+    
+    this.getViewed();
   }
   
+  getViewed = () => {
+    axios.get('/api/propose/viewed?id=0')
+    .then(res => {
+      // console.log(res.data);
+      this.setState({ viewed: res.data });
+    })
+  }
 
-  acceptPromisesModal = () => {
-    setTimeout(() => {
-      this.setState(prevState => ({
-        modal: !prevState.modal
-      }));
-    }, 3500);
+  openPromisesModal = () => {
+    this.props.acceptPromisesModal();
   }
 
   closePromisesModal = () => {
@@ -50,7 +68,7 @@ class PendingPromise extends Component {
                     <div className="request__items__username">@{item.username}</div>
                     {
                       (loginUser === receiver) && <div className="request__items__btn">
-                      <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
+                      <button type="button" className="request__items__btn__accept" onClick={ this.openPromisesModal }>Accept</button>
                       <button type="button" className="request__items__btn__delete">Delete</button>
                       </div>
                     }
@@ -60,10 +78,6 @@ class PendingPromise extends Component {
             })
           }
           </ModalBody>
-          {/* <ModalFooter>
-            <Button disabled={!this.isDisableAccept()} className="accept_promises_request" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
-            <Button className="cancel_promises_request" color="info" onClick={this.acceptPromisesModal}>Cancel</Button>
-          </ModalFooter> */}
         </Modal>
       </div>
     );
