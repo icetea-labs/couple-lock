@@ -61,7 +61,7 @@ class ChangeUser extends Component {
         return (
             <div className="layer_common">
                 <ul>
-                    <li className="btn_common chose">sender: {this.state.sender}</li>
+                    <li className="btn_common chose">now :{this.state.sender}</li>
                     <li className="btn_common" onClick={this.changeSender} >
                         tradatech
                     </li>
