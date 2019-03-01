@@ -32,7 +32,7 @@ class Promises extends Component {
 
   isDisableAccept = () =>{
     const { promisesMessage, promisesImage } = this.state;
-    if(promisesMessage.length > 0 || promisesImage != null){
+    if(promisesMessage.length > 0 && promisesImage != null){
       return "false" ;
     }
   }
@@ -53,6 +53,7 @@ class Promises extends Component {
       // console.log(res.data);
       PubSub.publish('acceptPromise');
       PubSub.publish('refreshProposeDetail');
+      PubSub.publish('updateBanner');
     })
 
     this.setState(prevState => ({

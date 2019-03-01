@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 
 class BannerImage extends Component {
   constructor(props) {
@@ -13,6 +14,17 @@ class BannerImage extends Component {
   componentDidMount() {
     this.getImgBanner();
   }
+
+  componentWillMount() {
+    const {loginUser} = this.state;
+    PubSub.subscribe('updateBanner', () => {
+      axios.get(`/api/propose/list?username=${loginUser}`)
+      .then(res => {
+        this.setState({ imgBanner: res.data.data });
+      });
+    });
+  }
+
   getImgBanner = () => {
     const {loginUser} = this.state;
     axios.get(`/api/propose/list?username=${loginUser}`)
@@ -30,15 +42,15 @@ class BannerImage extends Component {
             const id = item.id;
             const proposeId = this.props.proposeId;
             return(
-              (id === proposeId && loginUser === item.sender && item.s_attachments.length > 0) ? <div className="banner_container mg-auto" key={index}>
+              (id === proposeId && loginUser === item.sender && item.s_attachments) ? <div className="banner_container mg-auto" key={index}>
                 <img src={item.s_attachments[0].url} alt="" />
                 <p className="short_desc color-violet"><span className="icon-luggage"></span>
                   {item.s_attachments[0].caption}
                 </p>
-              </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments.length > 0) && <div className="banner_container mg-auto" key={index}>
+              </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments) && <div className="banner_container mg-auto" key={index}>
                 <img src={item.r_attachments[0].url} alt="" />
                 {
-                  (item.r_attachments[0].caption) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
+                  (item.r_attachments) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
                   {item.r_attachments[0].caption}
                   </p>
                 }
