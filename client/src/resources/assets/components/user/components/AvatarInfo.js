@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import CoverImage from './components/CoverImage';
 
-class User extends Component {
+class AvatarInfo extends Component {
 
     constructor(props) {
         super(props)
@@ -11,17 +10,13 @@ class User extends Component {
         }
     }
 
-    changeSender = () => {
-        localStorage.setItem("sender", 'tradatech');
-    }
-
     render() {
         return (
             <div>
-                <CoverImage />
+                
             </div>
         )
     }
 }
 
-export default User;
+export default AvatarInfo;

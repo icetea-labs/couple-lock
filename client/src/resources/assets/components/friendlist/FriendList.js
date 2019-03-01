@@ -5,7 +5,6 @@ import ReduxAction from '../redux/action';
 import { subscribe, dispatch } from 'redux';
 import createChat from '../redux/function';
 
-
 class FriendList extends Component {
 
     constructor(props) {
@@ -23,7 +22,7 @@ class FriendList extends Component {
     }
 
     componentWillMount() {
-        console.log(ReduxAction.getState());
+        // console.log(ReduxAction.getState());
     }
 
 
@@ -37,7 +36,6 @@ class FriendList extends Component {
             },
             receiver: 'paula',
         }
-
 
         console.log(ReduxAction.dispatch(createChat(data)));
     }
@@ -65,7 +63,7 @@ class FriendList extends Component {
                     <label >
                         <div>
                             <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
-                            <span type="button" onClick={this.testRedux}>{this.state.user1}</span>
+                            <span className="span_common" onClick={this.testRedux}>{this.state.user1}</span>
                         </div>
                     </label>
                     <label>

@@ -95,7 +95,7 @@ class SeedWord extends Component {
                     </CopyToClipboard>
                 </div>
                 {this.state.copied ? <span style={{ background: 'black', color: 'white' }}>Copied!</span> : null}
-                <button className="btn_next" onClick={this.createAccount}><strong>next</strong></button>
+                <button className="btn_next" onClick={this.createAccount}><a href='/'>next</a></button>
                 <button onClick={this.test}>test</button>
             </div>
         )

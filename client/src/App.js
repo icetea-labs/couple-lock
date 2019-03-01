@@ -9,6 +9,7 @@ import './resources/assets/sass/chatbox.scss';
 import './resources/assets/sass/addpromise.scss';
 import './resources/assets/sass/list_friend.scss';
 import './resources/assets/sass/notification.scss';
+import './resources/assets/sass/cover_image.scss';
 import Home from './resources/assets/components/Home';
 import Login from './resources/assets/components/Login';
 import Profile from './resources/assets/components/Profile';

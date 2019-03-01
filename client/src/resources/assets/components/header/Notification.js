@@ -46,7 +46,7 @@ class Notification extends Component {
                 <li key={i} className="li_noti">
                     <img className="sender_img" src={this.state.list_noti[i].img_url} alt="" />
 
-                    <span className="btn_common">
+                    <span className="span_common">
                         {this.state.list_noti[i].content}
                     </span>
                 </li>

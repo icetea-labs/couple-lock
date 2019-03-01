@@ -4,6 +4,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import redux from 'redux';
 // import 'font-awesome/css/font-awesome.min.css';
 
 window.getLoginUser = () => {
@@ -14,7 +15,18 @@ window.getLoginUser = () => {
   }
 };
 
+var test = {
+  name: 'ok',
+  age: '21'
+}
 
+var test1 = {...test}
+
+test1.name= '12'
+
+console.log(
+  test, '+', test1
+);
 
 ReactDOM.render(
   <App />, document.getElementById('root')

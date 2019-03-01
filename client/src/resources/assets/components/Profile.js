@@ -164,7 +164,7 @@ class FormLogin extends Component {
                             <p className="infor__label">Mật Khẩu :</p>
                             <input type={this.state.hidden ? "password" : "text"} placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} autoComplete="on" />
                         </div>
-                        <button className="btn__profile" onClick={this.createAccounts} disabled={this.brandCreate}>Đăng kí</button>
+                        <button className="btn__profile" onClick={this.createAccounts}>Đăng kí</button>
                     </div>
                 </form>
             </div>
