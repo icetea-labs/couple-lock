@@ -1,0 +1,102 @@
+collection: [],
+document: {},
+
+{
+    chat_rooms: [
+        "room_1_id": {       
+            id: "room_1",
+
+            memebers: [
+                "1": {
+                    id: 1,
+                    firstName: "A",
+                    lastName: "B",
+                    avatar: "avatar.png"
+                },
+
+                "2": {
+                    id: ,
+                    firstName: "C",
+                    lastName: "D",
+                    avatar: "avatar2.png"
+                },
+                "3": {
+                    id: 3,
+                    firstName: "tung",
+                    lastName: "D",
+                    avatar: "avatar3.png"
+                }
+            ],
+
+            messages: [
+                "msg_1": {
+                    id: "msg_1",
+                    ownerID: "1",
+                    "content": "Hello",
+                    createdDate: "10-12-2018"
+                }
+                "msg_2": {
+                    id: "msg_2",
+                    ownerID: "2",
+                    "content": "Bello",
+                    createdDate: "10-11-2018"
+                },
+                "msg_3": {
+                    id: "msg_3",
+                    ownerID: "3",
+                    content: "ACBDEF",
+                    createdDate: "10-1-2018"
+                }
+            ]
+        },
+
+        "room_2_id": {
+            id: "room_2_id",
+            memebers: [
+                "1": {
+                    id: 1,
+                    firstName: "A",
+                    lastName: "B",
+                    avatar: "avatar.png"
+                },
+                "2": {
+                    id: ,
+                    firstName: "C",
+                    lastName: "D",
+                    avatar: "avatar2.png"
+                },
+                "3": {
+                    id: ,
+                    firstName: "tung",
+                    lastName: "D",
+                    avatar: "avatar3.png"
+                }
+            ],
+
+            messages: [
+                "msg_1": {
+                    id: "msg_1",
+                    ownerID: "1",
+                    "content": "Hello",
+                    createdDate: "10-12-2018"
+                }
+                "msg_2": {
+                    id: "msg_2",
+                    ownerID: "2",
+                    "content": "Bello",
+                    createdDate: "10-11-2018"
+                },
+                "msg_3": {
+                    id: "msg_3",
+                    ownerID: "3",
+                    content: "ACBDEF",
+                    createdDate: "10-1-2018"
+                }
+            ]
+        }
+    ]
+}
+
+collection('chat_rooms')
+.where('members.id', "==", "3")
+.order()

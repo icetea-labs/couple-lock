@@ -30,6 +30,7 @@ class DialogueChat extends Component {
         <div className="box">
           {
             this.state.post.length > 0 && this.state.post.map((item, index) => {
+              const locationName = item.attachments.find(x => x.type === 'location');
               const num = parseInt(item.timestamp);
               const date = moment(num).format("MM/DD/YYYY");
               const className = (sender.username === item.sender) ? "sender" : "receiver";
@@ -41,9 +42,17 @@ class DialogueChat extends Component {
                     <div className="user_photo fl"><img src={avatar} alt="" /></div>
                     <div className="content_detail fl clearfix">
                       <span className="user_name color-violet" >{userName}</span>
+                      {
+                        (locationName) && <span className="location"> is at <i>{locationName.name}</i></span>
+                      }
+
                       <span className="time fr color-grey">{date}</span>
                       <p>{item.message}</p>
-                      <p><img src={item.attachments[0].url} alt="Trong ảnh có động vật" /></p>
+                      {
+                        (item.attachments[0] && item.attachments.length > 0) && <p className="attachments">
+                          <img src={item.attachments[0].url} alt="" />
+                        </p>
+                      }
                     </div>
                   </div>
                 </div>

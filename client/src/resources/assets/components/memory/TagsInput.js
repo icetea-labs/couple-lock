@@ -40,7 +40,7 @@ class TagsInput extends Component {
   render() {
     const { tags, suggestions } = this.state;
       return (
-        <div>
+        <div className="tags_input">
             <p>Tags: </p>
             <ReactTags tags={tags}
                 suggestions={suggestions}

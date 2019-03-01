@@ -3,6 +3,8 @@ import Web3 from 'web3';
 import bip39 from 'bip39';
 import md5 from 'md5';
 import aesjs from 'aes-js';
+import * as firebase from 'firebase';
+import MaterialIcon, { photo } from 'material-icons-react';
 
 
 class FormLogin extends Component {
@@ -10,7 +12,7 @@ class FormLogin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_name: '',
+            user_name: null,
             name: localStorage.getItem("name"),
             img_url: localStorage.getItem("img_url"),
             email: localStorage.getItem("email"),
@@ -22,6 +24,7 @@ class FormLogin extends Component {
             password: [],
             show: false,
             hidden: true,
+            user: null
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,9 +35,10 @@ class FormLogin extends Component {
         this.handleClose = this.handleClose.bind(this);
     }
 
+
     /**
      * 
-     * @param NOEVENT change infor for the login input profile
+     * @param handle handle profile user 
      */
 
     handleChange(event) {
@@ -62,11 +66,6 @@ class FormLogin extends Component {
         })
     }
 
-    componentWillMount(){
-
-
-    }
-
     confirmPassWord(event) {
         this.setState({
             password: event.target.value
@@ -92,7 +91,6 @@ class FormLogin extends Component {
         localStorage.setItem("U_N", this.state.user_name);
         localStorage.setItem("P_W", this.state.password);
         localStorage.setItem("I_U", this.state.img_url);
-
         this.props.history.push('/login/seed');
     }
 
@@ -102,42 +100,58 @@ class FormLogin extends Component {
         })
     }
 
+    /**
+     * @param user firebase setup
+     */
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            this.setState({ user: localStorage.getItem('user_name') });
+        });
+    }
+
+    handleSignIn() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider);
+    }
+
+    handleLogOut() {
+        firebase.auth().signOut();
+    }
+
     render() {
         return (
-            <div>
-                <div className="profile_form">
-                    <form action="" method="" className="form-control">
-                        <div className="avatar_profile">
-                            <div className="avatar" id="user_avatar">
-                                <img src={this.state.img_url} id="avatar_login" width="120" height="120" alt="" />
-                            </div>
-                            <div className="chose_file">
-                                <label htmlFor="upload">
-                                    <span className="label__file">Chọn ảnh</span>
-                                    <input type="file" id="upload" accept="img, mp4" onChange={this.handleChange} style={{ display: "none" }} />
-                                </label>
-                            </div>
+            <div className="profile_form">
+                <form action="" method="" className="form_control">
+                    <div className="avatar_profile">
+                        <div className="avatar" id="user_avatar">
+                            <img src={this.state.img_url} id="avatar_login" width="120" height="120" alt="" />
                         </div>
-                        <div className="infor_profile">
-                            <h2>Thay đổi thông tin của bạn</h2>
-                            <p className="infor__label">Tên tài khoản: </p>
-                            <input placeholder="User Name" value={this.state.user_name} onChange={this.usnChange} name="username" autoComplete="on" />
-                            <div>
-                                <p className="infor__label">Tên của bạn: </p>
-                                <input placeholder=" Display Name" value={this.state.name} onChange={this.dnChange} autoComplete="on" />
-                            </div>
-                            <div>
-                                <p className="infor__label">Email: </p>
-                                <input placeholder=" Email" value={this.state.email} autoComplete="on" />
-                            </div>
-                            <div>
-                                <p className="infor__label">Mật Khẩu :</p>
-                                <input type={this.state.hidden ? "password" : "text"} placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} autoComplete="on" />
-                            </div>
-                            <button className="btn__profile" onClick={this.createAccounts}>Đăng kí</button>
+                        <div className="chose_file">
+                            <label htmlFor="upload">
+                                <span className="label__file"><span className="icon-photo" ></span>Chọn ảnh</span>
+                                <input type="file" id="upload" accept="img, mp4" onChange={this.handleChange} style={{ display: "none" }} />
+                            </label>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div className="infor_profile">
+                        <h2>Thay đổi thông tin của bạn</h2>
+                        <p className="infor__label">Tên tài khoản: </p>
+                        <input placeholder="User Name" value={this.state.user_name} onChange={this.usnChange} name="username" autoComplete="on" />
+                        <div>
+                            <p className="infor__label">Tên của bạn: </p>
+                            <input placeholder=" Display Name" value={this.state.name} onChange={this.dnChange} autoComplete="on" />
+                        </div>
+                        <div>
+                            <p className="infor__label">Email: </p>
+                            <input placeholder=" Email" value={this.state.email} autoComplete="on" />
+                        </div>
+                        <div>
+                            <p className="infor__label">Mật Khẩu :</p>
+                            <input type={this.state.hidden ? "password" : "text"} placeholder="Password" value={this.state.password} onChange={this.confirmPassWord} autoComplete="on" />
+                        </div>
+                        <button className="btn__profile" onClick={this.createAccounts}>Đăng kí</button>
+                    </div>
+                </form>
             </div>
         )
     }

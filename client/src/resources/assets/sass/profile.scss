@@ -15,9 +15,10 @@
         size: 10px;
         color: white;
     }
-    .form-control{
-        padding-top: 60px;
+    .form_control{
+        height: 100%;
         .avatar_profile{
+            
             h2{
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             }    
@@ -26,9 +27,10 @@
             display: block;
             margin-left: 43%;
             .avatar{
-                margin-top: 30px;
+                padding-top: 20px;
                 margin-bottom: 30px;
                 #avatar_login{
+                    position: relative;
                     border-radius: 50%;
                     border: solid rgba(110, 74, 74, 0.285) 2px;
                 }
@@ -43,7 +45,7 @@
                 }
 
                 .chose_file{
-                    position: relative;
+                    position: absolute;
                     left: 20px;
                    label{
                        border: solid gray 2px !important;
@@ -54,6 +56,7 @@
         }
     
         .infor_profile{
+            position: absolute;
             width: 20%;
             margin-left: 40%;
             margin-right: 40%;
@@ -62,6 +65,7 @@
 
             .infor__label{
                 float: center;
+                margin: 5px;
             }
 
             .btn__profile{

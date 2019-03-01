@@ -4,7 +4,7 @@
 
 *{margin: 0; padding: 0; box-sizing: border-box}
 
-body{
+html, body{
   font-family: $font-body;
   font-size: $font-root;
   font-weight: 500;
@@ -17,7 +17,10 @@ body{
   width: 960px;
 }
 a{
-  text-decoration: none;
+  text-decoration: none !important;
+}
+p{
+  margin-bottom: 0px;
 }
 input{
   color: $color-grey;
@@ -74,7 +77,7 @@ img{
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 2;
   .header__container{
     margin: 0 auto;
     .logo{
@@ -128,8 +131,10 @@ img{
 }
 
 .user{
+  position: absolute;
+  right: 30%;
   display: inline-block;
-  margin-top: 18px;
+  top: 20px;
   span{
     vertical-align: middle;
     display: inline-block;
@@ -194,6 +199,8 @@ img{
   .short_desc{
     font-weight: 600;
     margin-top: 24px;
+    margin-bottom: 0;
+    // display: none;
     .icon-luggage{
       font-size: 24px;
       margin-right: 16px;
@@ -240,6 +247,11 @@ img{
         }
       }
     }
+    .content_detail{
+      p{
+        margin-bottom: 0;
+      }
+    }
   }
   .user_photo{
     display: block;
@@ -280,11 +292,14 @@ img{
 }
 .col-right{
   width: 620px;
-  padding: 20px;
+  // padding: 20px;
 }
 
 .memorypost{
   width: 100%;
+  background: $color-white;
+  border-radius: 10px;
+  padding: 15px;
   .post_container{
     display: inline-block;
     width: 100%;
@@ -294,10 +309,29 @@ img{
       border-radius: 10px;
       overflow: hidden;
     }
+    .showaddres{
+      display: inline-block;
+      width: 100%;
+      font-size: $font-smaller;
+      color: $color-violet;
+      margin-top: 10px;
+      span{
+        color: $color-grey;
+      }
+    }
     .showdate{
+      display: inline-block;
+      width: 100%;
+      font-size: $font-smaller;
+      color: $color-violet;
+      margin-top: 10px;
+      span{
+        color: $color-grey;
+      }
       input{
         border: none;
         background: none;
+        color: $color-violet;
       }
     }
     .post_input{
@@ -307,7 +341,7 @@ img{
       font-family: $font-body;
       font-weight: 500;
       width: calc(100% - 58px - 22px);
-      height: 58px;
+      min-height: 58px;
       float: right;
       border: none;
       background: transparent;
@@ -315,18 +349,17 @@ img{
   }
   .custom_post{
       min-height: 55px;
-      margin-top: 20px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
       border-top: 1px solid $color-grey-mercury;
       border-bottom: 1px solid $color-grey-mercury;
     .tags{
       width: 70%;
-      margin: 19px 0 16px 0;
-      vertical-align: middle;
       font-size: $font-smaller;
-      display: inline-block;
       p{
-        display: inline-block;
-        color: $color-grey;
+        font-weight: 500;
+        color: $color-grey-tags;
         margin-right: 13px;
         text-transform: uppercase;
       }
@@ -338,8 +371,9 @@ img{
         color: $color-violet;
         max-width: 85%;
       }
-      .tag-wrapper{
-        display: inline-block;
+      .tags_input{
+        display: flex;
+        align-items: center;
       }
       .ReactTags__tagInput{
         display: inline-block;
@@ -393,32 +427,37 @@ img{
       }
     }
     .options{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
       .place-wrapper{
         display: inline-block;
+        height: 24px;
         margin-right: 20px;
         position: relative;
         cursor: pointer;
         .location-search-input{
           position: absolute;
-          left: -50px;
+          left: -70px;
           top: 30px;
           height: 35px;
           border: none;
-          border-radius: 10px;
+          border-radius: 5px;
           padding: 0 5px;
-          box-shadow: 0 4px 12px 0 rgba($color-black, .04);
+          box-shadow: -1px 1px 12px 0 rgba($color-black, .06);
         }
         .autocomplete-dropdown-container{
           position: absolute;
           left: 0;
           min-width: 300px;
           font-size: $font-smaller;
-          left: -50px;
+          left: -70px;
           top: 70px;
           z-index: 100;
           border-radius: 10px;
           background: $color-white;
-          box-shadow: 0 4px 12px 0 rgba($color-black, .04);
+          box-shadow: -1px 1px 12px 0 rgba($color-black, .06);
           div{
             padding: 5px;
             span{
@@ -428,11 +467,6 @@ img{
           }
         }
       }
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      float: right;
-      margin-top: 15px;
       div{
         &:last-child{
           margin-right: 0;
@@ -446,7 +480,7 @@ img{
       }
       .upload_img{
         width: 24px;
-        height: 25px;
+        height: 23px;
         display: inline-block;
         margin-right: 20px;
         position: relative;
@@ -466,6 +500,7 @@ img{
       }
       .picktime{
         margin-right: 20px;
+        height: 24px;
         position: relative;
         cursor: pointer;
         .react-datepicker-wrapper{
@@ -480,12 +515,21 @@ img{
           left: -62px !important;
         }
       }
+      .avatar_receiver{
+        border-radius: 3px;
+        overflow: hidden;
+      }
     }
   }
   .img_preview{
-    display: inline-block;
+    display: inline-flex;
+    width: 100px;
+    max-height: 100px;
+    margin-top: 10px;
+    overflow: hidden;
     img{
-      width: 80px;
+      height: auto;
+      object-fit: cover;
     }
   }
   .action{
@@ -569,7 +613,7 @@ img{
 }
 
 .dialogue_chat{
-  width: 600px;
+  width:100%;
   margin-top: 42px;
   .box{
     display: inline-block;
@@ -603,7 +647,7 @@ img{
   .chat_content{
     width: 100%;
     display: inline-block;
-    margin-bottom: 47px;
+    margin-bottom: 30px;
     .sender, .receiver{
       display: inline-block;
     }
@@ -635,14 +679,26 @@ img{
       .user_name{
         font-size: $font-root;
         font-weight: 600;
-        margin-right: 15px;
         text-transform: capitalize;
       }
       .time{
         padding-top: 2px;
+        margin-left: 15px;
       }
       p{
         margin-top: 5px;
+      }
+      .attachments{
+        img{
+          max-width: 350px;
+        }
+      }
+      .location{
+        i{
+          color: $color-violet;
+          font-size: $font-root;
+          font-style: normal;
+        }
       }
     }
   }
@@ -710,6 +766,7 @@ img{
     }
   }
   .request_promises{
+    margin-bottom: 18px;
     .request__items{
       display: flex;
       align-items: center;
@@ -722,11 +779,12 @@ img{
         border-bottom: none;
       }
       &__avatar{
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        float: left;
-        overflow: hidden;
+          width: 36px;
+        img{
+          border-radius: 50%;
+          float: left;
+          overflow: hidden;
+        }
       }
       &__displayname{
         font-size: 14px;
@@ -739,13 +797,15 @@ img{
         font-size: $font-smaller;
         color: $color-violet;
         font-weight: 500;
-        float: right;
         margin-top: 2px;
-        margin-left: 80px;
         border-radius: 10px;
         padding: 2px 4px;
         border: 1px solid;
         cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+
       }
       &__username{
         font-size: $font-smaller;
@@ -767,8 +827,85 @@ img{
       }
     }
     .detail{
+      width: calc(100% - 36px);
       float: left;
       margin-left: 10px;
+      position: relative;
     }
+  }
+}
+
+.modal{
+  .accept_promises_request{
+    background-image: linear-gradient(332deg, #b276ff, #fe8dc3);
+    border: none;
+  }
+  .cancel_promises_request{
+    border: none;
+    color: $color-white;
+  }
+}
+
+.popular_tags{
+  .popular_tags__list{
+    ul{
+      display: inline-block;
+      margin-bottom: 0;
+    }
+    li{
+      list-style: none;
+      font-size: $font-smaller;
+      font-weight: 600;
+      line-height: 1.75;
+      margin-right: 10px;
+      color: $color-violet;
+      float: left;
+    }
+  }
+}
+
+.promise_popup{
+  .request__items{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+    &__avatar{
+      width: 80px;
+      height: 80px;
+      border:1px solid $color-violet;
+      border-radius: 3px;
+      padding: 3px;
+      margin-right: 15px;
+      overflow: hidden;
+    }
+    &__displayname{
+      font-size: $font-root;
+      color: $color-grey-shuttle;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    &__username{
+      font-size: $font-smaller;
+      color: $color-violet;
+      font-weight: 500;
+    }
+    &__btn__accept, &__btn__delete{
+      background: $color-violet;
+      color: $color-white;
+      font-weight: 600;
+      padding: 3px 6px;
+      border-radius: 3px;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    &__btn__delete{
+      background: $color-grey-dark;
+    }
+  }
+  button{
+    background: none;
   }
 }

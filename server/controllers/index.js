@@ -4,7 +4,7 @@ var express = require('express')
     , session = require('express-session')
     , cookieParser = require('cookie-parser')
     , nodePersist = require('./node-persist')
-    , fecth = require('node-fetch')
+    , fetch = require('cross-fetch');
 
 router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
@@ -69,19 +69,11 @@ router.route('/api/google/callback')
 
 router.route('/test')
     .get((req, res) => {
-        res.send(
-            '<input name="test" value="OK" />'
-        )
-
-        fecth('http://localhost:3000/')
-        .then((res) => {
-            res.json();
-        })
-        .then((json) => {
-            var test = document.getElementById("user_avatar").innerHTML;
-            console.log(test);
-        });
+    const data = {abc: "abcc"}
+      res.send(data);
     })
+
+
 
 
 

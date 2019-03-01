@@ -201,11 +201,12 @@ seeder.memory = [
                 url: "https://boygeniusreport.files.wordpress.com/2016/11/puppy-dog.jpg",
                 caption: "My dog likes that :D",
                 timestamp: Date.now(),
-                location: {
-                    name: "The Moon",
-                    lat: 10,
-                    long: 10
-                }
+            },
+            {
+                type: 'location',
+                name: "The Moon",
+                lat: 10,
+                long: 10
             }
         ],
         receiverReact: 1, // null, 1: accepted, 2: denied
@@ -228,11 +229,12 @@ seeder.memory = [
                 url: "https://boygeniusreport.files.wordpress.com/2016/11/puppy-dog.jpg",
                 caption: "My dog likes that :D",
                 timestamp: Date.now(),
-                location: {
-                    name: "The Moon",
-                    lat: 10,
-                    long: 10
-                }
+            },
+            {
+                type: 'location',
+                name: "The Moon",
+                lat: 10,
+                long: 10
             }
         ],
         receiverReact: 1, // null, 1: accepted, 2: denied
@@ -255,11 +257,12 @@ seeder.memory = [
                 url: "https://picsum.photos/200/300",
                 caption: "This is caption",
                 timestamp: Date.now(),
-                location: {
-                    name: "The Moon",
-                    lat: 10,
-                    long: 10
-                }
+            },
+            {
+                type: 'location',
+                name: "The Moon",
+                lat: 10,
+                long: 10
             }
         ],
         receiverReact: 1, // null, 1: accepted, 2: denied
@@ -282,11 +285,12 @@ seeder.memory = [
                 url: "https://picsum.photos/300/250",
                 caption: "This is caption",
                 timestamp: Date.now(),
-                location: {
-                    name: "The Moon",
-                    lat: 10,
-                    long: 10
-                }
+            },
+            {
+                type: 'location',
+                name: "The Moon",
+                lat: 10,
+                long: 10
             }
         ],
         receiverReact: 1, // null, 1: accepted, 2: denied
@@ -309,11 +313,12 @@ seeder.memory = [
                 url: "https://picsum.photos/240/240",
                 caption: "This is caption",
                 timestamp: Date.now(),
-                location: {
-                    name: "The Moon",
-                    lat: 10,
-                    long: 10
-                }
+            },
+            {
+                type: 'location',
+                name: "The Moon",
+                lat: 10,
+                long: 10
             }
         ],
         receiverReact: 1, // null, 1: accepted, 2: denied
@@ -336,11 +341,12 @@ seeder.memory = [
                 url: "https://picsum.photos/300",
                 caption: "This is caption",
                 timestamp: Date.now(),
-                location: {
-                    name: "The Moon",
-                    lat: 10,
-                    long: 10
-                }
+            },
+            {
+                type: 'location',
+                name: "The Moon",
+                lat: 10,
+                long: 10
             }
         ],
         receiverReact: 1, // null, 1: accepted, 2: denied
