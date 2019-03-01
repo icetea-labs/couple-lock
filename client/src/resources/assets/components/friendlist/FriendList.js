@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import MaterialIcon, { exit } from 'material-icons-react';
 import axios from 'axios';
-import ReduxAction from '../redux/action';
+// import ReduxAction from '../redux/action';
 import { subscribe, dispatch } from 'redux';
-import createChat from '../redux/function';
+// import createChat from '../redux/function';
 
 class FriendList extends Component {
 
@@ -37,7 +37,7 @@ class FriendList extends Component {
             receiver: 'paula',
         }
 
-        console.log(ReduxAction.dispatch(createChat(data)));
+        // console.log(ReduxAction.dispatch(createChat(data)));
     }
 
     hiddenListFriend = () => {

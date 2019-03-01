@@ -3,7 +3,7 @@ import axios from 'axios';
 import PubSub from 'pubsub-js';
 import Promises from './Promises';
 import AddPropose from './AddPropose';
-import FriendList from '../friendlist/FriendList';
+import PopularTag from './PopularTag';
 
 class SideBar extends Component {
   constructor(props) {
@@ -38,7 +38,10 @@ class SideBar extends Component {
   }
 
   componentWillMount() {
-    PubSub.subscribe('listen', () => {
+    PubSub.subscribe('acceptPromise', () => {
+      this.fetchData();
+    });
+    PubSub.subscribe('sendPromise', () => {
       this.fetchData();
     });
   }
@@ -83,12 +86,14 @@ class SideBar extends Component {
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
           proposeId: p.id,
-          r_react: p.r_react
+          r_react: p.r_react,
+          viewed: p.viewed
         }
       } else {
         sidebarItems[p.sender] = {
           proposeId: p.id,
-          r_react: p.r_react
+          r_react: p.r_react,
+          viewed: p.viewed
         }
       }
       this.setState({
@@ -112,6 +117,7 @@ class SideBar extends Component {
       const res = Object.keys(obj).map(function (key, index) {
         return {
           proposeId: obj[key].proposeId,
+          viewed:  obj[key].viewed,
           r_react: obj[key].r_react,
           avatar: obj[key].user.avatar,
           username: obj[key].user.username,
@@ -136,11 +142,9 @@ class SideBar extends Component {
 
         {/* Chose friend */}
         <AddPropose sender={window.getLoginUser()} />
+
+        {/* Show list Accepted Promise */}
         {acceptPromises.length > 0 && <h3 className="title title_promise">Accepted promise</h3>}
-        {
-          this.state.data.length > 0 && this.state.data.map((item, index) => {
-            const { activeUserId } = this.state;
-          })}
         {
           acceptPromises.length > 0 && acceptPromises.map((item, index) => {
             const { activeUserId } = this.state;
@@ -156,7 +160,9 @@ class SideBar extends Component {
             )
           })
         }
+        {/* End Show list Accepted Promise */}
         <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
+        <PopularTag deniedPromises={this.state.deniedPromises}/>
       </div>
     );
   }

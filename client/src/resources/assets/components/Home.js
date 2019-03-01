@@ -70,17 +70,24 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props)
+    // console.log(this.props)
     PubSub.subscribe('shareMemory', () => {
       this.fetchProposeId();
     });
-
+    PubSub.subscribe('refreshProposeDetail', () => {
+      const {proposeId} = this.state;
+      if(proposeId !== null){
+        axios.get(`/api/propose/details?id=${proposeId}`)
+        .then(propose => {
+          this.setState({ proposeList: propose.data.data });
+        })
+      }
+    });
     for (let i = 0; i < 3; i++) {
       this.listChat.push(
           <ChatBox key={i} />
       )
     }
-
   }
 
   componentDidUpdate(prevProps, prevState) {

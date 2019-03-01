@@ -30,7 +30,7 @@ router.post('/create', upload.single("attachment"), checkSchema({
     timestamp: req.body.timestamp || Date.now(),
     sender: req.body.sender,
     message: req.body.message,
-    attachments: []
+    attachments: [] || null,
   }
 
   if (!req.file) {

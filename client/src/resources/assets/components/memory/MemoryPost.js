@@ -86,6 +86,7 @@ class MemoryPost extends Component {
 
   shareMemory = (e) => {
     e.preventDefault();
+    const {m_message, selectFile, location} = this.state;
     const sender = window.getLoginUser();
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
@@ -93,22 +94,26 @@ class MemoryPost extends Component {
     const proposeId = this.props.proposeId;
     formData.append('proposeId', proposeId);
     formData.append('visibility', visibility);
-    formData.append('message', this.state.m_message);
+    formData.append('message', m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
-    formData.append('attachment', this.state.selectFile.imgUpload);
+    formData.append('attachment', (selectFile) ? selectFile.imgUpload : null);
+    formData.append('locationName', location);
+    formData.append('locationLat', 10);
+    formData.append('locationLong', 10);
 
     axios.post('/api/memory/create', formData)
     .then(res => {
-      // console.log(res);
-      // console.log(res.data);
-      PubSub.publish('listen');
+      console.log(res);
+      console.log(res.data);
+      PubSub.publish('shareMemory');
     })
 
     this.setState({
       m_message: "",
       selectFile: null,
       location: "",
+      startDate: new Date(),
     });
   }
 
@@ -124,7 +129,7 @@ class MemoryPost extends Component {
   
   isEnabledShare = () => {
     const { m_message, selectFile } = this.state;
-    if(m_message.length > 0 && selectFile != null){
+    if(m_message.length > 0 || selectFile != null){
       return "false" ;
     }
   }
@@ -150,7 +155,7 @@ class MemoryPost extends Component {
               (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
             }
             {
-              (selectDate != currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
+              (selectDate !== currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
             }
           </div>
           <div className="custom_post">
