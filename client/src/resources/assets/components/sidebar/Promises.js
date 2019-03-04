@@ -63,12 +63,9 @@ class Promises extends Component {
 
   render() {
     const deniedPromises = this.props.deniedPromises;
-    const {loginUser} = this.state;
-    const sender = this.props.user.sender;
-    const receiver = this.props.user.receiver;
     return (
       <div className="request_promises">
-        {deniedPromises.length > 0 && <h3 className="title title_promises">Pending promise</h3>}
+        {deniedPromises.length > 0 && <h3 className="title title_promises">Request promise</h3>}
         <div className="request">
           {
             deniedPromises.length > 0 && deniedPromises.map((item, index) =>{
@@ -79,10 +76,9 @@ class Promises extends Component {
                   </div>
                   <div className="detail">
                     <button className="request__items__displayname"> {item.displayName} </button>
-                    { (loginUser === sender) && <div className="request__items__pending">Pending</div> }
+                    {/* { (loginUser === sender) && <div className="request__items__pending">Pending</div> } */}
                     <div className="request__items__username">@{item.username}</div>
-                    {
-                      (loginUser === receiver) && <div className="request__items__btn">
+                      <div className="request__items__btn">
                       <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
                       <Modal isOpen={this.state.modal} toggle={this.acceptPromisesModal} className={this.props.className}>
                         <ModalHeader toggle={this.acceptPromisesModal}>Accept Promises</ModalHeader>
@@ -103,7 +99,6 @@ class Promises extends Component {
                       </Modal>
                       <button type="button" className="request__items__btn__delete">Delete</button>
                       </div>
-                    }
                   </div>
                 </div>
               )

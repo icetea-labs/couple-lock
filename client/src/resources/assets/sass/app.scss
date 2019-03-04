@@ -766,73 +766,73 @@ img{
       }
     }
   }
-  .request_promises{
+  .request_promises, .sent_promises{
     margin-bottom: 18px;
-    .request__items{
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed $color-grey-gallery;
-      &:last-child{
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
+  }
+  .request__items{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed $color-grey-gallery;
+    &:last-child{
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    &__avatar{
+        width: 36px;
+      img{
+        border-radius: 50%;
+        float: left;
+        overflow: hidden;
       }
-      &__avatar{
-          width: 36px;
-        img{
-          border-radius: 50%;
-          float: left;
-          overflow: hidden;
-        }
-      }
-      &__displayname{
-        font-size: 14px;
-        color: #5a5e67;
-        font-weight: 600;
-        text-transform: capitalize;
-        background: none;
-      }
-      &__pending{
-        font-size: $font-smaller;
-        color: $color-violet;
-        font-weight: 500;
-        margin-top: 2px;
-        border-radius: 10px;
-        padding: 2px 4px;
-        border: 1px solid;
-        cursor: pointer;
-        position: absolute;
-        top: 0;
-        right: 0;
+    }
+    &__displayname{
+      font-size: 14px;
+      color: #5a5e67;
+      font-weight: 600;
+      text-transform: capitalize;
+      background: none;
+    }
+    &__pending{
+      font-size: $font-smaller;
+      color: $color-violet;
+      font-weight: 500;
+      margin-top: 2px;
+      border-radius: 10px;
+      padding: 2px 4px;
+      border: 1px solid;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
 
+    }
+    &__username{
+      font-size: $font-smaller;
+      color: $color-violet;
+      font-weight: 500;
+    }
+    &__btn{
+      margin-top: 5px;
+      &__accept{
+        margin-right: 5px;
       }
-      &__username{
-        font-size: $font-smaller;
+      &__accept, &__delete{
+        background: $color-white;
         color: $color-violet;
-        font-weight: 500;
-      }
-      &__btn{
-        margin-top: 5px;
-        &__accept{
-          margin-right: 5px;
-        }
-        &__accept, &__delete{
-          background: $color-white;
-          color: $color-violet;
-          border: 1px solid $color-violet;
-          padding: 2px 6px;
-          border-radius: 10px;
-        }
+        border: 1px solid $color-violet;
+        padding: 2px 6px;
+        border-radius: 10px;
       }
     }
-    .detail{
-      width: calc(100% - 36px);
-      float: left;
-      margin-left: 10px;
-      position: relative;
-    }
+  }
+  .detail{
+    width: calc(100% - 36px);
+    float: left;
+    margin-left: 10px;
+    position: relative;
   }
 }
 

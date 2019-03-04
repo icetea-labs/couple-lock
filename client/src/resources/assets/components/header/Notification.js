@@ -25,7 +25,7 @@ class Notification extends Component {
         Promise.all(
             [axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))]
         ).then(([data]) => {
-            console.log(data);
+            // console.log(data);
             var allnoti = data.data.length;
             this.setState({
                 total_noti: 3

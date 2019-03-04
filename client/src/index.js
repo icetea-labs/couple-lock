@@ -24,9 +24,9 @@ var test1 = {...test}
 
 test1.name= '12'
 
-console.log(
-  test, '+', test1
-);
+// console.log(
+//   test, '+', test1
+// );
 
 ReactDOM.render(
   <App />, document.getElementById('root')
