@@ -16,12 +16,8 @@ class BannerImage extends Component {
   }
 
   componentWillMount() {
-    const {loginUser} = this.state;
     PubSub.subscribe('updateBanner', () => {
-      axios.get(`/api/propose/list?username=${loginUser}`)
-      .then(res => {
-        this.setState({ imgBanner: res.data.data });
-      });
+      this.getImgBanner();
     });
   }
 
@@ -33,31 +29,43 @@ class BannerImage extends Component {
     });
   }
 
-  render() {
+  showImgBanner = () => {
     const {imgBanner, loginUser} = this.state;
+    const proposeId = this.props.proposeId;
+    const list = imgBanner.length > 0 && imgBanner.map((item, index) => {
+      // console.log(item);
+      if(item.id === proposeId && loginUser === item.sender && item.r_attachments.length > 0){
+        return(
+          <div className="banner_container mg-auto" key={index}>
+            <img src={item.r_attachments[0].url} alt="" />
+            {
+              (item.s_attachments.length > 0) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
+              {item.r_attachments[0].caption}
+              </p>
+            }
+          </div>
+        )     
+      }else if(item.id === proposeId && loginUser === item.receiver && item.s_attachments.length > 0){
+        return(
+          <div className="banner_container mg-auto" key={index}>
+            <img src={item.s_attachments[0].url} alt="" />
+            {
+              (item.s_attachments[0].length > 0) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
+              {item.s_attachments[0].caption}
+              </p>
+            }
+          </div>
+        )
+      }else{
+        // console.log("No images");
+      }
+    })
+    return list;
+  }
+  render() {
     return (
       <div>
-        {
-          imgBanner.length > 0 && imgBanner.map((item, index) => {
-            const id = item.id;
-            const proposeId = this.props.proposeId;
-            return(
-              (id === proposeId && loginUser === item.sender && item.s_attachments) ? <div className="banner_container mg-auto" key={index}>
-                <img src={item.s_attachments[0].url} alt="" />
-                <p className="short_desc color-violet"><span className="icon-luggage"></span>
-                  {item.s_attachments[0].caption}
-                </p>
-              </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments) && <div className="banner_container mg-auto" key={index}>
-                <img src={item.r_attachments[0].url} alt="" />
-                {
-                  (item.r_attachments) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
-                  {item.r_attachments[0].caption}
-                  </p>
-                }
-              </div>
-            )
-          })
-        }
+        { this.showImgBanner () }
       </div>
     );
   }

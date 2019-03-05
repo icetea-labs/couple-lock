@@ -32,7 +32,7 @@ class Promises extends Component {
 
   isDisableAccept = () =>{
     const { promisesMessage, promisesImage } = this.state;
-    if(promisesMessage.length > 0 && promisesImage != null){
+    if(promisesMessage.length > 0 || promisesImage != null){
       return "false" ;
     }
   }
@@ -76,7 +76,6 @@ class Promises extends Component {
                   </div>
                   <div className="detail">
                     <button className="request__items__displayname"> {item.displayName} </button>
-                    {/* { (loginUser === sender) && <div className="request__items__pending">Pending</div> } */}
                     <div className="request__items__username">@{item.username}</div>
                       <div className="request__items__btn">
                       <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
