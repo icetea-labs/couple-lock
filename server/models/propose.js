@@ -1,50 +1,73 @@
-const promise = require("../helpers/promise");
-const user = require("./user");
+const userModel = require("./user");
+const notiModel = require('./noti')
 const store = require('../services/factory').getStore('propose');
 
-exports.one = (proposeId, cb) => {
-    return store.one(proposeId, cb);
-}
+exports.one = store.one.bind(store)
+exports.tryOne = store.tryOne.bind(store)
+exports.exist = store.exist.bind(store)
+exports.all = store.all.bind(store)
 
-exports.list = async (username, cb) => {
+exports.list = async (username) => {
     return store.list({
         sender: username,
         receiver: username
-    }, cb)
+    })
 }
 
-exports.insert = async (data, cb) => {
+exports.insert = async (data) => {
     if (!data.id) {
         data.id = data.sender + "_" + Date.now();
     }
 
     if (!data.sender || !data.receiver) {
-        return promise.cbOrFail("Sender or receiver not found");
+        console.log('dkjfkl')
+        return Promise.reject("Sender or receiver not found");
     }
 
-    const sender = await user.one(data.sender);
-    if (!sender) {
-        return promise.cbOrFail("Sender not registered");
+    if (!await userModel.exist(data.sender)) {
+        console.log('111')
+        return Promise.reject("Sender not registered");
     }
 
-    const receiver = await user.one(data.receiver);
-    if (!receiver) {
-        return promise.cbOrFail("Receiver not registered");
+    if (!await userModel.exist(data.receiver)) {
+        console.log('222')
+        return Promise.reject("Receiver not registered");
     }
 
-    return store.insert(data.id, data, cb);
+    return store.insert(data.id, data).then (whatever => {
+        // Add a noti
+        notiModel.insert({
+            username: data.receiver,
+            timestamp: Date.now(),
+            event: 'propose.request',
+            eventData: data
+        })
+
+        return whatever
+    })
 }
 
-exports.update = (id, newProps, cb) => {
+exports.update = (id, newProps) => {
     if (newProps.id && newProps.id !== id) {
-        return promise.cbOrFail("Changing key is not allowed")
+        return Promise.reject("Changing key is not allowed")
     }
     if (newProps.sender) {
-        return promise.cbOrFail("Changing sender is not allowed")
+        return Promise.reject("Changing sender is not allowed")
     }
     if (newProps.receiver) {
-        return promise.cbOrFail("Changing receiver is not allowed")
+        return Promise.reject("Changing receiver is not allowed")
     }
-    
-    return store.update(id, newProps, cb);
+
+    return store.update(id, newProps).then(data => {
+        console.log('propose.reply', data)
+        // Add a noti
+        notiModel.insert({
+            username: data.sender,
+            timestamp: Date.now(),
+            event: 'propose.reply',
+            eventData: data
+        })
+
+        return data
+    })
 }

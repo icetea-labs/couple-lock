@@ -28,9 +28,9 @@ module.exports = class DataStore {
 
     async tryOne(key, cb) {
         try {
-            return promise.cbOrSucceed(await this.one(key));
+            return promise.cbOrSucceed(await this.one(key), cb);
         } catch (error) {
-            promise.cbOrSucceed(undefined, cb); 
+            return promise.cbOrSucceed(undefined, cb); 
         }
     }
 
@@ -66,7 +66,13 @@ module.exports = class DataStore {
     // update, error if not exists
     async update(key, newProps, cb) {
         const value = await this.one(key);
-        return this.set(key, Object.assign(value, newProps), cb);
+        const newValue = Object.assign(value, newProps);
+        const promise = this.set(key, newValue).then(() => newValue);
+        if (cb) {
+            promise.then(value => cb(undefined, value), cb)
+        } else {
+            return promise
+        }
     }
 
     // update, insert if not exist
