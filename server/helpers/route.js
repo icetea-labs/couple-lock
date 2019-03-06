@@ -6,9 +6,10 @@ exports.succeed = (res, data) => {
 }
 
 exports.error = (res, err) => {
+    console.error(err)
     return res.json({
         ok: false,
-        error: err
+        error: String(err)
     })
 }
 
@@ -25,6 +26,7 @@ exports.tryJson = async (res, func, ...args) => {
     try {
         const data = await func(...args);
         exports.succeed(res, data);
+        return data
     } catch (error) {
         exports.error(res, error);
     }
@@ -32,7 +34,9 @@ exports.tryJson = async (res, func, ...args) => {
 
 exports.validateTryJson = async (req, res, validationResult, func, ...args) => {
     if (exports.validate(validationResult, req, res)) {
-        exports.tryJson(res, func, ...args);
+        return exports.tryJson(res, func, ...args);
+    } else {
+        console.error("Input validation failed")
     }
 }
 

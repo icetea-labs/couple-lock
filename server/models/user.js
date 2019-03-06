@@ -1,18 +1,14 @@
-const promise = require("../helpers/promise");
 const store = require('../services/factory').getStore('user');
 
-exports.one = (username, cb) => {
-    return store.one(username, cb);
-}
+exports.one = store.one.bind(store)
+exports.tryOne = store.tryOne.bind(store)
+exports.exist = store.exist.bind(store)
+exports.all = store.all.bind(store)
 
-exports.all = (cb) => {
-    return store.all(cb);
-}
-
-exports.insert = async (data, cb) => {
+exports.insert = async (data) => {
     if (!data.username) {
-        promise.cbOrFail("Must specify username");
+        Promise.reject("Must specify username");
     }
 
-    return store.insert(data.username, data, cb);
+    return store.insert(data.username, data);
 }

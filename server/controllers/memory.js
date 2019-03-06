@@ -1,18 +1,10 @@
-const express = require('express')
-  , router = express.Router()
-  , Memory = require('../models/memory')
+const Memory = require('../models/memory')
   , route = require('../helpers/route')
-  , { validationResult, checkSchema } = require('express-validator/check');
+  , { validationResult, checkSchema } = require('express-validator/check')
+  , Controller = require('./controller')
 
 const upload = require('../helpers/upload');
-
-router.get('/details', checkSchema({ id: route.stringSchema() }), (req, res) => {
-  route.validateTryJson(req, res, validationResult, Memory.one, req.query.id);
-})
-
-router.get('/list', checkSchema({ proposeId: route.stringSchema() }), (req, res) => {
-  route.validateTryJson(req, res, validationResult, Memory.list, req.query.proposeId);
-})
+const router = new Controller(Memory).details().list('proposeId').router
 
 router.post('/create', upload.single("attachment"), checkSchema({
   proposeId: route.stringSchema('body'),
@@ -31,6 +23,13 @@ router.post('/create', upload.single("attachment"), checkSchema({
     sender: req.body.sender,
     message: req.body.message,
     attachments: [] || null,
+  }
+
+  if (req.body.tags) {
+    const tags = req.body.tags.split(';')
+    if (tags.length) {
+      item.tags = tags
+    }
   }
 
   if (!req.file) {
