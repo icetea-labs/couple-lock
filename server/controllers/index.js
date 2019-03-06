@@ -4,13 +4,14 @@ var express = require('express')
     , session = require('express-session')
     , cookieParser = require('cookie-parser')
     , nodePersist = require('./node-persist')
-    , fetch = require('cross-fetch');
 
 router.use('/login', require('./authentication'));
 router.use('/api/user', require('./user'))
 router.use('/api/propose', require('./propose'))
 router.use('/api/memory', require('./memory'))
 router.use('/api/noti', require('./noti'))
+router.use('/api/tag', require('./tag'))
+
 router.use(cookieParser());
 router.use(session({
     secret: process.env || null,
@@ -25,6 +26,9 @@ router.use(session({
 router.get('/api', function (req, res) {
     res.send(`<h3>API list</h3>
   <ul>
+    <li>
+        <a href='/dump'>/dump (Dump database)</a>
+    </li>
     <li>
         <a href='/api/user/details?username=tradatech'>/api/user/details?username=tradatech</a>
     </li>
@@ -52,9 +56,6 @@ router.get('/api', function (req, res) {
     <li>
         <a href='/api/user/profile'>/api/user/profile</a>
     </li>
-    <li>
-        <a href='/test'> test </a>
-    </li>
   </ul>`
     );
 })
@@ -67,14 +68,18 @@ router.route('/api/google/callback')
             })
     })
 
-router.route('/test')
-    .get((req, res) => {
-    const data = {abc: "abcc"}
-      res.send(data);
-    })
+router.get('/dump', (req, res) => {
+    const models = ['user', 'tag', 'noti', 'propose', 'memory']
+    const data = models.reduce((collector, item) => {
+        collector.push(require(`../models/${item}`).all())
+        return collector
+    }, [])
 
-
-
+    Promise.all(data).then(data => res.json(models.reduce((obj, item, index) => {
+        obj[item] = data[index]
+        return obj
+    }, {})))
+})
 
 
 module.exports = router

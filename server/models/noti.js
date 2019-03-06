@@ -1,37 +1,38 @@
-const user = require("./user");
+const userModel = require("./user");
 const store = require('../services/factory').getStore('noti');
 
-exports.one = (notiId, cb) => {
-  return store.one(notiId, cb);
+exports.one = store.one.bind(store)
+exports.tryOne = store.tryOne.bind(store)
+exports.exist = store.exist.bind(store)
+exports.all = store.all.bind(store)
+
+exports.list = (username) => {
+  return store.list({ username })
 }
 
-exports.list = (username, cb) => {
-  return store.list({ username }, cb)
-}
-
-exports.insert = async (data, cb) => {
+exports.insert = async (data) => {
   if (!data.id) {
     data.id = data.username + "_" + Date.now();
   }
 
   if (!data.username) {
-    return promise.cbOrFail("Must specify username");
+    return Promise.reject("Must specify username");
   }
 
-  if (!await user.one(data.username)) {
-    return promise.cbOrFail("username not found");
+  if (!await userModel.exist(data.username)) {
+    return Promise.reject("username not found");
   }
 
-  return store.insert(data.id, data, cb);
+  return store.insert(data.id, data);
 }
 
-exports.update = (id, newProps, cb) => {
+exports.update = (id, newProps) => {
     if (newProps.id && newProps.id !== id) {
-        return promise.cbOrFail("Changing key is not allowed")
+        return Promise.reject("Changing key is not allowed")
     }
     if (newProps.username) {
-        return promise.cbOrFail("Changing username is not allowed")
+        return Promise.reject("Changing username is not allowed")
     }
     
-    return store.update(id, newProps, cb);
+    return store.update(id, newProps);
 }

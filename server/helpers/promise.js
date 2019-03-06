@@ -1,21 +1,9 @@
 module.exports = class {
-    static succeed(value) {
-        return new Promise(resolve => {
-            resolve(value);
-        })
-    }
-
-    static fail(error) {
-        return new Promise((resolve, reject) => {
-            reject(error);
-        })
-    }
-
     static cbOrSucceed(value, cb) {
         if (cb) {
             cb(null, value);
         } else {
-            return this.succeed(value);
+            return Promise.resolve(value);
         }
     }
 
@@ -23,7 +11,7 @@ module.exports = class {
         if (cb) {
             cb(error, {});
         } else {
-            return this.fail(error);
+            return Promise.reject(error);
         }
     }
 

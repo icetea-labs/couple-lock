@@ -1,26 +1,45 @@
-const propose = require("./propose");
+const proposeModel = require("./propose");
 const store = require('../services/factory').getStore('memory');
+const tagModel = require('./tag')
+const notiModel = require('./noti')
 
-exports.one = (memoryId, cb) => {
-  return store.one(memoryId, cb);
+exports.one = store.one.bind(store)
+exports.tryOne = store.tryOne.bind(store)
+exports.exist = store.exist.bind(store)
+exports.all = store.all.bind(store)
+
+exports.list = (proposeId) => {
+  return store.list({ proposeId: proposeId })
 }
 
-exports.list = (proposeId, cb) => {
-  return store.list({ proposeId: proposeId }, cb)
-}
-
-exports.insert = async (data, cb) => {
+exports.insert = async (data) => {
   if (!data.id) {
     data.id = data.proposeId + "_" + Date.now();
   }
 
   if (!data.proposeId) {
-    return promise.cbOrFail("Must specify proposeId");
+    return Promise.reject("Must specify proposeId");
   }
 
-  if (!await propose.one(data.proposeId)) {
-    return promise.cbOrFail("Propose ID not found");
+  const propose = await proposeModel.tryOne(data.proposeId)
+  if (!propose) {
+    return Promise.reject("Propose ID not found");
   }
 
-  return store.insert(data.id, data, cb);
+  // Insert tags
+  if (data.tags && data.tags.length) {
+    tagModel.insert(data.tags)
+  }
+
+  return store.insert(data.id, data).then((whatever) => {
+    // Insert noti
+    notiModel.insert({
+      username: propose.receiver,
+      timestamp: Date.now(),
+      event: 'memory.new',
+      eventData: data
+    })
+
+    return whatever
+  })
 }
