@@ -8,7 +8,6 @@ class PendingPromise extends Component {
     this.state = {
       acceptPromisesModal: false,
       loginUser: window.getLoginUser(),
-      viewed: [],
     }
   }
 
@@ -17,23 +16,20 @@ class PendingPromise extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const deniedPromises = this.props.deniedPromises;
-    const receiver = this.props.user.receiver;
     const {loginUser} = this.state;
-
-    if(this.props !== nextProps && deniedPromises.length > 0 && deniedPromises[0].viewed !== true && loginUser===receiver){
-      this.popupPromises();
-    }
-    // if(this.props !== nextProps){
-    //   console.log(deniedPromises);
-    // }
+    const deniedPromises = this.props.deniedPromises.filter(item => item.receiver === loginUser)
+    
+    deniedPromises.forEach(item => {
+      if(this.props !== nextProps && item.receiver === loginUser){
+        this.popupPromises();
+      }
+    });
   }
 
   popupPromises = () => {
     setTimeout(() => {
       this.setState({ modal: true })
-    }, 3000);
-    // this.getViewed();
+    }, 1500);
   }
 
   openPromisesModal = () => {
@@ -46,39 +42,45 @@ class PendingPromise extends Component {
     }));
   }
 
-  render() {
-    const deniedPromises = this.props.deniedPromises;
-    const receiver = this.props.user.receiver;
-    const {loginUser} = this.state;
-    return (
-      <div>
-        <Modal className="promise_popup" isOpen={this.state.modal} toggle={this.closePromisesModal} >
-          <ModalHeader toggle={this.closePromisesModal}>Request Promises</ModalHeader>
-          <ModalBody>
+
+  showRequestPromises = () =>{
+    return(
+      <Modal className="promise_popup" isOpen={this.state.modal} toggle={this.closePromisesModal} >
+        <ModalHeader toggle={this.closePromisesModal}>Request Promises</ModalHeader>
+        <ModalBody>
           {
-            deniedPromises.length > 0 && deniedPromises.map((item, index) =>{
-              return(
-                <div className="request__items" key={index}>
-                  <div className="request__items__avatar">
-                    <img src={item.avatar} alt="" />
-                  </div>
-                  <div className="detail">
-                    <button className="request__items__displayname"> {item.displayName} </button>
-                    <div className="request__items__username">@{item.username}</div>
-                    {
-                      (loginUser === receiver) && <div className="request__items__btn">
-                      <button type="button" className="request__items__btn__accept" onClick={ this.openPromisesModal }>Accept</button>
-                      <button type="button" className="request__items__btn__delete">Delete</button>
+            (this.props.deniedPromises && this.props.deniedPromises.length > 0) ? <div>
+              {
+                this.props.deniedPromises.map((item, index) =>{
+                  return(
+                    <div className="request__items" key={index}>
+                      <div className="request__items__avatar">
+                        <img src={item.avatar} alt="" />
                       </div>
-                    }
-                  </div>
-                </div>
-              )
-            })
+                      <div className="detail">
+                        <button className="request__items__displayname"> {item.displayName} </button>
+                        <div className="request__items__username">@{item.username}</div>
+                        {
+                          <div className="request__items__btn">
+                          <button type="button" className="request__items__btn__accept" onClick={ this.openPromisesModal }>Accept</button>
+                          <button type="button" className="request__items__btn__delete">Delete</button>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  )
+                })
+              }
+            </div> : <div className="rp_message">No request promises</div>
           }
-          </ModalBody>
-        </Modal>
-      </div>
+        </ModalBody>
+      </Modal>
+    )
+  }
+
+  render() {
+    return (
+      <div>{ this.showRequestPromises() }</div>
     );
   }
 }
