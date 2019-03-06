@@ -37,12 +37,8 @@ class ChatBox extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
     }
-
-    // TODO: test redux
-
-
+    
     // TODO: feaching data and handle message
-
     fetchMessageData() {
 
     }
@@ -52,15 +48,9 @@ class ChatBox extends Component {
     }
 
     hiddenMessage() {
-        if (this.state.see_chat) {
-            this.setState({
-                see_chat: false
-            })
-        } else {
-            this.setState({
-                see_chat: true
-            })
-        }
+       this.setState({
+           see_chat: !this.state.see_chat
+       })
     }
 
     hiddenChat = () => {
@@ -106,7 +96,7 @@ class ChatBox extends Component {
             <div className="display_chatbox " style={{ display: this.state.is_hidden ? 'block' : 'none', width: this.state.see_chat ? '300px' : '200px' }}>
                 <div className="chat_box" style={{ width: this.state.see_chat ? '300px' : '200px' }}>
                     <div className="header__box" onClick={this.hiddenMessage} >
-                        <label>Paulra</label>
+                        <label>{this.props.receiver}</label>
                         <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
                     <div className="chat__content" style={{ display: this.state.see_chat ? 'block' : 'none' }}>

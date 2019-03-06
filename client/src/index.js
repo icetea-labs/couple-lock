@@ -4,8 +4,10 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import redux from 'redux';
-// import 'font-awesome/css/font-awesome.min.css';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './reducers/reducer';
+import todos from './reducers/todo';
 
 window.getLoginUser = () => {
   if (localStorage.getItem("sender") === null) {
@@ -14,22 +16,28 @@ window.getLoginUser = () => {
     return localStorage.getItem("sender");
   }
 };
+const list_friend = [
+  { id: 1, name: 'Paula' },
+  { id: 2, name: 'Annie' },
+  { id: 3, name: 'Richard' }
+]
 
-var test = {
-  name: 'ok',
-  age: '21'
-}
+/**
+ * create storage
+ */
+const store = createStore(
+  reducer
+  , list_friend
+  , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-var test1 = {...test}
+// const store = configureStore();
+// store.dispatch(actions.setTracks(tracks));
 
-test1.name= '12'
-
-console.log(
-  test, '+', test1
-);
-
-ReactDOM.render(
-  <App />, document.getElementById('root')
+ReactDOM.render((
+  <Provider store={store}>
+    <App />
+  </Provider>
+), document.getElementById('root')
 );
 
 serviceWorker.unregister();

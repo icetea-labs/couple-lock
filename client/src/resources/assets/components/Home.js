@@ -10,8 +10,15 @@ import SideBar from './sidebar/SideBar';
 import ChatBox from './message/ChatBox';
 import FriendList from './friendlist/FriendList';
 import ChangUser from './test/ChangeUser';
-import Redux from 'redux';
+import { connect } from 'react-redux';
 
+console.log(window.store)
+
+function mapStateToProps (state){
+  return {
+    ...state
+  }
+}
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +92,7 @@ class Home extends Component {
     });
     for (let i = 0; i < 3; i++) {
       this.listChat.push(
-          <ChatBox key={i} />
+          <ChatBox key={i} receiver="Test receiver" />
       )
     }
   }
@@ -129,4 +136,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default connect(mapStateToProps) (Home);

@@ -16,11 +16,11 @@ const options = [
 
 class MemoryPost extends Component {
   constructor() {
-    super ();
-    this.state ={
+    super();
+    this.state = {
       selectedOption: { value: 'Public', label: 'Public' },
       idVisible: null,
-      isPlace : false,
+      isPlace: false,
       m_message: '',
       selectFile: null,
       startDate: new Date(),
@@ -30,8 +30,8 @@ class MemoryPost extends Component {
   }
 
   showInputPlaces = () => {
-    this.setState( prevState => ({
-      isPlace : !prevState.isPlace
+    this.setState(prevState => ({
+      isPlace: !prevState.isPlace
     }));
   }
 
@@ -46,22 +46,22 @@ class MemoryPost extends Component {
     this.setState({ selectedOption });
   }
 
-  getIdVisible () {
+  getIdVisible() {
     const id = this.state.selectedOption.value;
-    if(id === "Public"){
+    if (id === "Public") {
       return 1;
-    }else if(id === "Unlisted"){
+    } else if (id === "Unlisted") {
       return 2;
     }
-    else{
+    else {
       return 3;
     }
-    
+
   }
-  
+
   getMessageValue = (e) => {
     this.setState({
-      m_message: e.target.value ,
+      m_message: e.target.value,
     })
   }
 
@@ -71,22 +71,22 @@ class MemoryPost extends Component {
       imgPreview: URL.createObjectURL(e.target.files[0]),
     }
     this.setState({
-      selectFile: img ,
+      selectFile: img,
     })
   }
 
   getDate = (date) => {
     this.setState({
       startDate: date,
-      openPicker : !this.state.openPicker,
+      openPicker: !this.state.openPicker,
     });
   }
 
-  
+
 
   shareMemory = (e) => {
     e.preventDefault();
-    const {m_message, selectFile, location} = this.state;
+    const { m_message, selectFile, location } = this.state;
     const sender = window.getLoginUser();
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
@@ -103,11 +103,11 @@ class MemoryPost extends Component {
     formData.append('locationLong', 10);
 
     axios.post('/api/memory/create', formData)
-    .then(res => {
-      console.log(res);
-      console.log(res.data);
-      PubSub.publish('shareMemory');
-    })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        PubSub.publish('shareMemory');
+      })
 
     this.setState({
       m_message: "",
@@ -118,19 +118,19 @@ class MemoryPost extends Component {
   }
 
   toggleOpenPicker = () => {
-    this.setState({ openPicker : !this.state.openPicker})
+    this.setState({ openPicker: !this.state.openPicker })
   }
 
-  isImagePreview = () =>{
-    if(this.state.selectFile){
+  isImagePreview = () => {
+    if (this.state.selectFile) {
       return this.state.selectFile.imgPreview;
     }
   }
-  
+
   isEnabledShare = () => {
     const { m_message, selectFile } = this.state;
-    if(m_message.length > 0 || selectFile != null){
-      return "false" ;
+    if (m_message.length > 0 || selectFile != null) {
+      return "false";
     }
   }
 
@@ -147,15 +147,15 @@ class MemoryPost extends Component {
         <div className="memorypost__content">
           <div className="post_container clearfix">
             <div className="user_avatar fl"><img src={this.props.sender.avatar} alt="" /></div>
-            <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={ this.getMessageValue } value={this.state.m_message}></textarea>
+            <textarea className="post_input fl" placeholder="Describe your Memory…." onChange={this.getMessageValue} value={this.state.m_message}></textarea>
             {
               (this.state.location.length > 0 && <div className="showaddres"><span>— in </span> {this.state.location}</div>)
             }
             {
-              (this.state.selectFile != null) && <div className="img_preview"><img src={ this.isImagePreview() } alt="" /></div>
+              (this.state.selectFile != null) && <div className="img_preview"><img src={this.isImagePreview()} alt="" /></div>
             }
             {
-              (selectDate !== currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled"/></div>
+              (selectDate !== currentDate) && <div className="showdate"><span>— date </span><input value={currentDate} disabled="disabled" /></div>
             }
           </div>
           <div className="custom_post">
@@ -164,14 +164,14 @@ class MemoryPost extends Component {
             </div>
             <div className="options">
               <div className="place-wrapper">
-                <span className="icon-location" onClick={ this.showInputPlaces }></span>
+                <span className="icon-location" onClick={this.showInputPlaces}></span>
                 {
-                  this.state.isPlace && <LocationSearchInput getLocation={this.getLocation}/>
+                  this.state.isPlace && <LocationSearchInput getLocation={this.getLocation} />
                 }
               </div>
               <div className="upload_img">
                 <span className="icon-photo"></span>
-                <input type="file" accept=".png, .jpg, .jpeg" onChange={ this.fileSelected }/>
+                <input type="file" accept=".png, .jpg, .jpeg" onChange={this.fileSelected} />
               </div>
               <div className="picktime">
                 <span className="icon-today" onClick={this.toggleOpenPicker}></span><DatePicker open={this.state.openPicker} selected={this.state.startDate} onChange={this.getDate} />
@@ -183,7 +183,7 @@ class MemoryPost extends Component {
             <div className="privacy">
               <Select isSearchable={false} className="privacy_select" value={selectedOption} onChange={this.setPrivacyMemory} options={options} />
             </div>
-            <button type="button" disabled={!this.isEnabledShare()} onClick={ this.shareMemory }>Share</button>
+            <button type="button" disabled={!this.isEnabledShare()} onClick={this.shareMemory}>Share</button>
           </div>
         </div>
       </div>

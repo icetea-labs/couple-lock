@@ -36,10 +36,6 @@ class Notification extends Component {
     }
 
     addNotification = () => {
-        console.log()
-        for (let i = 0; i < this.state.list_noti; i++) {
-
-        }
 
         for (let i = 0; i < this.state.list_noti.length; i++) {
             this.showNoti.push(
@@ -55,18 +51,9 @@ class Notification extends Component {
     }
 
     seeNotification = () => {
-        if (this.state.see_noti === true) {
-            this.setState({
-                see_noti: false
-            })
-        }
-
-        if (this.state.see_noti === false) {
-
-            this.setState({
-                see_noti: true
-            })
-        }
+       this.setState({
+           see_noti: !this.state.see_noti
+       })
     }
 
     render() {

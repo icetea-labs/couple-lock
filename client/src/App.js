@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import './resources/assets/sass/app.scss';
 import './resources/assets/icomoon/icon.scss';
 import './resources/assets/sass/profile.scss'
@@ -16,8 +18,22 @@ import Profile from './resources/assets/components/Profile';
 import SeedPhase from './resources/assets/components/SeedPhase';
 import User from './resources/assets/components/user/User';
 
-class App extends Component {
+const mapStateToProps =  (state) => {
+  return {
+    ...state
+  }
+}
 
+const mapDispatchToProps = (state) => {
+  return {
+    ...state
+  }
+}
+
+class App extends Component {
+  
+  componentWillMount = () => {
+  }
   render() {
     return (
       <Router>
@@ -34,4 +50,5 @@ class App extends Component {
   }
 }
 
-export default App;
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
