@@ -56,8 +56,8 @@
         right: 180px;
         background-color: white;
         border: solid rgba(128, 128, 128, 0.285) 1px;
-        width: 350px;
-        height: 400px;
+        width: 400px;
+        height: 550px;
         border-top: none;
         border-bottom-right-radius: 3px;
         border-bottom-left-radius: 3px;
@@ -94,11 +94,11 @@
                 }
 
                 .img_receiver{
-                    position: relative;
                     width: 40px;
                     height: 50px;
                     border: solid purple 1px;
                     left: 10px;
+                    float: right;
                 }
 
                 
@@ -108,10 +108,19 @@
                 background-color: rgba(128, 255, 0, 0.578)
             }
         }
+
+        br{
+
+        }
         .check_all{
-            position: absolute !important;
-            top: 10px;
+            position: relative ;
             color: black;
+            margin: 10px;
+            border-bottom: solid rgba(243, 36, 105, 0.714) 1px;
+
+            span {
+                float:  right;
+            }
         }
     }
 }

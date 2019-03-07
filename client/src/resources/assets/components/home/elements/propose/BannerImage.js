@@ -55,7 +55,6 @@ class BannerImage extends Component {
       <div onClick={this.showPopUp}>
         {
           imgBanner.length > 0 && imgBanner.map((item, index) => {
-            console.log(item.s_attachments[0].url);
             const id = item.id;
             const proposeId = this.props.proposeId;
             return (
