@@ -11,14 +11,16 @@ class Notification extends Component {
         this.state = {
             see_noti: false,
             total_noti: 0,
-            list_noti: [
-                { img_url: 'https://lh4.googleusercontent.com/-wK2szuWGtzA/AAAAAAAAAAI/AAAAAAAAClk/mYAPz5QBvMo/s96-c/photo.jpg', sender: localStorage.getItem("sender"), content: "được lắm con trai" },
-                { img_url: localStorage.getItem("img_url"), sender: localStorage.getItem("sender"), content: "được lắm con trai" },
-                { img_url: localStorage.getItem("img_url"), sender: localStorage.getItem("sender"), content: "được lắm con trai" }
+            list_noti: [],
+            name_noti: [
+                'đã tạo một hẹn ước mới vói bạn',
+                'đã chấp nhận hẹn ước từ bạn',
+                'đã thêm một kỉ niệm mới',
             ],
+            text: '',
         }
 
-        this.showNoti = []
+        this.showNoti = [];
     }
 
     componentWillMount() {
@@ -26,34 +28,65 @@ class Notification extends Component {
             [axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))]
         ).then(([data]) => {
             console.log(data);
-            var allnoti = data.data.length;
             this.setState({
-                total_noti: 3
+                total_noti: data.data.data.length,
             })
+
+            let all_noti = data.data.data.map((item) => {
+                return item;
+            })
+
+            all_noti.forEach(element => {
+                this.state.list_noti.push(element);
+            });
+            this.addNotification();
         })
 
-        this.addNotification();
+        console.log('noti is', this.state.list_noti)
+
     }
 
     addNotification = () => {
+        for (let i = 0; i < this.state.total_noti; i++) {
+            Promise.all([axios.get('/api/user/details?username=' + this.state.list_noti[i].eventData.sender)])
+                .then(([data]) => {
+                    this.text = this.choseName(this.state.list_noti[i].event);
+                    console.log(data.data.data.avatar)
+                    let have_img = false;
+                    this.showNoti.push(
+                        <div key={i} className="li_noti">
+                            <img className="sender_img" src={data.data.data.avatar} alt="avatar sender" />
+                            <div className="noti_content">
+                                {this.state.list_noti[i].eventData.sender === this.state.list_noti[i].username ? 'Bạn' : this.state.list_noti[i].eventData.sender}
+                                {' ' + this.text}
+                            </div>
+                            <img style={{display: true ? 'block' : 'none' }} src = "" className="img_receiver" alt="img" />
+                        </div>
+                    )
+                })
+        }
+    }
 
-        for (let i = 0; i < this.state.list_noti.length; i++) {
-            this.showNoti.push(
-                <li key={i} className="li_noti">
-                    <img className="sender_img" src={this.state.list_noti[i].img_url} alt="" />
+    choseName = (event) => {
+        // eslint-disable-next-line default-case
+        switch (event) {
+            case "propose.request":
+                return this.state.name_noti[0];
+                break;
 
-                    <span className="span_common">
-                        {this.state.list_noti[i].content}
-                    </span>
-                </li>
-            )
+            case "propose.reply":
+                return this.state.name_noti[1];
+                break;
+
+            case "memory.new":
+                return this.state.name_noti[2];
         }
     }
 
     seeNotification = () => {
-       this.setState({
-           see_noti: !this.state.see_noti
-       })
+        this.setState({
+            see_noti: !this.state.see_noti
+        })
     }
 
     render() {
@@ -62,14 +95,14 @@ class Notification extends Component {
                 <MaterialIcon icon="mail" color="white" />
                 <div className="number_notification">
                     <span style={{}}>
-                        {this.state.list_noti.length}
+                        {this.state.total_noti}
                     </span>
                 </div>
                 <div className="pointed" style={{ display: this.state.see_noti ? 'block' : 'none' }}></div>
                 <div className="list_notification" style={{ display: this.state.see_noti ? 'block' : 'none' }}>
-                    <ul className="all__content">
+                    <div className="all__content">
                         {this.showNoti}
-                    </ul>
+                    </div>
                 </div>
             </div>
         );

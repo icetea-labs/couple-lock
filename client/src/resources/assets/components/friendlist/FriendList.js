@@ -54,7 +54,7 @@ class FriendList extends Component {
 
     render() {
         return (
-            <div className="list_friend div_tr" style={{ height: this.state.see_list ? '500px' : '40px' }}>
+            <div className="list_friend div_tr" style={{ height: this.state.see_list ? '500px' : '40px', width: this.state.see_list ? '200px': '80px' }}>
                 <span className="btn_hidden" onClick={this.hiddenListFriend}> {this.state.see_list ? 'hidden' : 'show'}</span>
                 <div className="online_friend" style={{ display: this.state.see_list ? 'block' : 'none' }}>
                     <label >
