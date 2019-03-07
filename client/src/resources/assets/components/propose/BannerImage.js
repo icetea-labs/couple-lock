@@ -33,38 +33,27 @@ class BannerImage extends Component {
     const {imgBanner, loginUser} = this.state;
     const proposeId = this.props.proposeId;
     const list = imgBanner.length > 0 && imgBanner.map((item, index) => {
-      // console.log(item);
-      if(item.id === proposeId && loginUser === item.sender && item.r_attachments.length > 0){
+      if(item.id === proposeId && loginUser === item.sender && item.r_attachments){
         return(
-          <div className="banner_container mg-auto" key={index}>
-            <img src={item.r_attachments[0].url} alt="" />
-            {
-              (item.s_attachments.length > 0) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
-              {item.r_attachments[0].caption}
-              </p>
-            }
+          <div key={index}>
+            {(item.r_attachments.length > 0) && <img src={item.r_attachments[0].url} alt="" />}
           </div>
-        )     
-      }else if(item.id === proposeId && loginUser === item.receiver && item.s_attachments.length > 0){
+        )
+      }else if(item.id === proposeId && loginUser === item.receiver && item.s_attachments){
         return(
-          <div className="banner_container mg-auto" key={index}>
-            <img src={item.s_attachments[0].url} alt="" />
-            {
-              (item.s_attachments[0].length > 0) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
-              {item.s_attachments[0].caption}
-              </p>
-            }
+          <div key={index}>
+            {(item.s_attachments.length > 0) && <img src={item.s_attachments[0].url} alt="" />}
           </div>
         )
       }else{
-        // console.log("No images");
+        //console.log("false");
       }
     })
     return list;
   }
   render() {
     return (
-      <div>
+      <div className="banner_container mg-auto">
         { this.showImgBanner () }
       </div>
     );

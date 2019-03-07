@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
-// import PopupPromise from './PopupPromise';
+import PopupPromise from './PopupPromise';
 
 class Promises extends Component {
   constructor(props) {
@@ -105,9 +105,9 @@ class Promises extends Component {
           }
         </div>
         <div className="popup_promises_wrapper">
-          {/* <PopupPromise user={this.props.user}
+          <PopupPromise user={this.props.user}
             deniedPromises={deniedPromises}
-            acceptPromisesModal = { this.acceptPromisesModal } /> */}
+            acceptPromisesModal = { this.acceptPromisesModal } />
         </div>
       </div>
     );

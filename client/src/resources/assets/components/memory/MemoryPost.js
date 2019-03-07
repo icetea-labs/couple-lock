@@ -26,6 +26,7 @@ class MemoryPost extends Component {
       startDate: new Date(),
       openPicker: false,
       location: '',
+      tags: [],
     }
   }
 
@@ -82,11 +83,19 @@ class MemoryPost extends Component {
     });
   }
 
-  
+  getTags = (arr) => {
+    const tags = [];
+    arr.forEach(item => {
+      tags.push(item.text)
+    });
+    const listTag = tags.join(';')
+    this.setState({ tags: listTag });
+  }
 
   shareMemory = (e) => {
     e.preventDefault();
-    const {m_message, selectFile, location} = this.state;
+    const {m_message, selectFile, location, tags} = this.state;
+    // console.log(tags);
     const sender = window.getLoginUser();
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
@@ -98,14 +107,15 @@ class MemoryPost extends Component {
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
     formData.append('attachment', (selectFile) ? selectFile.imgUpload : null);
+    formData.append('tags', tags);
     formData.append('locationName', location);
     formData.append('locationLat', 10);
     formData.append('locationLong', 10);
 
     axios.post('/api/memory/create', formData)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data);
       PubSub.publish('shareMemory');
     })
 
@@ -160,7 +170,7 @@ class MemoryPost extends Component {
           </div>
           <div className="custom_post">
             <div className="tags">
-              <TagsInput />
+              <TagsInput getTags={ this.getTags }/>
             </div>
             <div className="options">
               <div className="place-wrapper">
