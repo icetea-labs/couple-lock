@@ -1,8 +1,8 @@
-import { setTracks } from '../actions/tracks';
+import { setTracks } from './actions/tracks';
 import { combineReducers } from 'redux';
-import todos from "./todo";
+import handleNoti from "./notification";
 
 export default combineReducers({
     setTracks,
-    todos
+    handleNoti
 });

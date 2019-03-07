@@ -1,6 +1,6 @@
 export function addToDo(value) {
     return {
-        type: 'ADD_TODO',
+        type: 'ADD_NOTI',
         value
     }
 }

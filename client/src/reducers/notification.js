@@ -8,10 +8,10 @@ const inititalState = [{
  * 
  * action creator
  */
-export default function todos(state = inititalState, action) {
+export default function handleNoti(state = inititalState, action) {
     // eslint-disable-next-line default-case
     switch (action.type) {
-        case 'ADD_TODO':
+        case 'ADD_NOTI':
             return [{
                 id: (state.length === 0) ? 0 : state[0].id + 1,
                 marked: false,

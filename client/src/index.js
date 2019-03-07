@@ -7,7 +7,6 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers/reducer';
-import todos from './reducers/todo';
 
 window.getLoginUser = () => {
   if (localStorage.getItem("sender") === null) {
@@ -16,6 +15,7 @@ window.getLoginUser = () => {
     return localStorage.getItem("sender");
   }
 };
+
 const list_friend = [
   { id: 1, name: 'Paula' },
   { id: 2, name: 'Annie' },
