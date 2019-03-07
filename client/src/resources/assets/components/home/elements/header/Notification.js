@@ -13,8 +13,8 @@ class Notification extends Component {
             total_noti: 0,
             list_noti: [],
             name_noti: [
-                'đã tạo một hẹn ước mới vói bạn',
-                'đã chấp nhận hẹn ước từ bạn',
+                'đã tạo một hẹn ước mới vói ',
+                'đã chấp nhận hẹn ước từ ',
                 'đã thêm một kỉ niệm mới',
             ],
             text: '',
@@ -58,9 +58,9 @@ class Notification extends Component {
                             <img className="sender_img" src={data.data.data.avatar} alt="avatar sender" />
                             <div className="noti_content">
                                 {this.state.list_noti[i].eventData.sender === this.state.list_noti[i].username ? 'Bạn' : this.state.list_noti[i].eventData.sender}
-                                {' ' + this.text}
+                                {' ' + this.text} {this.state.list_noti[i].eventData.sender !== this.state.list_noti[i].username ? 'bạn' : this.state.list_noti[i].eventData.sender}
                             </div>
-                            <img style={{display: true ? 'block' : 'none' }} src = "" className="img_receiver" alt="img" />
+                            <img style={{ display: true ? 'block' : 'none' }} src="" className="img_receiver" alt="img" />
                         </div>
                     )
                 })
@@ -102,7 +102,9 @@ class Notification extends Component {
                 <div className="list_notification" style={{ display: this.state.see_noti ? 'block' : 'none' }}>
                     <div className="all__content">
                         {this.showNoti}
+
                     </div>
+                    <span className="check_all">Đánh dấu tất cả là đã đọc</span>
                 </div>
             </div>
         );

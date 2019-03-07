@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import Layout from './Layout';
-import BannerImage from './propose/BannerImage';
-import MemoryPost from './memory/MemoryPost';
-import DialogueChat from './memory/DialogueChat';
-import RecentChat from './propose/RecentChat';
-import SideBar from './sidebar/SideBar';
-import ChatBox from './message/ChatBox';
-import FriendList from './friendlist/FriendList';
-import ChangUser from './test/ChangeUser';
 import { connect } from 'react-redux';
+
+
+// Element
+import Layout from './Layout';
+import BannerImage from './elements/propose/BannerImage';
+import MemoryPost from './elements/memory/MemoryPost';
+import DialogueChat from './elements/memory/DialogueChat';
+import RecentChat from './elements/propose/RecentChat';
+import SideBar from './elements/sidebar/SideBar';
+import ChatBox from './elements/message/ChatBox';
+import FriendList from './elements/friendlist/FriendList';
+import ChangUser from '../test/ChangeUser';
 
 console.log(window.store)
 

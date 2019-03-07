@@ -6,14 +6,13 @@ class CoverImage extends Component {
         super(props)
 
         this.state ={
-            image: localStorage.getItem('img_url')
         }
     }
 
     render() {
         return (
             <div className= "layer_common cover_image " >
-                <img src={this.state.image} />
+                <img src='./images/banner.jpg' />
             </div>
         )
     }

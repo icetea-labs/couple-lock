@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import bip39 from 'bip39';
-import SeedWord from './seed/SeedWord';
 import { array } from 'prop-types';
-import Header from './seed/Header';
+
+// import element
+import SeedWord from './elements/seed/SeedWord';
+import Header from './elements/seed/Header';
 
 class Seed extends Component {
 

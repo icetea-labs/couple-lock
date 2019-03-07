@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CoverImage from './components/CoverImage';
+import CoverImage from './elements/CoverImage';
 
 class User extends Component {
 
@@ -9,10 +9,6 @@ class User extends Component {
         this.state ={
             
         }
-    }
-
-    changeSender = () => {
-        localStorage.setItem("sender", 'tradatech');
     }
 
     render() {

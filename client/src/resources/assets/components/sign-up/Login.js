@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../sass/login.scss';
 import GoogleLogin from 'react-google-login';
 import { Grid, Col, Row } from 'react-bootstrap';
 import MaterialIcon, { mail } from 'material-icons-react';
