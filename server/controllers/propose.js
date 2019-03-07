@@ -4,7 +4,7 @@ var Propose = require('../models/propose')
   , Controller = require('./controller')
 
 const upload = require('../helpers/upload');
-const router = new Controller(Propose).details().list('username').router
+const router = new Controller(Propose).details().list('username').viewed().router
 
 router.post('/request', upload.single("attachment"), checkSchema({
   sender: route.stringSchema('body'),
@@ -60,22 +60,5 @@ router.post('/reply', upload.single("attachment"), checkSchema({
   route.validateTryJson(req, res, validationResult, Propose.update, req.body.id, item)
 })
 
-router.get('/viewed', checkSchema({
-  id: route.stringSchema(),
-}), (req, res) => {
-
-  const item = {
-    viewed: true,
-  }
-
-  const batchUpdate = idArray => {
-    return idArray.reduce((promises, i) => {
-      promises.push(Propose.update(i, item))
-      return promises
-    }, [])
-  }
-
-  route.validateTryJson(req, res, validationResult, batchUpdate, id.split(';'), item);
-})
 
 module.exports = router

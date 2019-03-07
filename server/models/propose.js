@@ -20,17 +20,14 @@ exports.insert = async (data) => {
     }
 
     if (!data.sender || !data.receiver) {
-        console.log('dkjfkl')
         return Promise.reject("Sender or receiver not found");
     }
 
     if (!await userModel.exist(data.sender)) {
-        console.log('111')
         return Promise.reject("Sender not registered");
     }
 
     if (!await userModel.exist(data.receiver)) {
-        console.log('222')
         return Promise.reject("Receiver not registered");
     }
 
@@ -59,7 +56,6 @@ exports.update = (id, newProps) => {
     }
 
     return store.update(id, newProps).then(data => {
-        console.log('propose.reply', data)
         // Add a noti
         notiModel.insert({
             username: data.sender,
