@@ -13,35 +13,42 @@
     background-color: rgba(255, 255, 255, 0);
     color: rgba(255, 255, 255, 0.693);
     cursor: pointer;
-    i{
-    color: rgba(255, 228, 196, 0.83) !important;
+
+    .icon_noti{
+        i{
+            color: rgba(34, 29, 85, 0.83) !important;
+            }
+        
+        i:hover{
+            border-radius: 2px;
+            transition: 0.2s;
+            color: rgb(255, 255, 255) !important;     
+        }
+
+        .number_notification{
+            background: red;
+            color: rgba(255, 255, 255, 0.863);
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: -3px;
+            right: -8px;
+            text-align: center;
+            border-radius: 50%;
+        }
     }
-
-    i:hover{
-        border-radius: 2px;
-        transition: 0.2s;
-        color: rgb(255, 255, 255) !important;
-        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.564);
-        transform: scale(1.5 , 1.5);
-
+    .icon_noti:hover{
+        .tooltip_common{
+            transition: 1s;
+            transition-delay: 0.5s;
+            visibility: visible;
+        }
     }
-
+    
     .pointed{
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-bottom: 20px solid white;
-    }
-
-    .number_notification{
-        background: red;
-        color: rgba(255, 255, 255, 0.863);
-        width: 15px;
-        height: 15px;
-        position: absolute;
-        top: -3px;
-        right: -8px;
-        text-align: center;
-        border-radius: 50%;
     }
 
     .number_notification:hover{
@@ -50,8 +57,7 @@
     }
 
     .list_notification{
-        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.564);
-        overflow-y: auto;
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.564);
         position: relative;
         right: 180px;
         background-color: white;
@@ -62,6 +68,7 @@
         border-bottom-right-radius: 3px;
         border-bottom-left-radius: 3px;
         .all__content{
+            overflow-y: auto;
             margin-top: 30px;
             margin-left: 10px;
             margin-right: 10px;
@@ -70,9 +77,9 @@
             color: black;
             .li_noti{
                 margin-top: 3px;
-                background-color: white;
                 height: 60px;
                 width: 100%;
+                background-color: rgba(128, 128, 128, 0.222);
                 border-bottom: solid rgba(128, 128, 128, 0.551) 1px;
                 padding: 6px;
                 display: flex;
@@ -96,7 +103,7 @@
                 .img_receiver{
                     width: 40px;
                     height: 50px;
-                    border: solid purple 1px;
+                    border: solid rgb(17, 151, 60) 1px;
                     left: 10px;
                     float: right;
                 }
@@ -108,18 +115,40 @@
                 background-color: rgba(128, 255, 0, 0.578)
             }
         }
-
-        br{
-
-        }
-        .check_all{
+        .noti_header{
             position: relative ;
-            color: black;
-            margin: 10px;
-            border-bottom: solid rgba(243, 36, 105, 0.714) 1px;
+            color: rgba(0, 0, 0, 0.721);
+            
+            padding: 10px;
+            border-bottom: solid rgba(17, 107, 15, 0.714) 1px;
 
             span {
                 float:  right;
+            }
+
+            span:hover{
+                color: rgba(255, 0, 0, 0.666);
+            }
+        }
+
+        .noti_footer{
+            position: absolute;
+            bottom: 0px;
+            color: rgba(15, 15, 15, 0.775);
+            width: 100%;
+            height:  40px;
+            border-top:  solid rgba(243, 36, 105, 0.714) 1px;
+            span{
+                float: right;
+                height: 100%;
+                text-align: center;
+                padding-top: 10px;
+                padding-right: 10px;
+            }
+
+            .btn_settings{
+                background: rgba(255, 255, 255, 0);
+                padding: 3px;
             }
         }
     }

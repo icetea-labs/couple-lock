@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+// scss
 import './resources/assets/sass/home/app.scss';
 import './resources/assets/icomoon/icon.scss';
 import './resources/assets/sass/profile.scss'
@@ -12,6 +13,9 @@ import './resources/assets/sass/home/addpromise.scss';
 import './resources/assets/sass/home/list_friend.scss';
 import './resources/assets/sass/home/notification.scss';
 import './resources/assets/sass/user/cover_image.scss';
+import './resources/assets/sass/home/settings.scss';
+
+// page router
 import Home from './resources/assets/components/home/Home';
 import Login from './resources/assets/components/sign-up/Login';
 import Profile from './resources/assets/components/set-profile/Profile';

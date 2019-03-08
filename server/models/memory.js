@@ -34,7 +34,7 @@ exports.insert = async (data) => {
   return store.insert(data.id, data).then((whatever) => {
     // Insert noti
     notiModel.insert({
-      username: propose.receiver,
+      username: data.sender === propose.sender ? propose.receiver : propose.sender,
       timestamp: Date.now(),
       event: 'memory.new',
       eventData: data

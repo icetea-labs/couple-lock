@@ -49,6 +49,34 @@ ul {
   background-color: rgba(255, 0, 0, 0.381);
 }
 
+.tooltip_common{
+  visibility: hidden;
+  position: absolute;
+  delay: 0.5s;
+  top: -30px;
+  left: 10px;
+  .pointed_common{
+    position: absolute;
+    z-index: 999;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid black;
+  }
+
+  .content_common{
+    z-index: 999;
+    position: relative;
+    top: 0px;
+    right: 10px;
+    background-color: black;
+    color: white;
+    width: 90px;
+    height: 27px;
+    padding-top: 3px;
+    border-radius: 10px;
+    text-align: center;
+  }
+}
 
 
 @-webkit-keyframes{

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import UserAccount from './UserAccount';
 import Notification  from './Notification';
+import MaterialIcon, { settings} from 'material-icons-react'
+import Settings from './Settings';
 
 class Header extends Component {
   render() {
@@ -13,6 +15,7 @@ class Header extends Component {
           <SearchBox />
           <UserAccount />
           <Notification />
+          <Settings />
         </div>
       </div>
     );
