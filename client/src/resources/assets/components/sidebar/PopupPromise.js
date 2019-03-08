@@ -8,24 +8,25 @@ class PendingPromise extends Component {
     this.state = {
       acceptPromisesModal: false,
       loginUser: window.getLoginUser(),
-      proposeViewedList: [],
+      // proposeViewedList: [],
     }
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   const {loginUser} = this.state;
-  //   const {deniedPromises} = this.props;
-  //   const proposeIdList = [];
-  //   if(this.props !== nextProps){
-  //     deniedPromises.filter(u => u.receiver === loginUser).map((item) =>{
-  //       proposeIdList.push(item.proposeId)
-  //       if(item.viewed !== true){
-  //         this.popupPromises();
-  //         axios.get(`/api/propose/viewed?id=${proposeIdList.join(';')}`);
-  //       }
-  //     })
-  //   }
-  // }
+  componentWillReceiveProps(nextProps){
+    const {loginUser} = this.state;
+    const {deniedPromises} = this.props;
+    const proposeIdList = [];
+    if(this.props.deniedPromises !== nextProps){
+      deniedPromises.filter(u => u.receiver === loginUser).map((item) =>{
+        proposeIdList.push(item.proposeId)
+        if(item.viewed !== true){
+          this.popupPromises();
+          axios.get(`/api/propose/viewed?id=${proposeIdList.join(';')}`);
+        }
+      })
+    }
+  }
+  
 
   popupPromises = () => {
     setTimeout(() => {
