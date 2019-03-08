@@ -26,9 +26,7 @@ const list_friend = [
  * create storage
  */
 const store = createStore(
-  reducer
-  , list_friend
-  , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  reducer,list_friend,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // const store = configureStore();
 // store.dispatch(actions.setTracks(tracks));

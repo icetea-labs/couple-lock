@@ -14,17 +14,21 @@ import SideBar from './elements/sidebar/SideBar';
 import ChatBox from './elements/message/ChatBox';
 import FriendList from './elements/friendlist/FriendList';
 import ChangUser from '../test/ChangeUser';
+import PopUp from './elements/popup/PopUp';
 
 console.log(window.store)
 
-function mapStateToProps (state){
-  return {
+const mapStateToProps = (state) =>({
     ...state
-  }
-}
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  
+})
+
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       leftUser: [],
       rightUser: [],
@@ -132,6 +136,7 @@ class Home extends Component {
           </div>
         <FriendList />
         <ChangUser />
+        <PopUp open={true} data={true} />
         </div>
       </Layout >
 
@@ -139,4 +144,4 @@ class Home extends Component {
   }
 }
 
-export default connect(mapStateToProps) (Home);
+export default connect(mapStateToProps, mapDispatchToProps) (Home);

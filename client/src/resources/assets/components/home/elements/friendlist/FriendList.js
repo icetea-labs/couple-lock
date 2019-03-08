@@ -2,30 +2,21 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => ({...state.handleListFriend});
 
-    console.log(state);
-    return {
-        ...state.addToDo
-    };
-
-}
-
-function mapDispatchToProps (dispatch) {
-    // eslint-disable-next-line no-labels
+const mapDispatchToProps = (dispatch) => ({
     // eslint-disable-next-line no-unused-expressions
-    onChangeTest: value => {
+    onChangeTest: (id) => {
         dispatch({
-            type: 'ADD_TODO',
-            value
+            type: 'ADD_FRIEND', id ,
         })
     }
-}
+})
 
 class FriendList extends Component {
 
-    constructor(props) {
-        super(props)
+    constructor() {
+        super();
 
         this.state = {
             _is_online: true,
@@ -43,7 +34,6 @@ class FriendList extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props);
     }
 
     hiddenListFriend = () => {
@@ -70,7 +60,7 @@ class FriendList extends Component {
                         </div>
                     </label>
                         <input placeholder="test" defaultValue={this.state.value} onChange = {this.changeTest} />
-                        <button className="common_btn">Submit</button>
+                        <button className="common_btn" onSubmit="">Submit</button>
                 </div>
             </div>
         )
