@@ -8,7 +8,8 @@ const mapDispatchToProps = (dispatch) => ({
     // eslint-disable-next-line no-unused-expressions
     onChangeTest: (id) => {
         dispatch({
-            type: 'ADD_FRIEND', id ,
+            type: 'ADD_FRIEND',
+            id
         })
     }
 })
@@ -59,8 +60,6 @@ class FriendList extends Component {
                             <span>{this.state.user2}</span>
                         </div>
                     </label>
-                        <input placeholder="test" defaultValue={this.state.value} onChange = {this.changeTest} />
-                        <button className="common_btn" onSubmit="">Submit</button>
                 </div>
             </div>
         )

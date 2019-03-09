@@ -21,8 +21,12 @@
         
         i:hover{
             border-radius: 2px;
-            transition: 0.2s;
+            transition: 0.4s;
             color: rgb(255, 255, 255) !important;     
+        }
+
+        i:not(:hover){
+            transition: 0.2s;
         }
 
         .number_notification{
@@ -69,21 +73,21 @@
         border-bottom-left-radius: 3px;
         .all__content{
             overflow-y: auto;
-            margin-top: 30px;
+            margin-top: 10px;
             margin-left: 10px;
             margin-right: 10px;
             height: auto;
+            max-height: 430px;
             width: auto;
             color: black;
             .li_noti{
+                background-color: rgba(110, 110, 110, 0.095);
                 margin-top: 3px;
                 height: 60px;
                 width: 100%;
-                background-color: rgba(128, 128, 128, 0.222);
                 border-bottom: solid rgba(128, 128, 128, 0.551) 1px;
                 padding: 6px;
                 display: flex;
-
                 .sender_img{
                     border: solid orange 1px;
                     width: 50px !important;
@@ -107,12 +111,14 @@
                     left: 10px;
                     float: right;
                 }
-
-                
             }
            
             .li_noti:hover{
-                background-color: rgba(128, 255, 0, 0.578)
+                background-color: rgba(128, 255, 0, 0.578);
+            }
+
+            .viewed{
+                background-color: rgba(26, 26, 26, 0.197);
             }
         }
         .noti_header{

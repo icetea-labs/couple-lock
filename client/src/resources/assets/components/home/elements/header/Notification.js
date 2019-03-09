@@ -23,7 +23,7 @@ class Notification extends Component {
         this.showNoti = [];
     }
 
-    componentWillMount() {
+    componentDidMount () {
         Promise.all(
             [axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))]
         ).then(([data]) => {
@@ -39,6 +39,8 @@ class Notification extends Component {
             all_noti.forEach(element => {
                 this.state.list_noti.push(element);
             });
+
+            this.checkNoticationView();
             this.addNotification();
         })
 
@@ -46,8 +48,24 @@ class Notification extends Component {
 
     }
 
+    checkNoticationView = () => {
+        for (let  i = 0 ; i < this.state.list_noti.length; i++) {
+            if ( 'viewed' in this.state.list_noti[i] ){
+                this.setState({
+                    total_noti: this.state.total_noti - 1
+                })
+            }
+        }
+    }
+
+    isView = (result) => {
+        if ( 'viewed' in result){
+            return true;
+        } return false;
+    }
+
     addNotification = () => {
-        for (let i = 0; i < this.state.total_noti; i++) {
+        for (let i = 0; i < this.state.list_noti.length; i++) {
             Promise.all([axios.get('/api/user/details?username=' + this.state.list_noti[i].eventData.sender)])
                 .then(([data]) => {
                     this.inforNoti = this.imgSrc(this.state.list_noti[i].event, this.state.list_noti[i].eventData);
@@ -56,7 +74,7 @@ class Notification extends Component {
                     this.text = this.inforNoti.text;
                     this.have_img = this.inforNoti.have_img;
                     this.showNoti.push(
-                        <div key={i} className="li_noti" >
+                        <div key={i} className={ this.isView(this.state.list_noti[i]) ? 'li_noti'  : 'li_noti viewed'} >
                             <img className="sender_img" src={data.data.data.avatar} alt="avatar sender" />
                             <div className="noti_content">
                                 {this.state.list_noti[i].eventData.sender === this.state.list_noti[i].username ? 'Bạn' : this.state.list_noti[i].eventData.sender}

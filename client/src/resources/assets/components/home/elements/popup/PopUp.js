@@ -3,29 +3,33 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux';
 import MaterialIcon, { exit } from 'material-icons-react';
 
-function mapStateToProps(state) {
-
+const  mapStateToProps = (state) => {
   return {
+    ...state.handlePopup
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  toClose: (data) => dispatch({
+    type: 'CLOSE_POPUP',
+    data,
+  })
+})
 
 class PopUp extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
 
     this.state = {
-      open_popup: this.props.isOpen,
+      open_popup: false,
       comment: [
         { id: "21", avatar: "https://picsum.photos/200/200", timestamp: 1433741, content: "haha" }
       ]
     }
 
     this.allComment = []
+
+    this.closePopup = event => (this.props.toClose(event));
   }
 
   componentWillMount = () => {
@@ -37,18 +41,13 @@ class PopUp extends Component {
         </div>
       )
     }
-  }
 
-  closePopup = () => {
-    this.setState({
-      open_popup: !this.state.open_popup
-    })
+    console.log('propis:', this.props)
   }
-
 
   render() {
     return (
-      <Modal isOpen={this.state.open_popup} className="pop_up" >
+      <Modal isOpen={this.props.open} className="pop_up" >
         <span className="out" onClick={this.closePopup}>
           x
         </span>

@@ -34,6 +34,7 @@ class UserAccount extends Component {
       <div className="custom-right-header">
         <div className="user">
           <span className="user__photo"><img src={this.state.avatar} alt="ảnh đại diện" /></span>
+          
           <button className="login__button"><a href={this.state.redirect}>{this.state.linkto}</a></button>
         </div>
       </div>

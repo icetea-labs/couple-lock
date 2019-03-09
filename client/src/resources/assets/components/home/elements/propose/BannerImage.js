@@ -2,6 +2,21 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import PopUp from '../popup/PopUp';
 import PubSub from 'pubsub-js';
+import { connect } from 'react-redux';
+
+const mapStatetoProps = (state) => ({
+  ...state.initPopup
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  showPopUp: (data = "open now") => {
+    dispatch({
+      type: 'OPEN_POPUP',
+      data,
+    })
+  }
+});
+
 
 class BannerImage extends Component {
   constructor(props) {
@@ -11,24 +26,11 @@ class BannerImage extends Component {
       loginUser: window.getLoginUser(),
       show_Popup: false
     }
+    this.showPopUp = (data) => {this.props.showPopUp(data)}
   }
 
   componentDidMount() {
     this.getImgBanner()
-  }
-
-  showPopUp = () => {
-    if (this.state.show_Popup === "true") {
-      this.setState({
-        show_Popup: false
-      })
-    } else {
-      this.setState({
-        show_PopUp: true
-      })
-    }
-
-    return this.state.show_Popup
   }
 
   componentWillMount() {
@@ -52,35 +54,37 @@ class BannerImage extends Component {
   render() {
     const { imgBanner, loginUser } = this.state;
     return (
-      <div onClick={this.showPopUp}>
+      <div >
         {
           imgBanner.length > 0 && imgBanner.map((item, index) => {
             const id = item.id;
             const proposeId = this.props.proposeId;
+           
             return (
               (
                 id === proposeId && loginUser === item.sender && item.s_attachments) ?
                 <div className="banner_container mg-auto" key={index}>
-                  <img src={item.s_attachments[0].url} alt="sender image" />
+                  <img src={item.s_attachments[0].url} alt="sender image" onClick={this.showPopUp} />
                   <p className="short_desc color-violet"><span className="icon-luggage"></span>
                     {item.s_attachments[0].caption}
                   </p>
                 </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments) && <div className="banner_container mg-auto" key={index}>
-                  <img src={item.r_attachments[0].url} alt="" />
+                  <img src={item.r_attachments[0].url} alt="" onClick={this.showPopUp}/>
                   {
                     (item.r_attachments) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
                       {item.r_attachments[0].caption}
                     </p>
                   }
                 </div>
-            )
+            );
+          
           })
         }
-        <PopUp isOpen={this.showPopUp} />
+        
       </div>
-
+      
     );
   }
 }
 
-export default BannerImage;
+export default connect(mapStatetoProps, mapDispatchToProps)(BannerImage);

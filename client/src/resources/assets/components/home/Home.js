@@ -136,7 +136,7 @@ class Home extends Component {
           </div>
         <FriendList />
         <ChangUser />
-        <PopUp open={true} data={true} />
+        <PopUp />
         </div>
       </Layout >
 
