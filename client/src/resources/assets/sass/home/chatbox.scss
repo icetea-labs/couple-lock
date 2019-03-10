@@ -10,7 +10,7 @@
     bottom: 0px;
     right: 0px;
     width: auto;
-    z-index: 10;
+    z-index: 999;
     // background-color: rgba(128, 128, 128, 0.326);
     display: flex;
 }
@@ -29,7 +29,7 @@
     width: 300px;
     bottom: 0px;
     position: fixed;
-    z-index: 10px;
+    z-index: 999;
     float: right;
     background-color: rgba(228, 235, 233, 0.693);
     border: solid rgba(36, 35, 35, 0.23) 1px;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MaterialIcon, { mail, settings } from 'material-icons-react';
 import axios from 'axios';
 import { number } from 'prop-types';
+import ToolTip from '../../../helper/ToolTip';
 
 class Notification extends Component {
 
@@ -23,34 +24,47 @@ class Notification extends Component {
         this.showNoti = [];
     }
 
-    componentDidMount () {
+    componentWillMount() {
         Promise.all(
             [axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))]
         ).then(([data]) => {
-            console.log(data);
             this.setState({
                 total_noti: data.data.data.length,
             })
 
-            let all_noti = data.data.data.map((item) => {
+            this.state.list_noti = data.data.data.map((item) => {
                 return item;
             })
-
-            all_noti.forEach(element => {
-                this.state.list_noti.push(element);
-            });
-
             this.checkNoticationView();
             this.addNotification();
         })
+    }
 
-        console.log('noti is', this.state.list_noti)
+    // componentWillUpdate() {
+    //     Promise.all(
+    //         setInterval([axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))], 1000)
+    //     ).then(([data]) => {
+    //         this.setState({
+    //             total_noti: data.data.data.length,
+    //         })
+
+    //         this.state.list_noti = data.data.data.map((item) => {
+    //             return item;
+    //         })
+    //         this.checkNoticationView();
+    //         this.addNotification();
+
+    //         this.showNoti = [];
+    //     })
+    // }
+
+    componentDidMount() {
 
     }
 
     checkNoticationView = () => {
-        for (let  i = 0 ; i < this.state.list_noti.length; i++) {
-            if ( 'viewed' in this.state.list_noti[i] ){
+        for (let i = 0; i < this.state.list_noti.length; i++) {
+            if ('viewed' in this.state.list_noti[i]) {
                 this.setState({
                     total_noti: this.state.total_noti - 1
                 })
@@ -59,22 +73,22 @@ class Notification extends Component {
     }
 
     isView = (result) => {
-        if ( 'viewed' in result){
+        if ('viewed' in result) {
             return true;
         } return false;
     }
 
     addNotification = () => {
-        for (let i = 0; i < this.state.list_noti.length; i++) {
+        for (let i = this.state.list_noti.length - 1; i >= 0; i--) {
             Promise.all([axios.get('/api/user/details?username=' + this.state.list_noti[i].eventData.sender)])
                 .then(([data]) => {
-                    this.inforNoti = this.imgSrc(this.state.list_noti[i].event, this.state.list_noti[i].eventData);
+                    this.inforNoti = this.addContent(this.state.list_noti[i].event, this.state.list_noti[i].eventData);
                     this.image = this.inforNoti.img;
                     this.message = this.inforNoti.message;
                     this.text = this.inforNoti.text;
                     this.have_img = this.inforNoti.have_img;
                     this.showNoti.push(
-                        <div key={i} className={ this.isView(this.state.list_noti[i]) ? 'li_noti'  : 'li_noti viewed'} >
+                        <div key={i} className={this.isView(this.state.list_noti[i]) ? 'li_noti' : 'li_noti viewed'} >
                             <img className="sender_img" src={data.data.data.avatar} alt="avatar sender" />
                             <div className="noti_content">
                                 {this.state.list_noti[i].eventData.sender === this.state.list_noti[i].username ? 'Bạn' : this.state.list_noti[i].eventData.sender}
@@ -88,8 +102,7 @@ class Notification extends Component {
         }
     }
 
-    imgSrc = (event, eventData) => {
-
+    addContent = (event, eventData) => {
         // eslint-disable-next-line default-case
         switch (event) {
             case "propose.request":
@@ -116,20 +129,23 @@ class Notification extends Component {
         })
     }
 
+    checkAll = () => {
+        this.setState({
+            total_noti: 0
+        })
+    }
+
     render() {
         return (
             <div className="notification" onClick={this.seeNotification} >
-                <span className="icon_noti">
+                <span className="icon_noti" onClick={this.checkAll}>
                     <MaterialIcon icon="mail" color="white" />
-                    <div className="number_notification" style={{ display: this.state.list_noti.length === 0 ? 'none' : 'block' }}>
+                    <div className="number_notification" style={{ display: this.state.total_noti === 0 ? 'none' : 'block' }}>
                         <span >
                             {this.state.total_noti}
                         </span>
                     </div>
-                    <div className="tooltip_common ">
-                        <div className="pointed_common"></div>
-                        <div className="content_common">Thông báo</div>
-                    </div>
+                    <ToolTip name="thông báo" />
                 </span>
                 <div className="pointed" style={{ display: this.state.see_noti ? 'block' : 'none' }}></div>
                 <div className="list_notification" style={{ display: this.state.see_noti ? 'block' : 'none' }}>
@@ -141,7 +157,7 @@ class Notification extends Component {
                         {this.showNoti}
                     </div>
                     <div className="noti_footer">
-                        <button className="btn_settings">
+                        <button className="btn_settings"  >
                             <MaterialIcon icon="settings" />
                             Cài đặt
                         </button>

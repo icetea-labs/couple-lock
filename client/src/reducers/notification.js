@@ -1,11 +1,10 @@
-const inititalState = [{
+const inititalState = {
     text: 'Use Redux',
     mark: false,
     id: 0
-}]
+}
 
 /**
- * 
  * action creator
  */
 export default function handleNoti(state = inititalState, action) {

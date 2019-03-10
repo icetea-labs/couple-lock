@@ -30,7 +30,6 @@ export default class Message extends Component {
 
 
   fetchDataMessage = () => {
-
     var arrayMessage = [];
     var messages = [];
     firebase.firestore()

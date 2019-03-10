@@ -1,14 +1,14 @@
-export function addFriend(id){
+export function addFriend(username){
     return {
         type: 'ADD_FRIEND',
-        id
+        username
     }
 
 }
 
-export function deleteFriend(id){
+export function deleteFriend(username){
     return {
         type: 'DELETE_FRIEND',
-        id
+        username
     }
 }

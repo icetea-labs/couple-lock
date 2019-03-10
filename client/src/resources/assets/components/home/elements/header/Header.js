@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import UserAccount from './UserAccount';
-import Notification  from './Notification';
-import MaterialIcon, { settings} from 'material-icons-react'
+import Notification from './Notification';
 import Settings from './Settings';
+import LogOut from './LogOut';
 
 class Header extends Component {
   render() {
@@ -16,6 +16,7 @@ class Header extends Component {
           <UserAccount />
           <Notification />
           <Settings />
+          <LogOut />
         </div>
       </div>
     );

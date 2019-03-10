@@ -41,8 +41,6 @@ class PopUp extends Component {
         </div>
       )
     }
-
-    console.log('propis:', this.props)
   }
 
   render() {

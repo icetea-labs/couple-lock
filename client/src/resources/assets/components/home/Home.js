@@ -13,17 +13,16 @@ import RecentChat from './elements/propose/RecentChat';
 import SideBar from './elements/sidebar/SideBar';
 import ChatBox from './elements/message/ChatBox';
 import FriendList from './elements/friendlist/FriendList';
-import ChangUser from '../test/ChangeUser';
+import ChangUser from '../helper/ChangeUser';
 import PopUp from './elements/popup/PopUp';
 
-console.log(window.store)
-
-const mapStateToProps = (state) =>({
-    ...state
-})
+const mapStateToProps = (state) => ({...state.initListFriend});
 
 const mapDispatchToProps = (dispatch) => ({
-  
+   closeThis : (username) => dispatch({
+        type: 'DELETE_FRIEND',
+        username
+    })
 })
 
 class Home extends Component {
@@ -89,19 +88,14 @@ class Home extends Component {
       this.fetchProposeId();
     });
     PubSub.subscribe('refreshProposeDetail', () => {
-      const {proposeId} = this.state;
-      if(proposeId !== null){
+      const { proposeId } = this.state;
+      if (proposeId !== null) {
         axios.get(`/api/propose/details?id=${proposeId}`)
-        .then(propose => {
-          this.setState({ proposeList: propose.data.data });
-        })
+          .then(propose => {
+            this.setState({ proposeList: propose.data.data });
+          })
       }
     });
-    for (let i = 0; i < 3; i++) {
-      this.listChat.push(
-          <ChatBox key={i} receiver="Test receiver" />
-      )
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -134,14 +128,15 @@ class Home extends Component {
               this.listChat
             }
           </div>
-        <FriendList />
-        <ChangUser />
-        <PopUp />
+          <FriendList />
+          <ChangUser />
+          <PopUp />
         </div>
+        <ChatBox />
       </Layout >
 
-      );
+    );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

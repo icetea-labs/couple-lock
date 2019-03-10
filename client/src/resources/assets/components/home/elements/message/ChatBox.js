@@ -3,18 +3,25 @@ import firebase from 'firebase';
 import Config from '../firebase/Config';
 import Message from './Message';
 import PubSub from 'pubsub-js';
-import { getState } from 'redux';
+import { connect } from 'react-redux';
 import { number, string, object } from 'prop-types';
 
 
 firebase.initializeApp(Config);
 // Initialize Cloud Firestore through Firebase
 
+const mapStateToProps = (state) => ({...state.initListFriend});
+
+const mapDispatchToProps = (dispatch) => ({
+   closeThis : (username) => dispatch({
+        type: 'DELETE_FRIEND',
+        username
+    })
+})
+
 class ChatBox extends Component {
-
-
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             user: localStorage.getItem("user_name"),
             userName_item: null,
@@ -96,7 +103,7 @@ class ChatBox extends Component {
             <div className="display_chatbox " style={{ display: this.state.is_hidden ? 'block' : 'none', width: this.state.see_chat ? '300px' : '200px' }}>
                 <div className="chat_box" style={{ width: this.state.see_chat ? '300px' : '200px' }}>
                     <div className="header__box" onClick={this.hiddenMessage} >
-                        <label>{this.props.receiver}</label>
+                        <label>test</label>
                         <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
                     <div className="chat__content" style={{ display: this.state.see_chat ? 'block' : 'none' }}>
@@ -106,7 +113,6 @@ class ChatBox extends Component {
                             <img src={this.state.avatarURL} />
                             <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
                         </div>
-
                         <div className="content_message">
                             <Message owner={window.getLoginUser()} />
                         </div>
@@ -123,4 +129,4 @@ class ChatBox extends Component {
     }
 }
 
-export default ChatBox;
+export default connect(mapStateToProps, mapDispatchToProps )(ChatBox);

@@ -16,6 +16,7 @@ import './resources/assets/sass/home/notification.scss';
 import './resources/assets/sass/user/cover_image.scss';
 import './resources/assets/sass/home/settings.scss';
 import './resources/assets/sass/home/popup.scss';
+import './resources/assets/sass/home/logout.scss';
 
 // page router
 import Home from './resources/assets/components/home/Home';
