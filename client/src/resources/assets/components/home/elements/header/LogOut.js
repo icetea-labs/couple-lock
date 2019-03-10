@@ -7,7 +7,7 @@ class LogOut extends Component {
         return (
             <div  className="logout">
                 <MaterialIcon icon="logout" />
-                <ToolTip name="Đăng xuất" />;
+                <ToolTip name="Đăng xuất" />
             </div>
         );
     }

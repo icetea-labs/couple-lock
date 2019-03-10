@@ -10,7 +10,6 @@ class Layout extends Component {
         <main id="main">
           <div className="main_container w-960 mg-auto clearfix">{this.props.children}</div>
         </main>
-       
       </div>
     );
   }
