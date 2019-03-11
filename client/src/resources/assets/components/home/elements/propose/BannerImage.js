@@ -24,9 +24,10 @@ class BannerImage extends Component {
     this.state = {
       imgBanner: [],
       loginUser: window.getLoginUser(),
-      show_Popup: false
+      show_Popup: false,
+      id: null
     }
-    this.showPopUp = (data) => {this.props.showPopUp(data)}
+    this.showPopUp = (data) => { this.props.showPopUp(data) }
   }
 
   componentDidMount() {
@@ -51,6 +52,14 @@ class BannerImage extends Component {
       });
   }
 
+  check = () => {
+    try {
+      console.log(this.state.imgBanner[0].id);
+    } catch (err){
+      console.log(err);
+      throw(err);
+    }
+  }
   render() {
     const { imgBanner, loginUser } = this.state;
     return (
@@ -59,17 +68,16 @@ class BannerImage extends Component {
           imgBanner.length > 0 && imgBanner.map((item, index) => {
             const id = item.id;
             const proposeId = this.props.proposeId;
-           
+
             return (
-              (
-                id === proposeId && loginUser === item.sender && item.s_attachments) ?
+              (id === proposeId && loginUser === item.sender && item.s_attachments) ?
                 <div className="banner_container mg-auto" key={index}>
-                  <img src={item.s_attachments[0].url} alt="sender image" onClick={this.showPopUp} />
+                  <img id={id} src={item.s_attachments[0].url} alt="sender image" onClick={this.showPopUp} />
                   <p className="short_desc color-violet"><span className="icon-luggage"></span>
                     {item.s_attachments[0].caption}
                   </p>
                 </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments) && <div className="banner_container mg-auto" key={index}>
-                  <img src={item.r_attachments[0].url} alt="" onClick={this.showPopUp}/>
+                  <img id={id} src={item.r_attachments[0].url} alt="" onClick={this.showPopUp} />
                   {
                     (item.r_attachments) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
                       {item.r_attachments[0].caption}
@@ -77,14 +85,15 @@ class BannerImage extends Component {
                   }
                 </div>
             );
-          
+
           })
         }
-        
+        <button onClick={this.check}>TEST</button>
       </div>
-      
+
     );
   }
+
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(BannerImage);
