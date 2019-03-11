@@ -8,23 +8,29 @@ class PendingPromise extends Component {
     this.state = {
       acceptPromisesModal: false,
       loginUser: window.getLoginUser(),
-      // proposeViewedList: [],
+      proposeIdList: [],
     }
   }
 
   componentWillReceiveProps(nextProps){
     const {loginUser} = this.state;
     const {deniedPromises} = this.props;
-    const proposeIdList = [];
-    if(this.props.deniedPromises !== nextProps){
-      deniedPromises.filter(u => u.receiver === loginUser).map((item) =>{
-        proposeIdList.push(item.proposeId)
-        if(item.viewed !== true){
-          this.popupPromises();
-          axios.get(`/api/propose/viewed?id=${proposeIdList.join(';')}`);
-        }
+    const x = [];
+    if(this.props !== nextProps){
+      deniedPromises.filter(u => (u.receiver === loginUser && u.viewed !== true)).map((item) =>{
+        this.popupPromises();
+        x.push(item.proposeId)
+        this.setState({ proposeIdList: [...x] });
       })
     }
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    const {proposeIdList} = this.state;
+    if(this.state.proposeIdList !== prevState.proposeIdList){
+      axios.get(`/api/propose/viewed?id=${proposeIdList.join(';')}`);
+    }
+    
   }
   
 
@@ -46,6 +52,7 @@ class PendingPromise extends Component {
 
 
   showRequestPromises = () =>{
+    console.log(this.props);
     const {loginUser} = this.state
     return(
       <Modal className="promise_popup" isOpen={this.state.modal} toggle={this.closePromisesModal} >

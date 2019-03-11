@@ -105,7 +105,7 @@ class Promises extends Component {
           }
         </div>
         <div className="popup_promises_wrapper">
-          <PopupPromise user={this.props.user}
+          <PopupPromise
             deniedPromises={deniedPromises}
             acceptPromisesModal = { this.acceptPromisesModal } />
         </div>
