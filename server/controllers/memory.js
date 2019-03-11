@@ -4,7 +4,7 @@ const Memory = require('../models/memory')
   , Controller = require('./controller')
 
 const upload = require('../helpers/upload');
-const router = new Controller(Memory).details().list('proposeId').router
+const router = new Controller(Memory).details().list().router
 
 router.post('/create', upload.single("attachment"), checkSchema({
   proposeId: route.stringSchema('body'),
