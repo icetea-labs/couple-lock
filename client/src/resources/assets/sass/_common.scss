@@ -29,17 +29,17 @@ ul {
 .layer_common{
   position: fixed;
   left: 40px;
-  bottom: 40px;
+  top: 80px;
   z-index: 999;
   width: auto;
   height: auto;
   background: #ffffff;
- box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.564);
+ box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.394);
 }
 
 .span_common{
   background-color: none;
-  width: 100%;
+  width: 80%;
   height: 40px;
   margin-left: 10px;
   margin-right: 10px;
@@ -49,6 +49,56 @@ ul {
   background-color: rgba(255, 0, 0, 0.381);
 }
 
+.tooltip_common{
+  visibility: hidden;
+  position: absolute;
+  delay: 0.5s;
+  top: -30px;
+  left: 10px;
+  .pointed_common{
+    position: absolute;
+    z-index: 999;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid black;
+  }
+
+  .content_common{
+    z-index: 999;
+    position: relative;
+    top: 0px;
+    right: 10px;
+    background-color: black;
+    color: white;
+    width: 90px;
+    height: 27px;
+    padding-top: 3px;
+    border-radius: 10px;
+    text-align: center;
+  }
+}
+
+.loading{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden !important;
+  background-color: rgba(21, 24, 24, 0.877);
+  .gif{
+    transform: rotate(1000deg);
+    transition: 10s;
+    position: absolute;
+    top: 40vh;
+    left: 45%;
+    i{
+      font-size: 100px;
+      color: whitesmoke;
+    }
+  }
+}
+
+.fade {
+  overflow-y: scroll;
+}
 
 @-webkit-keyframes{
   
