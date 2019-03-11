@@ -15,9 +15,9 @@ module.exports = class {
     return this
   }
 
-  list(prop) {
+  list(prop, or) {
     this.router.get('/list', (req, res) => {
-      route.validateTryJson(req, res, validationResult, this.model.list, prop ? req.query[prop] : req.query)
+      route.validateTryJson(req, res, validationResult, this.model.list, prop ? req.query[prop] : req.query, !or)
     })
     return this
   }

@@ -25,8 +25,8 @@ module.exports = class SmartStore extends DataStore {
         return promise.cbOrSucceed(diskValue, cb);
     }
 
-    list(condition, cb) {
-        return this.disk.list(condition, cb);
+    list(condition, and = true, cb) {
+        return this.disk.list(condition, and, cb);
     }
 
     async set(key, value, cb) {
