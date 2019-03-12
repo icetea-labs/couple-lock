@@ -90,8 +90,8 @@ seeder.propose = [
         r_attachments: [
             {
                 type: 'photo',
-                url: "https://boygeniusreport.files.wordpress.com/2016/11/puppy-dog.jpg",
-                caption: "My dog likes that :D",
+                url: "https://i.ibb.co/946jCZj/banner.jpg",
+                caption: "Sotatek Company :D",
                 timestamp: Date.now(),
                 location: {
                     name: "The Moon",

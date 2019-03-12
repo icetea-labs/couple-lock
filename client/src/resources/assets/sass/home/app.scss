@@ -852,18 +852,20 @@ img{
 
 .popular_tags{
   .popular_tags__list{
-    ul{
-      display: inline-block;
+    display: inline-block;
+    label{
+      float: left;
+      color: $color-violet;
       margin-bottom: 0;
     }
-    li{
-      list-style: none;
+    .tags_item{
       font-size: $font-smaller;
+      color: $color-violet;
       font-weight: 600;
       line-height: 1.75;
       margin-right: 10px;
-      color: $color-violet;
-      float: left;
+      background: none;
+      border: none;
     }
   }
 }
