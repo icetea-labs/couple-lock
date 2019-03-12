@@ -18,5 +18,5 @@ exports.insert = async tags => {
   // merge two tags
   const newTags = [...new Set([...existingTags, ...tags])];
 
-  return store.insert('tags', newTags);
+  return store.set('tags', newTags);
 }

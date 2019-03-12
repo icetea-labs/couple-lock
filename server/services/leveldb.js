@@ -1,7 +1,6 @@
-const _ = require("lodash");
-var level = require('level');
+const level = require('level');
 const NsStore = require("./nsstore");
-const dbEngine = level("db", {keyEncoding: 'ascii', valueEncoding:'json'});
+const dbEngine = level("db", { keyEncoding: 'ascii', valueEncoding: 'json' });
 
 module.exports = class LevelStore extends NsStore {
     constructor(namespace) {
@@ -9,7 +8,7 @@ module.exports = class LevelStore extends NsStore {
         this.setEngine(dbEngine);
     }
 
-    list(condition, cb) {
+    list(condition, and = true, cb) {
         const prefix = this.namespace + ":";
         const arr = [];
 
@@ -19,16 +18,9 @@ module.exports = class LevelStore extends NsStore {
             lte: String.fromCharCode(prefix.charCodeAt(0) + 1)
         });
 
-        stream.on('data', (value) => {
-            if (!condition) {
-                arr.push(value);
-            } else {
-                _.each(condition, (cv, ck) => {
-                    if (value[ck] == cv) {
-                        arr.push(value);
-                        return false;
-                    }
-                })
+        stream.on('data', value => {
+             if (this.match(condition, and, value)) {
+                arr.push(value)
             }
         })
 

@@ -15,9 +15,9 @@ module.exports = class {
     return this
   }
 
-  list(fKeyName) {
-    this.router.get('/list', checkSchema({ [fKeyName]: route.stringSchema() }), (req, res) => {
-      route.validateTryJson(req, res, validationResult, this.model.list, req.query[fKeyName])
+  list(prop, or) {
+    this.router.get('/list', (req, res) => {
+      route.validateTryJson(req, res, validationResult, this.model.list, prop ? req.query[prop] : req.query, !or)
     })
     return this
   }

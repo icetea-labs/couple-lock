@@ -15,7 +15,7 @@ router.use(session({
   }
 }))
 
-new Controller(User, router).details('username').all().create('username')
+new Controller(User, router).details('username').all().list().create('username')
 
 router.route('/profile')
   .get((req, res) => {

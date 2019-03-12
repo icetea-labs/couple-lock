@@ -7,10 +7,7 @@ exports.one = store.one.bind(store)
 exports.tryOne = store.tryOne.bind(store)
 exports.exist = store.exist.bind(store)
 exports.all = store.all.bind(store)
-
-exports.list = (proposeId) => {
-  return store.list({ proposeId: proposeId })
-}
+exports.list = store.list.bind(store)
 
 exports.insert = async (data) => {
   if (!data.id) {
