@@ -88,9 +88,7 @@ class BannerImage extends Component {
 
           })
         }
-        <button onClick={this.check}>TEST</button>
       </div>
-
     );
   }
 

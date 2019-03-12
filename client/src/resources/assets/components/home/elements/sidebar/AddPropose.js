@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import moment from 'moment';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
 import LocationSearchInput from '../memory/Places';
+import socketIOClient from 'socket.io-client';
 
 class AddPropose extends Component {
 
@@ -31,6 +31,7 @@ class AddPropose extends Component {
                 imgPreview: '',
                 imgUpload: ''
             },
+            host: 'localhost:5000',
         }
     }
     componentWillMount() {
@@ -171,7 +172,10 @@ class AddPropose extends Component {
             show_promise: false
         })
 
-        axios.post('api/noti/create', formData )
+        axios.post('api/noti/create', formData );
+        
+        const socket = socketIOClient(this.state.host);
+        socket.emit('createNoti', this.state.receiver);
     }
 
     render() {

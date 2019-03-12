@@ -17,7 +17,7 @@ class Notification extends Component {
         }
 
         this.showNoti = [<div>loading</div>];
-        this.content = [<div className="all_content"></div>];
+        this.content = [];
     }
 
     seeNotification = () => {
@@ -30,6 +30,7 @@ class Notification extends Component {
         } catch (err) {
             throw err;
         }
+
     }
 
     render() {

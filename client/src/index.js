@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers/reducer';
+import socketIOClient from 'socket.io-client';
 
 window.getLoginUser = () => {
   if (localStorage.getItem("sender") === null) {
@@ -16,17 +17,15 @@ window.getLoginUser = () => {
   }
 };
 
-const list_friend = [
-  { id: 1, name: 'Paula' },
-  { id: 2, name: 'Annie' },
-  { id: 3, name: 'Richard' }
-]
+const socket = socketIOClient('localhost:5000');
+
+console.log(socket);
 
 /**
  * create storage
  */
 const store = createStore(
-  reducer,list_friend,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  reducer,socket,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // const store = configureStore();
 // store.dispatch(actions.setTracks(tracks));

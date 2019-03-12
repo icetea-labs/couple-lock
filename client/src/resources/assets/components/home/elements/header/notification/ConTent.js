@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import socketIOClient from 'socket.io-client';
+import { connect } from 'react-redux';
+
+const  mapStateToProps = (state) => {
+    return {
+      ...state.socket
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => ({
+  })
 
 class ConTent extends Component {
 
@@ -22,8 +33,6 @@ class ConTent extends Component {
     }
 
     componentDidMount() {
-        demoAsyncCall().then(() => this.setState({ loading: false }));
-
         Promise.all(
             [axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))]
         ).then(([data]) => {
@@ -37,7 +46,31 @@ class ConTent extends Component {
 
             this.addNotification();
         })
+
+        // 
+        this.props.socket.emit('createNoti', 'test' );
+
+
+        // Listen emit from server
+        this.props.socket.on('resNoti', (data) => {
+            console.log(data);
+        });
+
     }
+
+    // componentWillUpdate() {
+    //     Promise.all([axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))])
+    //         .then(([data]) => {
+    //             if (data.data.data.length > this.state.total_noti) {
+    //                 this.state.list_noti = [];
+    //                 this.showNoti = [];
+    //                 this.state.list_noti = data.data.data.map((item) => {
+    //                     return item;
+    //                 })
+    //                 this.addNotification();
+    //             }
+    //         });
+    // }
 
     isView = (data) => {
         if ('viewed' in data) {
@@ -46,7 +79,7 @@ class ConTent extends Component {
         return false;
     }
 
-    async addNotification() {
+    addNotification() {
         for (let index = this.state.list_noti.length - 1; index >= 0; index--) {
             let item = this.state.list_noti[index];
             Promise.all([axios.get('/api/user/details?username=' + item.eventData.sender)])
@@ -58,7 +91,7 @@ class ConTent extends Component {
                         this.text = this.inforNoti.text;
                         this.have_img = this.inforNoti.have_img;
                         this.avatar = intance.data.data.avatar;
-                    } catch (err) { 
+                    } catch (err) {
                         console.log(err);
                         throw err;
                     };
@@ -99,15 +132,6 @@ class ConTent extends Component {
     }
 
     render() {
-
-        const loading = this.state.loading;
-
-        if (loading) { // if your component doesn't have to wait for an async action, remove this block 
-            return (
-                <div>loading...</div>
-            )
-        }
-
         return (
             <div className="all__content" >
                 {this.showNoti}
@@ -116,9 +140,4 @@ class ConTent extends Component {
     }
 }
 
-function demoAsyncCall() {
-    return new Promise((resolve) => setTimeout(() => resolve(), 2500));
-}
-
-
-export default ConTent;
+export default connect(  ) (ConTent);

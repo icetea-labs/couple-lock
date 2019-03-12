@@ -15,6 +15,7 @@ import ChatBox from './elements/message/ChatBox';
 import FriendList from './elements/friendlist/FriendList';
 import ChangUser from '../helper/ChangeUser';
 import PopUp from './elements/popup/PopUp';
+import TestButton from '../helper/TestButton';
 
 const mapStateToProps = (state) => ({...state.initListFriend});
 
@@ -133,6 +134,7 @@ class Home extends Component {
           <PopUp />
         </div>
         <ChatBox />
+        <TestButton />
       </Layout >
 
     );
