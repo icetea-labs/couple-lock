@@ -165,7 +165,7 @@ class SideBar extends Component {
             const { activeUserId } = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return (
-              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)} proposeId={item.proposeId}>
+              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)}>
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>

@@ -134,7 +134,6 @@ class Home extends Component {
         </div>
         <ChatBox />
       </Layout >
-
     );
   }
 }

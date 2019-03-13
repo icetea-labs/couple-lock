@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 
 const tagslist = ['love', 'travel', 'honeymoon', 'relax', 'sweet']
 
 class PopularTag extends Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+
+    }
+  }
 
   showTags = () => {
     if(tagslist && tagslist.length > 0){
@@ -19,10 +27,11 @@ class PopularTag extends Component {
   searchTags = (tags) => {
     axios.get(`/api/memory/list?proposeId=0&tags.includes=${tags}`)
     .then(res => {
-      console.log(res.data.data);
+      PubSub.publish('filterTasg', res.data.data)
     })
+    
   }
-
+  
   render() {
     return (
       <div className="popular_tags">
