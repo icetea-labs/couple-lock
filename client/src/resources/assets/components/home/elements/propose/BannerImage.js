@@ -27,7 +27,6 @@ class BannerImage extends Component {
       loginUser: window.getLoginUser(),
       show_Popup: false,
       data: null,
-      list: [],
       img: null,
     }
 
@@ -51,6 +50,7 @@ class BannerImage extends Component {
     console.log(this.props);
     axios.get(`/api/propose/list?username=${this.props.sender}`)
       .then(res => {
+        console.log(res)
         this.setState({
           imgBanner: res.data.data,
         });
@@ -58,41 +58,42 @@ class BannerImage extends Component {
         console.log(this.state.imgBanner)
         this.showImgBanner();
       });
-    }
+  }
 
   showImgBanner = () => {
-    this.state.imgBanner.forEach((item, index) => {
-      if (item.r_attachments.length > 0) {
-        console.log(item.r_attachments[index])
-        this.img_receiver.map((item, i) => {
-          return (
-            <img key={i} src={item[i].url} />
-          )
-        })
+    const { imgBanner, loginUser } = this.state;
+    const proposeId = this.props.proposeId;
+    const list = imgBanner.length > 0 && imgBanner.map((item, index) => {
+      if (item.id === proposeId && loginUser === item.sender && item.r_attachments) {
+        return (
+          <div key={index}>
+            {(item.r_attachments.length > 0) && <img src={item.r_attachments[0].url} alt="" onClick={this.showPopUp} />}
+          </div>
+        )
+      } else if (item.id === proposeId && loginUser === item.receiver && item.s_attachments) {
+        return (
+          <div key={index}>
+            {(item.s_attachments.length > 0) && <img src={item.s_attachments[0].url} alt="" onClick={this.showPopUp} />}
+          </div>
+        )
+      } else {
+        //console.log("false");
       }
-
-      console.log(this.img_receiver);
     })
-
-    return this.img_receiver;
+    return list;
   }
 
   showPopUp = (data) => {
-    // this.props.showPopUp(data.target.value);
-  }
-
-
-  check = () => {
+    this.props.showPopUp(data.target.value);
   }
 
   render() {
     return (
       <div className="banner_container mg-auto">
         <div className="sender-img--right">
-          {this.img_receiver}
+          {this.showImgBanner}
         </div>
         <div className="receiver-img--left">
-          {this.img_receiver}
         </div>
       </div>
     );

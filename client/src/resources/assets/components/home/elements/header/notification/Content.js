@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-class ConTent extends Component {
+class Content extends Component {
 
     constructor(props) {
         super(props);
@@ -121,4 +121,4 @@ function demoAsyncCall() {
 }
 
 
-export default ConTent;
+export default Content;
