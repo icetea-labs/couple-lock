@@ -56,12 +56,12 @@ const io = socketIO(server);
 io.on('connection', socket => {
   console.log("User Connected", socket.id);
 
- //  listen on event create Noti
+ //  listen event on client
   socket.on('createNoti', (receiver) =>{
     // test on server
     console.log('receive is:', receiver);
 
-    // Create emit receiverNoti and all Client will see it
+    // Create emit on server
     io.sockets.emit('receiveNoti',receiver);
   });
 

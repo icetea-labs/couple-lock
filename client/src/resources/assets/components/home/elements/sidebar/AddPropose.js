@@ -150,7 +150,7 @@ class AddPropose extends Component {
         })
     }
 
-    handleSendPromise = (e) => {
+     handleSendPromise = (e) => {
         e.preventDefault();
         var formData = new FormData();
         this.state.s_attachments.push(this.state.url, this.state.message, this.state.location);

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Suggestion from './SuggestionTags';
 import { WithContext as ReactTags } from 'react-tag-input';
+import axios from 'axios';
 
-const content = Suggestion.map((result) => {
-  return{
-    id: result,
-    text: result,
-  }
-})
+// const content = Suggestion.map((result) => {
+//   return{
+//     id: result,
+//     text: result,
+//   }
+// })
 
 const KeyCodes = {
   comma: 188,
@@ -22,14 +23,32 @@ class TagsInput extends Component {
 
     this.state = {
         tags: [],
-        suggestions: content
     };
+  }
+
+  componentDidMount() {
+    axios.get('/api/tag/all')
+    .then(result =>{
+      const content = result.data.data.map((tags) => {
+        return{
+          id: tags,
+          text: tags,
+        }
+      })
+      this.setState({ suggestions: content});
+    })
+  }
+  
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.tags !== prevState.tags){
+      this.props.getTags(this.state.tags);
+    }
   }
 
   handleDelete = (i) => {
     const { tags } = this.state;
     this.setState({
-     tags: tags.filter((tag, index) => index !== i),
+      tags: tags.filter((tag, index) => index !== i),
     });
   }
 

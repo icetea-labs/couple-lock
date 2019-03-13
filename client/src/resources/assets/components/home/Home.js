@@ -17,7 +17,7 @@ import ChangUser from '../helper/ChangeUser';
 import PopUp from './elements/popup/PopUp';
 import TestButton from '../helper/TestButton';
 
-const mapStateToProps = (state) => ({...state.initListFriend});
+const mapStateToProps = (state) => ({...state});
 
 const mapDispatchToProps = (dispatch) => ({
    closeThis : (username) => dispatch({
@@ -134,7 +134,7 @@ class Home extends Component {
           <PopUp />
         </div>
         <ChatBox />
-        <TestButton />
+        {/* <TestButton /> */}
       </Layout >
 
     );

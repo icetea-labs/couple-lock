@@ -5,7 +5,8 @@ import PubSub from 'pubsub-js';
 import { connect } from 'react-redux';
 
 const mapStatetoProps = (state) => ({
-  ...state.initPopup
+  ...state.handlePopUp,
+  ...state.handleBanner,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -19,75 +20,80 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 class BannerImage extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       imgBanner: [],
       loginUser: window.getLoginUser(),
       show_Popup: false,
-      id: null
+      data: null,
+      list: [],
+      img: null,
     }
-    this.showPopUp = (data) => { this.props.showPopUp(data) }
-  }
 
-  componentDidMount() {
-    this.getImgBanner()
+    this.img_sender = [];
+    this.img_receiver = [];
   }
 
   componentWillMount() {
-    const { loginUser } = this.state;
     PubSub.subscribe('updateBanner', () => {
-      axios.get(`/api/propose/list?username=${loginUser}`)
-        .then(res => {
-          this.setState({ imgBanner: res.data.data });
-        });
+      this.getImgBanner();
     });
   }
 
-  getImgBanner = () => {
-    const { loginUser } = this.state;
-    axios.get(`/api/propose/list?username=${loginUser}`)
-      .then(res => {
-        this.setState({ imgBanner: res.data.data });
-      });
+  async componentDidMount() {
+    this.getImgBanner();
+    console.log(this.img_receiver);
   }
+
+
+  getImgBanner = () => {
+    console.log(this.props);
+    axios.get(`/api/propose/list?username=${this.props.sender}`)
+      .then(res => {
+        this.setState({
+          imgBanner: res.data.data,
+        });
+
+        console.log(this.state.imgBanner)
+        this.showImgBanner();
+      });
+    }
+
+  showImgBanner = () => {
+    this.state.imgBanner.forEach((item, index) => {
+      if (item.r_attachments.length > 0) {
+        console.log(item.r_attachments[index])
+        this.img_receiver.map((item, i) => {
+          return (
+            <img key={i} src={item[i].url} />
+          )
+        })
+      }
+
+      console.log(this.img_receiver);
+    })
+
+    return this.img_receiver;
+  }
+
+  showPopUp = (data) => {
+    // this.props.showPopUp(data.target.value);
+  }
+
 
   check = () => {
-    try {
-      console.log(this.state.imgBanner[0].id);
-    } catch (err){
-      console.log(err);
-      throw(err);
-    }
   }
+
   render() {
-    const { imgBanner, loginUser } = this.state;
     return (
-      <div >
-        {
-          imgBanner.length > 0 && imgBanner.map((item, index) => {
-            const id = item.id;
-            const proposeId = this.props.proposeId;
-
-            return (
-              (id === proposeId && loginUser === item.sender && item.s_attachments) ?
-                <div className="banner_container mg-auto" key={index}>
-                  <img id={id} src={item.s_attachments[0].url} alt="sender image" onClick={this.showPopUp} />
-                  <p className="short_desc color-violet"><span className="icon-luggage"></span>
-                    {item.s_attachments[0].caption}
-                  </p>
-                </div> : (id === proposeId && loginUser === item.receiver && item.r_attachments) && <div className="banner_container mg-auto" key={index}>
-                  <img id={id} src={item.r_attachments[0].url} alt="" onClick={this.showPopUp} />
-                  {
-                    (item.r_attachments) && <p className="short_desc color-violet"><span className="icon-luggage"></span>
-                      {item.r_attachments[0].caption}
-                    </p>
-                  }
-                </div>
-            );
-
-          })
-        }
+      <div className="banner_container mg-auto">
+        <div className="sender-img--right">
+          {this.img_receiver}
+        </div>
+        <div className="receiver-img--left">
+          {this.img_receiver}
+        </div>
       </div>
     );
   }

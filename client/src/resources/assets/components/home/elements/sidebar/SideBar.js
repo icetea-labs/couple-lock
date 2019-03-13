@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import Promises from './Promises';
+import Promises from './ReceiverPromises';
 import AddPropose from './AddPropose';
 import PopularTag from './PopularTag';
+import SentPromises from './SentPromises';
 
 class SideBar extends Component {
   constructor(props) {
@@ -16,9 +17,11 @@ class SideBar extends Component {
       loginUser: window.getLoginUser(),
       acceptPromises: [],
       deniedPromises: [],
+      sentPromises: [],
       show_friend: false,
       show_promise: false,
       avatarUrl: localStorage.getItem("I_U"),
+      test: [],
     }
   }
 
@@ -49,25 +52,29 @@ class SideBar extends Component {
   getPromises = () => {
     const { data } = this.state;
     const { loginUser } = this.state;
-    const sender = this.state.user.sender;
-    const receiver = this.state.user.receiver;
     let pId = [];
     const acceptPromises = [];
     const deniedPromises = [];
+    const sentPromises = [];
 
     data.forEach((obj) => {
       pId.push(obj.proposeId);
       this.props.getProposeId(pId[0]);
-      if ((loginUser === sender || loginUser === receiver) && obj.r_react === 1) {
+      if ((loginUser === obj.sender || loginUser === obj.receiver) && obj.r_react === 1) {
         acceptPromises.push(obj);
-      } else if (!obj.r_react || obj.r_react === 2) {
+      }
+      if ((loginUser === obj.receiver) && obj.r_react === undefined){
         deniedPromises.push(obj);
+      }
+      if ((loginUser === obj.sender) && obj.r_react === undefined){
+        sentPromises.push(obj);
       }
     });
 
     this.setState({
       acceptPromises: [...acceptPromises],
       deniedPromises: [...deniedPromises],
+      sentPromises: [...sentPromises],
     });
   }
 
@@ -77,7 +84,7 @@ class SideBar extends Component {
 
   getUsers = (allUser, listPropose) => {
     const userLogin = window.getLoginUser();
-    const sidebarItems = {};
+    const sidebarItems = [];
 
     listPropose.forEach((p, index) => {
       if (index === 0) {
@@ -86,12 +93,16 @@ class SideBar extends Component {
       if (p.sender === userLogin) {
         sidebarItems[p.receiver] = {
           proposeId: p.id,
+          sender: p.sender,
+          receiver: p.receiver,
           r_react: p.r_react,
           viewed: p.viewed
         }
       } else {
         sidebarItems[p.sender] = {
           proposeId: p.id,
+          sender: p.sender,
+          receiver: p.receiver,
           r_react: p.r_react,
           viewed: p.viewed
         }
@@ -114,9 +125,12 @@ class SideBar extends Component {
   getUserInfo = () => {
     const obj = this.state.sidebarItems;
     if (obj) {
+      // console.log(obj);
       const res = Object.keys(obj).map(function (key, index) {
         return {
           proposeId: obj[key].proposeId,
+          sender: obj[key].sender,
+          receiver: obj[key].receiver,
           viewed:  obj[key].viewed,
           r_react: obj[key].r_react,
           avatar: obj[key].user.avatar,
@@ -136,7 +150,8 @@ class SideBar extends Component {
   }
   
   render() {
-    const { acceptPromises } = this.state;
+    const { acceptPromises,deniedPromises, sentPromises } = this.state;
+    //console.log(sentPromises);
     return (
       <div className="sidebar">
 
@@ -150,7 +165,7 @@ class SideBar extends Component {
             const { activeUserId } = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return (
-              <div className={className} pid={item.proposeId} key={index} onClick={() => this.passingProposeId(item.proposeId)}>
+              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)} proposeId={item.proposeId}>
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>
@@ -161,8 +176,9 @@ class SideBar extends Component {
           })
         }
         {/* End Show list Accepted Promise */}
-        <Promises user={this.state.user} deniedPromises={this.state.deniedPromises} />
-        <PopularTag deniedPromises={this.state.deniedPromises}/>
+        <Promises deniedPromises={deniedPromises} />
+        <SentPromises sentPromises={sentPromises}/>
+        <PopularTag />
       </div>
     );
   }

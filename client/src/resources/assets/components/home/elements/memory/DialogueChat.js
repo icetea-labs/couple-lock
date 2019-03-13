@@ -45,8 +45,14 @@ class DialogueChat extends Component {
                       {
                         (locationName) && <span className="location"> is at <i>{locationName.name}</i></span>
                       }
-
                       <span className="time fr color-grey">{date}</span>
+                      <div className="tags_wrapper">
+                        {
+                          (item.tags && item.tags.length > 0) && item.tags.map((tagslist, index) => {
+                            return <span key={index} className="tags_item">#{ tagslist }&nbsp;</span>
+                          })
+                        }
+                      </div>
                       <p>{item.message}</p>
                       {
                         (item.attachments[0] && item.attachments.length > 0) && <p className="attachments">

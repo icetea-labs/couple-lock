@@ -27,8 +27,7 @@ class PopUp extends Component {
       ]
     }
 
-    this.allComment = []
-
+    this.allComment = [];
     this.closePopup = event => (this.props.toClose(event));
   }
 

@@ -4,7 +4,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
+import { createStore , compose ,applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers/reducer';
 import socketIOClient from 'socket.io-client';
@@ -25,7 +25,7 @@ console.log(socket);
  * create storage
  */
 const store = createStore(
-  reducer,socket,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  reducer,socket,compose(applyMiddleware() ,window.devToolsExtension ? window.devToolsExtension() : f => f));
 
 // const store = configureStore();
 // store.dispatch(actions.setTracks(tracks));

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => ([...state.handleListFriend]);
+const mapStateToProps = (state) => ({...state.handlListFriend});
 
 const mapDispatchToProps = (dispatch) => ({
     // eslint-disable-next-line no-unused-expressions
