@@ -42,18 +42,13 @@ class Home extends Component {
     this.listChat = [];
   }
 
-  getProposeId = (pId) => {
-    this.setState({
-      proposeId: pId,
-    })
+  getProposeId = pId => {
+    this.setState({ proposeId: pId, })
   }
 
-  proposeIdChanged = (newProposeId) => {
-    this.setState({
-      proposeId: newProposeId,
-    })
+  proposeIdChanged = newProposeId => {
+    this.setState({ proposeId: newProposeId })
   }
-
 
   getUsers = (sender, receiver) => {
     const p1 = axios.get("/api/user/details?username=" + sender);
@@ -136,7 +131,6 @@ class Home extends Component {
         <ChatBox />
         {/* <TestButton /> */}
       </Layout >
-
     );
   }
 }

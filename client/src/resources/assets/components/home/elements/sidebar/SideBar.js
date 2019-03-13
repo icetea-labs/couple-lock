@@ -21,7 +21,6 @@ class SideBar extends Component {
       show_friend: false,
       show_promise: false,
       avatarUrl: localStorage.getItem("I_U"),
-      test: [],
     }
   }
 
@@ -60,6 +59,7 @@ class SideBar extends Component {
     data.forEach((obj) => {
       pId.push(obj.proposeId);
       this.props.getProposeId(pId[0]);
+      PubSub.publish('proposeIdTags', pId[0])
       if ((loginUser === obj.sender || loginUser === obj.receiver) && obj.r_react === 1) {
         acceptPromises.push(obj);
       }
@@ -70,6 +70,8 @@ class SideBar extends Component {
         sentPromises.push(obj);
       }
     });
+
+    PubSub.publish('deniedPromise', [...deniedPromises])
 
     this.setState({
       acceptPromises: [...acceptPromises],
@@ -147,6 +149,7 @@ class SideBar extends Component {
   passingProposeId = pId => {
     this.setState({ activeUserId: pId })
     this.props.proposeIdChanged(pId);
+    PubSub.publish('proposeIdChangeTags', pId)
   }
   
   render() {
@@ -165,7 +168,7 @@ class SideBar extends Component {
             const { activeUserId } = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return (
-              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)} proposeId={item.proposeId}>
+              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)}>
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 
 class PendingPromise extends Component {
   constructor(props) {
@@ -8,26 +9,28 @@ class PendingPromise extends Component {
     this.state = {
       // acceptPromisesModal: false,
       loginUser: window.getLoginUser(),
+      deniedPromises: [],
       proposeIdList: [],
     }
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillMount() {
     const {loginUser} = this.state;
-    const {deniedPromises} = this.props;
     const proposeIdList = [];
-    
-    if(this.props.deniedPromises !== nextProps){
-      deniedPromises.filter(u => u.viewed !== true).map((item) =>{
+    PubSub.subscribe('deniedPromise', (msg, data) => {
+      // console.log(data);
+      this.setState({ deniedPromises : data});
+
+      data.filter(u => u.viewed !== true).map((item) =>{
         proposeIdList.push(item.proposeId);
         if(item.viewed !== true){
           this.popupPromises();
           axios.get(`/api/propose/viewed?id=${proposeIdList.join(';')}`);
         }
       })
-    }
+    })
   }
-  
+
   popupPromises = () => {
     setTimeout(() => {
       this.setState({ modal: true })
@@ -46,15 +49,15 @@ class PendingPromise extends Component {
 
 
   showRequestPromises = () =>{
-    const {loginUser} = this.state
+    const {loginUser, deniedPromises} = this.state
     return(
       <Modal className="promise_popup" isOpen={this.state.modal} toggle={this.closePromisesModal} >
         <ModalHeader toggle={this.closePromisesModal}>Request Promises</ModalHeader>
         <ModalBody>
           {
-            (this.props.deniedPromises && this.props.deniedPromises.length > 0) ? <div>
+            (deniedPromises && deniedPromises.length > 0) ? <div>
               {
-                this.props.deniedPromises.map((item, index) =>{
+                deniedPromises.map((item, index) =>{
                   return(
                     <div className="request__items" key={index} id={item.proposeId}>
                       <div className="request__items__avatar">
@@ -65,7 +68,7 @@ class PendingPromise extends Component {
                         <div className="request__items__username">@{item.username}</div>
                         { (loginUser === item.receiver) && <div className="request__items__btn">
                             <button type="button" className="request__items__btn__accept" onClick={ this.openPromisesModal }>Accept</button>
-                            <button type="button" className="request__items__btn__delete">Delete</button>
+                            <button type="button" className="request__items__btn__delete">Denied</button>
                           </div> }
                       </div>
                     </div>

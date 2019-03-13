@@ -96,7 +96,7 @@ class Promises extends Component {
                           <Button className="cancel_promises_request" color="info" onClick={this.acceptPromisesModal}>Cancel</Button>
                         </ModalFooter>
                       </Modal>
-                      <button type="button" className="request__items__btn__delete">Delete</button>
+                      <button type="button" className="request__items__btn__delete">Denied</button>
                       </div>
                   </div>
                 </div>
