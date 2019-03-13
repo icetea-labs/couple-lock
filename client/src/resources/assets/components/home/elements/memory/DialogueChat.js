@@ -29,7 +29,14 @@ class DialogueChat extends Component {
       this.setState({ tagsFilter: tags});
       // console.log(this.state.tagsFilter);
     });
+
+    // reset filter tags
+
+    PubSub.subscribe('resetFilterTags', () => {
+      this.setState({ tagsFilter: [] });
+    })
   }
+
 
   showMemory = () =>{
     const sender = this.props.sender;
