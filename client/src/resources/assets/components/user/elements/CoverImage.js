@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import CoverImage from './elements/CoverImage';
 
-class User extends Component {
+class CoverImage extends Component {
 
     constructor(props) {
         super(props)
 
         this.state ={
-            
         }
     }
 
     render() {
         return (
-            <div>
-                <CoverImage />
+            <div className= "layer_common cover_image " >
+                <img src='./images/banner.jpg' />
             </div>
         )
     }
 }
 
-export default User;
+export default CoverImage;

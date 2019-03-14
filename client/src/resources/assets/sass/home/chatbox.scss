@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
+@import '../variables';
+@import '../common';
+@import '../responsive';
+
+
+.list_chatbox{
+    position: fixed;
+    height: auto;
+    bottom: 0px;
+    right: 0px;
+    width: auto;
+    z-index: 999;
+    // background-color: rgba(128, 128, 128, 0.326);
+    display: flex;
+}
+
+.display_chatbox{
+    display: relative;
+    margin: 10px;
+    right: 10px;
+    width: 300px;
+    height: 40px !important;
+    float: right;
+}
+
+.chat_box{
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.258);
+    width: 300px;
+    bottom: 0px;
+    position: fixed;
+    z-index: 999;
+    float: right;
+    background-color: rgba(228, 235, 233, 0.693);
+    border: solid rgba(36, 35, 35, 0.23) 1px;
+    border-top-left-radius: 5px;
+    .header__box{
+        color: whitesmoke;
+        border-top-left-radius: 5px;
+        position: relative;
+        top: 0px;
+        width: 100%;
+        border: solid 2px gray;
+        height: 40px;
+        background-color: rgba(137, 43, 226, 0.455);
+        .btn_close{
+            background-color: black;
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            text-align: center;
+            font-size: 9px;
+            border: solid 2px black;
+        }
+
+        .btn_close:hover{
+            border: solid 2px white; 
+        }
+    }
+
+    .chat__content{
+        height: 200px;
+        position: relative;
+        overflow-y: scroll; 
+    }
+
+    .chat__send{
+        height: 60px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+
+        textarea{
+            height: 50px !important;
+        }
+
+        .btn_send {
+            height: 30px;
+            margin-left: 10px !important;
+            border: solid gray 2px;
+            position: relative;
+            top: -10px;
+        }
+    }
+
+    .inside_message{
+        padding: 5px;
+
+        img {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+        }
+    }
+
+    .content_message{
+        height: auto;
+        position: inherit;
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+       height: 100%;
+    
+
+        #friend_message{
+            border: rgba(137, 43, 226, 0.455);
+            background-color: rgba(168, 127, 255, 0.68);
+            border-radius: 15px;
+            padding: 6px;
+            margin-left: 10px;
+            margin-top: 2px;
+            width: auto;
+            max-width: 150px;
+        }
+    }
+
+    #my_message{
+        float: right;
+        top: 5px;
+        right: 5px;
+        border: rgba(137, 43, 226, 0.455);
+      
+        width: 150px !important;
+        padding: 3px;
+        margin-top: 2px;
+        width: auto;
+        height: auto;
+        span{
+            float: right;
+            padding: 10px;
+            background-color: rgba(127, 255, 212, 0.68);
+            border-radius: 15px;
+        }
+    }
+
+  
+}

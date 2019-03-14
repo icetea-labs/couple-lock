@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import CoverImage from './elements/CoverImage';
 
-class User extends Component {
+class LoverAvatar extends Component {
 
     constructor(props) {
         super(props)
@@ -14,10 +13,10 @@ class User extends Component {
     render() {
         return (
             <div>
-                <CoverImage />
+                
             </div>
         )
     }
 }
 
-export default User;
+export default LoverAvatar;

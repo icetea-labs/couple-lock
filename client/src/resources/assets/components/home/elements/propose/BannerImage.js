@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PopUp from '../popup/PopUp';
 import PubSub from 'pubsub-js';
+import { connect } from 'react-redux';
+
+const mapStatetoProps = (state) => ({
+  ...state.initPopup
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  showPopUp: (data = "open now") => {
+    dispatch({
+      type: 'OPEN_POPUP',
+      data,
+    })
+  }
+});
+
 
 class BannerImage extends Component {
   constructor(props) {
@@ -8,11 +24,13 @@ class BannerImage extends Component {
     this.state = {
       imgBanner: [],
       loginUser: window.getLoginUser(),
+      show_Popup: false
     }
+    this.showPopUp = (data) => {this.props.showPopUp(data)}
   }
 
   componentDidMount() {
-    this.getImgBanner();
+    this.getImgBanner()
   }
 
   componentWillMount() {
@@ -36,13 +54,13 @@ class BannerImage extends Component {
       if(item.id === proposeId && loginUser === item.sender && item.r_attachments){
         return(
           <div key={index}>
-            {(item.r_attachments.length > 0) && <img src={item.r_attachments[0].url} alt="" />}
+            {(item.r_attachments.length > 0) && <img src={item.r_attachments[0].url} alt="" onClick={this.showPopUp}/>}
           </div>
         )
       }else if(item.id === proposeId && loginUser === item.receiver && item.s_attachments){
         return(
           <div key={index}>
-            {(item.s_attachments.length > 0) && <img src={item.s_attachments[0].url} alt="" />}
+            {(item.s_attachments.length > 0) && <img src={item.s_attachments[0].url} alt="" onClick={this.showPopUp}/>}
           </div>
         )
       }else{
@@ -51,6 +69,7 @@ class BannerImage extends Component {
     })
     return list;
   }
+
   render() {
     return (
       <div className="banner_container mg-auto">
@@ -60,4 +79,4 @@ class BannerImage extends Component {
   }
 }
 
-export default BannerImage;
+export default connect(mapStatetoProps, mapDispatchToProps)(BannerImage);

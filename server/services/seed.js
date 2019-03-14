@@ -90,8 +90,8 @@ seeder.propose = [
         r_attachments: [
             {
                 type: 'photo',
-                url: "https://boygeniusreport.files.wordpress.com/2016/11/puppy-dog.jpg",
-                caption: "My dog likes that :D",
+                url: "https://i.ibb.co/946jCZj/banner.jpg",
+                caption: "Sotatek Company :D",
                 timestamp: Date.now(),
                 location: {
                     name: "The Moon",
@@ -141,46 +141,46 @@ seeder.propose = [
             }
         ]
     },
-    {
-        id: '2',
-        chained: false,
-        visibility: 1, //1: listed, 2: public, 3: private
-        sender: "sotatek",
-        s_timestamp: Date.now(),
-        s_visibilitySuggestion: 1,
-        s_receiverCanChangeVisibility: 1, // 1: none, 2: reduceOnly, 3: all
-        s_message: "Hellooo ! I'm Sotatekers",
-        s_attachments: [
-            {
-                type: 'photo',
-                url: "https://picsum.photos/900/425",
-                caption: "This is great image",
-                timestamp: Date.now(),
-                location: {
-                    name: "Ha Noi, Viet Nam",
-                    lat: 0,
-                    long: 0
-                }
-            }
-        ],
-        receiver: "paulra",
-        r_react: 2, //null, 1: accepted, 2: denied
-        r_timestamp: Date.now(),
-        r_message: "Ohh ! I'm Paulra. Nice to meet you.",
-        r_attachments: [
-            {
-                type: 'photo',
-                url: "https://i.ibb.co/bNDWW6v/bitmap-copy-4-2x.jpg",
-                caption: "Happy wedding <3",
-                timestamp: Date.now(),
-                location: {
-                    name: "England",
-                    lat: 10,
-                    long: 10
-                }
-            }
-        ]
-    }
+    // {
+    //     id: '2',
+    //     chained: false,
+    //     visibility: 1, //1: listed, 2: public, 3: private
+    //     sender: "sotatek",
+    //     s_timestamp: Date.now(),
+    //     s_visibilitySuggestion: 1,
+    //     s_receiverCanChangeVisibility: 1, // 1: none, 2: reduceOnly, 3: all
+    //     s_message: "Hellooo ! I'm Sotatekers",
+    //     s_attachments: [
+    //         {
+    //             type: 'photo',
+    //             url: "https://picsum.photos/900/425",
+    //             caption: "This is great image",
+    //             timestamp: Date.now(),
+    //             location: {
+    //                 name: "Ha Noi, Viet Nam",
+    //                 lat: 0,
+    //                 long: 0
+    //             }
+    //         }
+    //     ],
+    //     receiver: "paulra",
+    //     r_react: 2, //null, 1: accepted, 2: denied
+    //     r_timestamp: Date.now(),
+    //     r_message: "Ohh ! I'm Paulra. Nice to meet you.",
+    //     r_attachments: [
+    //         {
+    //             type: 'photo',
+    //             url: "https://i.ibb.co/bNDWW6v/bitmap-copy-4-2x.jpg",
+    //             caption: "Happy wedding <3",
+    //             timestamp: Date.now(),
+    //             location: {
+    //                 name: "England",
+    //                 lat: 10,
+    //                 long: 10
+    //             }
+    //         }
+    //     ]
+    // }
 ];
 
 seeder.memory = [

@@ -4,7 +4,9 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-// import 'font-awesome/css/font-awesome.min.css';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './reducers/reducer';
 
 window.getLoginUser = () => {
   if (localStorage.getItem("sender") === null) {
@@ -14,10 +16,26 @@ window.getLoginUser = () => {
   }
 };
 
+const list_friend = [
+  { id: 1, name: 'Paula' },
+  { id: 2, name: 'Annie' },
+  { id: 3, name: 'Richard' }
+]
 
+/**
+ * create storage
+ */
+const store = createStore(
+  reducer,list_friend,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
+// const store = configureStore();
+// store.dispatch(actions.setTracks(tracks));
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
+ReactDOM.render((
+  <Provider store={store}>
+    <App />
+  </Provider>
+), document.getElementById('root')
+);
 
 serviceWorker.unregister();
