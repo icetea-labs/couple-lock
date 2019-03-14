@@ -65,7 +65,7 @@ class PopularTag extends Component {
       <div className="popular_tags">
         {(tagsAll && tagsAll.length > 0) && <h3 className="title title_promises">Popular Tag</h3>}
         <div className="popular_tags__list">
-          <label><input className="tags_item" type="button" value="↲ All" onClick={this.resetFilterTags} /></label>
+          {(tagsAll && tagsAll.length > 0) && <label><input className="tags_item" type="button" value="↲ All" onClick={this.resetFilterTags} /></label>}
           { this.showTags() }
         </div>
       </div>

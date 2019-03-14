@@ -82,7 +82,7 @@ class Home extends Component {
     PubSub.subscribe('shareMemory', () => {
       this.fetchProposeId();
     });
-    PubSub.subscribe('refreshProposeDetail', () => {
+    PubSub.subscribe('updateProposeDetail', () => {
       const { proposeId } = this.state;
       if (proposeId !== null) {
         axios.get(`/api/propose/details?id=${proposeId}`)

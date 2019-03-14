@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import Promises from './ReceiverPromises';
+import ReceiverPromises from './ReceiverPromises';
 import AddPropose from './AddPropose';
 import PopularTag from './PopularTag';
 import SentPromises from './SentPromises';
+import DeniedPromises from './DeniedPromises';
 
 class SideBar extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class SideBar extends Component {
       r_react: null,
       loginUser: window.getLoginUser(),
       acceptPromises: [],
+      receiverPromises: [],
       deniedPromises: [],
       sentPromises: [],
       show_friend: false,
@@ -40,7 +42,7 @@ class SideBar extends Component {
   }
 
   componentWillMount() {
-    PubSub.subscribe('acceptPromise', () => {
+    PubSub.subscribe('updatePromise', () => {
       this.fetchData();
     });
     PubSub.subscribe('sendPromise', () => {
@@ -53,8 +55,9 @@ class SideBar extends Component {
     const { loginUser } = this.state;
     let pId = [];
     const acceptPromises = [];
-    const deniedPromises = [];
+    const receiverPromises = [];
     const sentPromises = [];
+    const deniedPromises = [];
 
     data.forEach((obj) => {
       pId.push(obj.proposeId);
@@ -64,19 +67,23 @@ class SideBar extends Component {
         acceptPromises.push(obj);
       }
       if ((loginUser === obj.receiver) && obj.r_react === undefined){
-        deniedPromises.push(obj);
+        receiverPromises.push(obj);
       }
       if ((loginUser === obj.sender) && obj.r_react === undefined){
         sentPromises.push(obj);
       }
+      if ((loginUser === obj.receiver) && obj.r_react === 2){
+        deniedPromises.push(obj);
+      }
     });
 
-    PubSub.publish('deniedPromise', [...deniedPromises])
+    PubSub.publish('deniedPromise', [...receiverPromises])
 
     this.setState({
       acceptPromises: [...acceptPromises],
-      deniedPromises: [...deniedPromises],
+      receiverPromises: [...receiverPromises],
       sentPromises: [...sentPromises],
+      deniedPromises: [...deniedPromises],
     });
   }
 
@@ -153,7 +160,7 @@ class SideBar extends Component {
   }
   
   render() {
-    const { acceptPromises,deniedPromises, sentPromises } = this.state;
+    const { acceptPromises,receiverPromises, sentPromises, deniedPromises } = this.state;
     //console.log(sentPromises);
     return (
       <div className="sidebar">
@@ -178,9 +185,9 @@ class SideBar extends Component {
             )
           })
         }
-        {/* End Show list Accepted Promise */}
-        <Promises deniedPromises={deniedPromises} />
+        <ReceiverPromises receiverPromises={receiverPromises}/>
         <SentPromises sentPromises={sentPromises}/>
+        <DeniedPromises deniedPromises={deniedPromises}/>
         <PopularTag />
       </div>
     );

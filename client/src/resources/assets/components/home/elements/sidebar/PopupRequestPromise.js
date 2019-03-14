@@ -37,8 +37,12 @@ class PendingPromise extends Component {
     }, 1500);
   }
 
-  openPromisesModal = () => {
+  acceptPromises = () => {
     this.props.acceptPromisesModal();
+  }
+  
+  deniedPromises = () => {
+    this.props.deniedPromisesModal();
   }
 
   closePromisesModal = () => {
@@ -67,8 +71,8 @@ class PendingPromise extends Component {
                         <button className="request__items__displayname"> {item.displayName} </button>
                         <div className="request__items__username">@{item.username}</div>
                         { (loginUser === item.receiver) && <div className="request__items__btn">
-                            <button type="button" className="request__items__btn__accept" onClick={ this.openPromisesModal }>Accept</button>
-                            <button type="button" className="request__items__btn__delete">Denied</button>
+                            <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromises }>Accept</button>
+                            <button type="button" className="request__items__btn__delete" onClick={ this.deniedPromises }>Denied</button>
                           </div> }
                       </div>
                     </div>
