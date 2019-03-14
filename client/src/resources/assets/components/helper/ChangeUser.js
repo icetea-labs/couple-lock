@@ -6,86 +6,54 @@ class ChangeUser extends Component {
         super(props)
 
         this.state = {
-            sender: ''
+            sender: '',
+            isOpen: false,
+            list_user: [
+                'tradatech', 'sotatek', 'paulra', 'sugar', 'sotatrada', 'richard'
+            ]
         }
 
         this.list_button = [];
     }
 
-    componentWillMount = () =>{
+    componentWillMount = () => {
         this.setState({
             sender: localStorage.getItem('sender')
         })
     }
 
-    reload = () => {
+
+    componentDidMount() {
+        this.list_button = this.state.list_user.map((item, index) => {
+            return (
+                <li key={index} id={index} className="btn_common " onClick={(e) => { this.changUser(e.target.id) }}>{item}</li>
+            )
+        })
+    }
+
+    changUser = (event) => {
+        localStorage.setItem('username', this.state.list_user[event]);
         window.location.reload();
     }
 
-    changeSender = () => {
-        localStorage.setItem("sender", 'tradatech');
-        alert('done ,  sender now: sotatek, you must refresh ');
-        this.reload();
-    }
-
-    changeSender1 = () => {
-        localStorage.setItem("sender", 'sotatek');
-        alert('done, sender now: sotatek , you must refresh ');
-        this.reload();
-    }
-
-    changeSender2 = () => {
-        localStorage.setItem("sender", 'paulra');
-        alert('done ,  sender now: paulra ,you must refresh ');
-        this.reload();
-    }
-
-    changeSender3 = () => {
-        localStorage.setItem("sender", 'richard');
-        alert('done ,  sender now: richard ,you must refresh ');
-        this.reload();
-    }
-
-    changeSender4 = () => {
-        localStorage.setItem("sender", 'sugar');
-        alert('done ,  sender now: sugar ,you must refresh ');
-        this.reload();
-    }
-    changeSender5 = () => {
-        localStorage.setItem("sender", 'sotatrada');
-        alert('done ,  sender now: sotatrada ,you must refresh ');
-        this.reload();
+    handleChangeUser = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
     }
 
     render() {
         return (
             <div className="layer_common">
-                <ul>
-                    <li className="btn_common chose">now :{this.state.sender}</li>
-                    <li className="btn_common" onClick={this.changeSender} >
-                        tradatech
-                    </li>
-
-                    <li className="btn_common" onClick={this.changeSender1} >
-                        sotatek
-                    </li>
-
-                    <li className="btn_common" onClick={this.changeSender2} >
-                        paulra
-                    </li>
-
-                    <li className="btn_common" onClick={this.changeSender3} >
-                        richard
-                    </li>
-
-                    <li className="btn_common" onClick={this.changeSender4} >
-                        sugar
-                    </li>
-
-                    <li className="btn_common" onClick={this.changeSender5} >
-                        sotatrada
-                    </li>
+                <li className="btn_common chose">now :{localStorage.getItem('username')}</li>
+                <ul className="div_tr" style={{ display: this.state.isOpen ? 'block' : 'none' }}>
+                    {
+                        this.list_button
+                    }
                 </ul>
+                <button className="btn_common" onClick={this.handleChangeUser}  >
+                    {this.state.isOpen ? 'Hidden' : 'Open'}
+                </button>
             </div>
         )
     }

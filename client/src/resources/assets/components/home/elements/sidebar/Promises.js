@@ -49,8 +49,6 @@ class Promises extends Component {
 
     axios.post('/api/propose/reply', dataValue)
     .then(res => {
-      // console.log(res);
-      // console.log(res.data);
       PubSub.publish('acceptPromise');
       PubSub.publish('refreshProposeDetail');
       PubSub.publish('updateBanner');

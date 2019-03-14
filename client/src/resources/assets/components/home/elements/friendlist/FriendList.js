@@ -40,7 +40,7 @@ class FriendList extends Component {
     componentDidMount() {
         for (let i = 0; i < this.state.all_friend.length; i++) {
             this.list_friend.push(
-                <label >
+                <label key={i} >
                     <div>
                         <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
                         <span className="span_common" key={i} >

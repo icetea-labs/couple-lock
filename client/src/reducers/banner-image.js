@@ -1,16 +1,24 @@
+import axios from 'axios';
+
 const initBanner = {
-    proposeId: 0,
-    sender: localStorage.getItem('sender'),
-    receiver: null,
+    proposeId: null,
+    img_sender: null,
+    img_receiver: null,
+    sender: null,
 }
 
-export default function handleBanner (state = initBanner, action){
+export default function handleBanner(state = initBanner, action) {
     switch (action.type) {
         case 'ADD_BANNER':
-            return{
-                ...state, proposeId:action.proposeId, sender: action.sender, receiver: action.receiver
+            return {
+                ...state,
+                proposeId: action.proposeId,
+                img_sender: action.img_sender,
+                img_receiver: action.img_receiver,
+                sender: action.sender,
+                receiver: action.receiver,
             }
-    
+
         default:
             return state;
     }

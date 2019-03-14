@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import socketIOClient from 'socket.io-client';
+
+const socket = socketIOClient('localhost:5000');
 
 class Content extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             name_noti: [
                 'đã tạo một hẹn ước mới với ',
@@ -18,23 +20,36 @@ class Content extends Component {
         }
 
         this.showNoti = [];
+    }
 
+    componentWillMount() {
+        this.getNoti();
+
+        this.showNoti = []
     }
 
     componentDidMount() {
-        demoAsyncCall().then(() => this.setState({ loading: false }));
+        socket.on('receiveNoti', data => {
+            if (data === window.getLoginUser()) {
+                alert('có thông báo mới')
+                this.getNoti();
+            } else this.showNoti = []
+        })
+        
+        console.log(this.showNoti);
+    }
 
+    getNoti = () => {
         Promise.all(
-            [axios.get('/api/noti/list?username=' + localStorage.getItem('sender'))]
+            [axios.get('/api/noti/list?username=' + localStorage.getItem('username'))]
         ).then(([data]) => {
             this.setState({
                 total_noti: data.data.data.length,
             })
-
+            console.log(data);
             this.state.list_noti = data.data.data.map((item) => {
                 return item;
             })
-
             this.addNotification();
         })
     }
@@ -58,7 +73,7 @@ class Content extends Component {
                         this.text = this.inforNoti.text;
                         this.have_img = this.inforNoti.have_img;
                         this.avatar = intance.data.data.avatar;
-                    } catch (err) { 
+                    } catch (err) {
                         console.log(err);
                         throw err;
                     };
@@ -68,7 +83,7 @@ class Content extends Component {
                             <div className="noti_content">
                                 {item.eventData.sender === item.username ? 'Bạn' : item.eventData.sender}
                                 {' ' + this.text} {item.eventData.sender !== item.username ? 'bạn' : item.eventData.receiver}
-                                {':' + this.message}
+                                { this.message !== undefined ? ':' + this.message : '' }
                             </div>
                             <img style={{ display: this.have_img ? 'block' : 'none' }} src={this.image} className="img_receiver" alt="img" />
                         </div>
@@ -77,14 +92,23 @@ class Content extends Component {
         }
     }
 
+    componentWillUnmount(){
+    }
+
     addContent = (event, eventData) => {
         // eslint-disable-next-line default-case
         switch (event) {
             case "propose.request":
-                return { img: eventData.s_attachments[0].url, message: eventData.s_message, text: this.state.name_noti[0], have_img: true };
+                if (eventData.r_attachments.length !== 0) {
+                    return { img: eventData.r_attachments[0].url, message: eventData.message, text: this.state.name_noti[0], have_img: true }
+                } else
+                    return { img: '', message: eventData.s_message, text: this.state.name_noti[0], have_img: false };
 
             case "propose.reply":
-                return { img: eventData.s_attachments[0].url, message: eventData.s_message, text: this.state.name_noti[1], have_img: true };
+                if (eventData.s_attachments.length !== 0) {
+                    return { img: eventData.s_attachments[0].url, message: eventData.message, text: this.state.name_noti[1], have_img: true }
+                } else
+                    return { img: '', message: eventData.s_message, text: this.state.name_noti[1], have_img: false };
 
             case "memory.new":
                 try {
@@ -99,15 +123,6 @@ class Content extends Component {
     }
 
     render() {
-
-        const loading = this.state.loading;
-
-        if (loading) { // if your component doesn't have to wait for an async action, remove this block 
-            return (
-                <div>loading...</div>
-            )
-        }
-
         return (
             <div className="all__content" >
                 {this.showNoti}
@@ -116,9 +131,6 @@ class Content extends Component {
     }
 }
 
-function demoAsyncCall() {
-    return new Promise((resolve) => setTimeout(() => resolve(), 2500));
-}
 
 
 export default Content;

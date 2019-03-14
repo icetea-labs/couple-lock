@@ -106,7 +106,7 @@ class Home extends Component {
       <Layout>
         <div>
           <div className="propose">
-            <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId} />
+            <BannerImage />
             <RecentChat propose={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} />
           </div>
 

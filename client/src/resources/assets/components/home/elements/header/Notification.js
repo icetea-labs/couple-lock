@@ -21,12 +21,6 @@ class Notification extends Component {
         this.setState({
             see_noti: !this.state.see_noti
         })
-
-        try {
-            setTimeout((this.content = <Content />), 1);
-        } catch (err) {
-            throw err;
-        }
     }
 
     render() {
@@ -48,7 +42,7 @@ class Notification extends Component {
                         <span onClick={this.toCheckViewed}>Đánh dấu tất cả là đã đọc</span>
                     </div>
                     {/* Begin */}
-                    {this.content}
+                    <Content />
                     {/* End */}
                     <div className="noti_footer">
                         <button className="btn_settings"  >

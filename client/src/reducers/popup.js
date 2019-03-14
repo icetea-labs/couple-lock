@@ -1,6 +1,9 @@
 const initPopup = {
     open: false,
-    data: null,
+    image: null,
+    proposeId: null,
+    sender: null,
+    receiver: null,
 }
 
 export default function handlePopup(state = initPopup, action) {
@@ -9,7 +12,10 @@ export default function handlePopup(state = initPopup, action) {
             return {
                 ...state,
                 open: true,
-                data: action.data,
+                image: action.image,
+                proposeId: action.proposeId,
+                sender: action.sender,
+                receiver: action.receiver,
             }
             
         case 'CLOSE_POPUP':
@@ -17,6 +23,8 @@ export default function handlePopup(state = initPopup, action) {
                 ...state,
                 open: false,
                 data: null,
+                sender: null,
+                receiver: null,
             }
 
         default:
