@@ -7,6 +7,7 @@ import PubSub from 'pubsub-js';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+// import socketIOClient from 'socket.io-client';
 
 const options = [
   { value: 'Public', label: 'Public' },
@@ -27,6 +28,7 @@ class MemoryPost extends Component {
       openPicker: false,
       location: '',
       tags: [],
+      key: null,
     }
   }
 
@@ -94,15 +96,21 @@ class MemoryPost extends Component {
 
   shareMemory = (e) => {
     e.preventDefault();
-    const {m_message, selectFile, location, tags} = this.state;
+    const {m_message, selectFile, location, tags , key} = this.state;
     // console.log(tags);
     const sender = window.getLoginUser();
     const visibility = this.getIdVisible();
     const dateFormat = moment(this.state.startDate * 1000).unix();
     const formData = new FormData();
     const proposeId = this.props.proposeId;
+    // TODO: create randomkey
+    if (visibility === 3){
+      // generate new key
+    }
     formData.append('proposeId', proposeId);
     formData.append('visibility', visibility);
+    // TODO: add random key
+    formData.append('key', key);
     formData.append('message', m_message);
     formData.append('sender', sender);
     formData.append('timestamp', dateFormat);
@@ -125,6 +133,9 @@ class MemoryPost extends Component {
       location: "",
       startDate: new Date(),
     });
+
+    // const socket = socketIOClient(this.state.host);
+    // socket.emit('createNoti', this.state.receiver);
   }
 
   toggleOpenPicker = () => {

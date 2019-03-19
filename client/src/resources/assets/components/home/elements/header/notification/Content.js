@@ -11,32 +11,30 @@ class Content extends Component {
         this.state = {
             name_noti: [
                 'đã tạo một hẹn ước mới với ',
-                'đã được chấp nhận hẹn ước từ ',
+                'đã nhận được hẹn ước từ ',
                 'đã thêm một kỉ niệm mới với',
             ],
             text: '',
             loading: true,
             avatar: '',
+            total_noti: 0,
+            list_noti: [],
         }
 
         this.showNoti = [];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getNoti();
 
-        this.showNoti = []
-    }
-
-    componentDidMount() {
         socket.on('receiveNoti', data => {
             if (data === window.getLoginUser()) {
                 alert('có thông báo mới')
                 this.getNoti();
-            } else this.showNoti = []
+            }
         })
-        
         console.log(this.showNoti);
+
     }
 
     getNoti = () => {
@@ -46,12 +44,13 @@ class Content extends Component {
             this.setState({
                 total_noti: data.data.data.length,
             })
-            console.log(data);
+            console.log('data is:', data);
             this.state.list_noti = data.data.data.map((item) => {
                 return item;
             })
+            console.log(this.state.list_noti);
             this.addNotification();
-        })
+        });
     }
 
     isView = (data) => {
@@ -62,10 +61,13 @@ class Content extends Component {
     }
 
     async addNotification() {
-        for (let index = this.state.list_noti.length - 1; index >= 0; index--) {
-            let item = this.state.list_noti[index];
+        for (let i = this.state.total_noti - 1; i >= 0; i--) {
+            let item = this.state.list_noti[i];
+            console.log(this.state.list_noti[i]);
             Promise.all([axios.get('/api/user/details?username=' + item.eventData.sender)])
+                // eslint-disable-next-line no-loop-func
                 .then(([intance]) => {
+                    console.log(intance);
                     try {
                         this.inforNoti = this.addContent(item.event, item.eventData);
                         this.image = this.inforNoti.img;
@@ -77,13 +79,14 @@ class Content extends Component {
                         console.log(err);
                         throw err;
                     };
+
                     this.showNoti.push(
-                        <div key={index} className={this.isView(item) ? 'li_noti' : 'li_noti viewed'} >
+                        <div key={i} className={this.isView(item) ? 'li_noti' : 'li_noti viewed'} >
                             <img className="sender_img" src={this.avatar} alt="avatar sender" />
                             <div className="noti_content">
                                 {item.eventData.sender === item.username ? 'Bạn' : item.eventData.sender}
                                 {' ' + this.text} {item.eventData.sender !== item.username ? 'bạn' : item.eventData.receiver}
-                                { this.message !== undefined ? ':' + this.message : '' }
+                                {this.message !== undefined ? ':' + this.message : ''}
                             </div>
                             <img style={{ display: this.have_img ? 'block' : 'none' }} src={this.image} className="img_receiver" alt="img" />
                         </div>
@@ -92,33 +95,29 @@ class Content extends Component {
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
     }
 
     addContent = (event, eventData) => {
         // eslint-disable-next-line default-case
         switch (event) {
             case "propose.request":
-                if (eventData.r_attachments.length !== 0) {
-                    return { img: eventData.r_attachments[0].url, message: eventData.message, text: this.state.name_noti[0], have_img: true }
+                if (eventData.s_attachments.length > 0) {
+                    return { img: eventData.s_attachments[0].url, message: eventData.message, text: this.state.name_noti[0], have_img: true }
                 } else
                     return { img: '', message: eventData.s_message, text: this.state.name_noti[0], have_img: false };
 
             case "propose.reply":
-                if (eventData.s_attachments.length !== 0) {
-                    return { img: eventData.s_attachments[0].url, message: eventData.message, text: this.state.name_noti[1], have_img: true }
+                if (eventData.r_attachments.length > 0) {
+                    return { img: eventData.r_attachments[0].url, message: eventData.message, text: this.state.name_noti[1], have_img: true }
                 } else
                     return { img: '', message: eventData.s_message, text: this.state.name_noti[1], have_img: false };
 
             case "memory.new":
-                try {
-                    if (eventData.attachments.length !== 0) {
-                        return { img: eventData.attachments[0].url, message: eventData.message, text: this.state.name_noti[2], have_img: true }
-                    } else
-                        return { img: '', message: eventData.message, text: this.state.name_noti[2], have_img: false }
-                } catch (err) {
-                    console.log(err);
-                }
+                if (eventData.attachments.length > 0) {
+                    return { img: eventData.attachments[0].url, message: eventData.message, text: this.state.name_noti[2], have_img: true }
+                } else
+                    return { img: '', message: eventData.message, text: this.state.name_noti[2], have_img: false }
         }
     }
 

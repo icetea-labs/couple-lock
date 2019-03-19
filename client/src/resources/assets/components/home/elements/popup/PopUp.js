@@ -71,6 +71,9 @@ class PopUp extends Component {
           <div className="show_comment">
             {this.allComment}
           </div>
+          <div className="comment">
+            <input placeholder="Viết bình luận ..." />
+          </div>
         </div>
       </Modal>
     );

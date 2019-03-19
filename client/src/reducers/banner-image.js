@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 const initBanner = {
-    proposeId: null,
+    proposeId: 0,
     img_sender: null,
     img_receiver: null,
     sender: null,
+    receiver: null,
 }
 
 export default function handleBanner(state = initBanner, action) {

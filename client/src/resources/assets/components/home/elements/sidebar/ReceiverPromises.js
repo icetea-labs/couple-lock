@@ -12,7 +12,10 @@ class Promises extends Component {
       acceptPromisesModal: false,
       promisesMessage: "",
       promisesImage: null,
+      possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     };
+
+    this.r_key = '';
   }
   acceptPromisesModal = () => {
     this.setState(prevState => ({
@@ -21,7 +24,7 @@ class Promises extends Component {
   }
 
   getMessagePomises = e => {
-    this.setState({ promisesMessage: e.target.value,  });
+    this.setState({ promisesMessage: e.target.value, });
   }
 
   promisesImage = e => {
@@ -30,31 +33,48 @@ class Promises extends Component {
     });
   }
 
-  isDisableAccept = () =>{
+  isDisableAccept = () => {
     const { promisesMessage, promisesImage } = this.state;
-    if(promisesMessage.length > 0 || promisesImage != null){
-      return "false" ;
+    if (promisesMessage.length > 0 || promisesImage != null) {
+      return "false";
     }
   }
 
-  acceptPromises = (pId) => {
+  async acceptPromises(pId) {
     const proposeId = pId;
     const react = 1;
-    const {promisesMessage, promisesImage} = this.state;
+    const { promisesMessage, promisesImage } = this.state;
     const dataValue = new FormData();
+
+    // TODO : create random_key
+    for (let i = 0; i < 26; i++) {
+      this.r_key += this.state.possible.charAt(Math.floor(Math.random() * 26));
+    }
+
+    // TODO: randomkey to bytes
+
+    // TODO: data to bytes
+
+    // TODO: create aesCtr
+
+    // TODO: encrypt data
+
+    //TODO : add append to from
+
+    dataValue.append('r_key', this.r_key);
     dataValue.append('id', proposeId);
     dataValue.append('react', react);
     dataValue.append('message', promisesMessage);
     dataValue.append('attachment', promisesImage);
 
     axios.post('/api/propose/reply', dataValue)
-    .then(res => {
-      // console.log(res);
-      // console.log(res.data);
-      PubSub.publish('acceptPromise');
-      PubSub.publish('refreshProposeDetail');
-      PubSub.publish('updateBanner');
-    })
+      .then(res => {
+        // console.log(res);
+        // console.log(res.data);
+        PubSub.publish('acceptPromise');
+        PubSub.publish('refreshProposeDetail');
+        PubSub.publish('updateBanner');
+      })
 
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -68,8 +88,8 @@ class Promises extends Component {
         {deniedPromises.length > 0 && <h3 className="title title_promises">Request promise</h3>}
         <div className="request">
           {
-            deniedPromises.length > 0 && deniedPromises.map((item, index) =>{
-              return(
+            deniedPromises.length > 0 && deniedPromises.map((item, index) => {
+              return (
                 <div className="request__items" key={index}>
                   <div className="request__items__avatar">
                     <img src={item.avatar} alt="" />
@@ -77,14 +97,14 @@ class Promises extends Component {
                   <div className="detail">
                     <button className="request__items__displayname"> {item.displayName} </button>
                     <div className="request__items__username">@{item.username}</div>
-                      <div className="request__items__btn">
-                      <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
+                    <div className="request__items__btn">
+                      <button type="button" className="request__items__btn__accept" onClick={this.acceptPromisesModal}>Accept</button>
                       <Modal isOpen={this.state.modal} toggle={this.acceptPromisesModal} className={this.props.className}>
                         <ModalHeader toggle={this.acceptPromisesModal}>Accept Promises</ModalHeader>
                         <ModalBody>
                           <p>
                             <span>Message: </span>
-                            <Input type="textarea" name="text" id="exampleText" onChange={ this.getMessagePomises } />
+                            <Input type="textarea" name="text" id="exampleText" onChange={this.getMessagePomises} />
                           </p>
                           <p>
                             <span>Promises Images: </span>
@@ -97,7 +117,7 @@ class Promises extends Component {
                         </ModalFooter>
                       </Modal>
                       <button type="button" className="request__items__btn__delete">Denied</button>
-                      </div>
+                    </div>
                   </div>
                 </div>
               )
@@ -107,7 +127,7 @@ class Promises extends Component {
         <div className="popup_promises_wrapper">
           <PopupPromise
             deniedPromises={deniedPromises}
-            acceptPromisesModal = { this.acceptPromisesModal } />
+            acceptPromisesModal={this.acceptPromisesModal} />
         </div>
       </div>
     );

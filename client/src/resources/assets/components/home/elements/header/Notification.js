@@ -3,7 +3,6 @@ import MaterialIcon, { mail, settings } from 'material-icons-react';
 import axios from 'axios';
 import Content from './notification/Content'
 import ToolTip from '../../../helper/ToolTip';
-import { setInterval } from 'timers';
 
 class Notification extends Component {
 
@@ -15,6 +14,14 @@ class Notification extends Component {
             total_noti: 0,
             list_noti: [],
         }
+
+        this.total_noti = 0;
+    }
+
+    componentWillMount(){
+        axios.get('/api/noti/list?username=').then( data =>
+            this.total_noti = data.data.data.length
+        )
     }
 
     seeNotification = () => {
@@ -30,7 +37,7 @@ class Notification extends Component {
                     <MaterialIcon icon="mail" color="white" />
                     <div className="number_notification" style={{ display: this.state.total_noti === 0 ? 'none' : 'block' }}>
                         <span >
-                            {this.state.total_noti}
+                            {this.total_noti}
                         </span>
                     </div>
                     <ToolTip name="thông báo" />

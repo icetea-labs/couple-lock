@@ -29,6 +29,14 @@ class BannerImage extends Component {
 
   componentWillMount(){
     console.log(this.props.proposeId);
+
+    // TODO : convert data to Byte
+
+    // TODO : create aesCtr
+
+    // TODO: decrypt data
+
+    // TODO: convert data to string
   }
 
   showPopUp = (image, proposeId) => {

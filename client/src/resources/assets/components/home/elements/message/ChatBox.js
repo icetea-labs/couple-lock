@@ -4,7 +4,8 @@ import Config from '../firebase/Config';
 import Message from './Message';
 import PubSub from 'pubsub-js';
 import { connect } from 'react-redux';
-import { number, string, object } from 'prop-types';
+// import { number, string, object } from 'prop-types';
+import MaterialIcon from 'material-icons-react';
 
 
 firebase.initializeApp(Config);
@@ -104,6 +105,7 @@ class ChatBox extends Component {
                 <div className="chat_box" style={{ width: this.state.see_chat ? '300px' : '200px' }}>
                     <div className="header__box" onClick={this.hiddenMessage} >
                         <label>test</label>
+                        <MaterialIcon icon="phone" />
                         <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
                     <div className="chat__content" style={{ display: this.state.see_chat ? 'block' : 'none' }}>
@@ -118,9 +120,14 @@ class ChatBox extends Component {
                         </div>
                     </div>
                     <div className="chat__send" style={{ display: this.state.see_chat ? 'block' : 'none' }} >
-                        <hr></hr>
                         <textarea className="chat__input" placeholder="Type Message" onChange={this.handleChange} value={this.state.message_input} ></textarea>
-                        <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button>
+                        {/* <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button> */}
+                        <div className="icon">
+                            <MaterialIcon icon="photo" />
+                            <MaterialIcon icon="face" />
+                            <MaterialIcon icon="settings_voice" />
+                            <MaterialIcon icon="play_for_work" />
+                        </div>
                     </div>
                 </div>
             </div>

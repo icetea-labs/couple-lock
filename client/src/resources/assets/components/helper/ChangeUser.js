@@ -44,9 +44,9 @@ class ChangeUser extends Component {
 
     render() {
         return (
-            <div className="layer_common">
+            <div className="layer_common div_tr">
                 <li className="btn_common chose">now :{localStorage.getItem('username')}</li>
-                <ul className="div_tr" style={{ display: this.state.isOpen ? 'block' : 'none' }}>
+                <ul className="" style={{ display: this.state.isOpen ? 'block' : 'none' }}>
                     {
                         this.list_button
                     }

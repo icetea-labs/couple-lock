@@ -13,7 +13,7 @@ import './resources/assets/sass/home/chatbox.scss';
 import './resources/assets/sass/home/addpromise.scss';
 import './resources/assets/sass/home/list_friend.scss';
 import './resources/assets/sass/home/notification.scss';
-import './resources/assets/sass/user/cover_image.scss';
+import './resources/assets/sass/user.scss';
 import './resources/assets/sass/home/settings.scss';
 import './resources/assets/sass/home/popup.scss';
 import './resources/assets/sass/home/logout.scss';
