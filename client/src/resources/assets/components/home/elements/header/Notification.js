@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MaterialIcon, { mail, settings } from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 import axios from 'axios';
 import Content from './notification/Content'
 import ToolTip from '../../../helper/ToolTip';
@@ -11,15 +11,14 @@ class Notification extends Component {
 
         this.state = {
             see_noti: false,
-            total_noti: 0,
-            list_noti: [],
+            total_noti: 1,
         }
 
         this.total_noti = 0;
     }
 
-    componentWillMount(){
-        axios.get('/api/noti/list?username=').then( data =>
+    componentWillMount() {
+        axios.get('/api/noti/list?username=').then(data =>
             this.total_noti = data.data.data.length
         )
     }
@@ -30,12 +29,16 @@ class Notification extends Component {
         })
     }
 
+    toCheckViewed(){
+        axios.get()
+    }
+
     render() {
         return (
             <div className="notification" onClick={this.seeNotification} >
                 <span className="icon_noti" onClick={this.checkAll}>
                     <MaterialIcon icon="mail" color="white" />
-                    <div className="number_notification" style={{ display: this.state.total_noti === 0 ? 'none' : 'block' }}>
+                    <div className="number_notification" style={{ display: this.total_noti === 0 ? 'none' : 'block' }}>
                         <span >
                             {this.total_noti}
                         </span>

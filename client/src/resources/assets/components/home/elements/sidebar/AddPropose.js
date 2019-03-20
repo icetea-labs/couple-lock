@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
+import md5 from 'md5';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MaterialIcon from 'material-icons-react';
 import LocationSearchInput from '../memory/Places';
 import socketIOClient from 'socket.io-client';
 import * as aesjs from 'aes-js';
+// import textEncoding from 'text-encoding';
+import encryptMessage from '../../../../../../private/encrypt';
 
 class AddPropose extends Component {
 
@@ -13,7 +16,7 @@ class AddPropose extends Component {
         super(props);
         this.state = {
             avatarUrl: localStorage.getItem("I_U"),
-            show_friend: true,
+            show_friend: false,
             show_promise: false,
             show_option: false,
             list_user: [],
@@ -35,8 +38,12 @@ class AddPropose extends Component {
             },
             host: 'localhost:5000',
             possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-            choseThis: 'Public'
+            choseThis: 'Public',
+            visibility: 0,
+            messageHex: ''
         }
+
+        this.choseThis = 'Public'
     }
     componentWillMount() {
         this.filterData();
@@ -48,7 +55,30 @@ class AddPropose extends Component {
         this.setState({
             choseThis: id
         })
-        console.log(this.state.choseThis);
+
+        // eslint-disable-next-line default-case
+        switch (id) {
+            case 'Public':
+                this.setState({
+                    visibility: 0
+                });
+                break;
+
+            case 'Unlisted':
+                this.setState({
+                    visibility: 1
+                })
+
+                break;
+
+            case 'Private':
+                this.setState({
+                    visibility: 2
+                })
+
+                break
+        }
+
         this.handleOption();
     }
 
@@ -168,44 +198,32 @@ class AddPropose extends Component {
         })
     }
 
-     handleSendPromise = (e) => {
+    handleSendPromise = (e) => {
         e.preventDefault();
         var formData = new FormData();
-        this.state.s_attachments.push(this.state.url, this.state.location);
-
         var s_key = '';
+        var message = this.state.message
 
-        var iv = [ 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,35, 36 ];
+        if (this.state.visibility === 2) {
 
-        // Creta random key
-        for (let i = 0; i < 26; i++) {
-            s_key += this.state.possible.charAt(Math.floor(Math.random() * 26));
+            const posible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for (let i = 0; i < 16; i++) {
+                s_key += posible.charAt(Math.floor(Math.random() * this.state.possible.length));
+            }
+
+            message = encryptMessage(this.state.message, s_key).messageHex;
         }
 
-        // TODO: randomkey to bytes
-        var s_key_bytes = aesjs.utils.utf8.toBytes(s_key);
-
-        console.log(s_key_bytes)
-        // TODO: data to bytes
-        this.setState({
-            message: aesjs.utils.utf8.toBytes(this.state.message)
-        })
-
-        // TODO: create aesCtr
-        var aesCtr = new aesjs.ModeOfOperation.cbc(s_key_bytes, iv);
-        // TODO: encrypt data
-        this.state({
-            message: aesCtr.encrypt(this.state.message)
-        })
-
-        // TODO: convert to hexString
+        this.state.s_attachments.push(this.state.url, this.state.location);
         formData.append('sender', this.state.sender);
         formData.append('s_attachments', this.state.s_attachments);
         formData.append('receiver', this.state.receiver);
         formData.append('r_address', this.state.publickey);
-        formData.append('message', this.state.message);
+        formData.append('message', message);
         formData.append('attachment', this.state.selectFile.imgUpload);
+        formData.append('visibility', this.state.visibility);
         formData.append('s_key', s_key);
+
 
         axios.post('/api/propose/request', formData)
             .then(res => {
@@ -215,8 +233,7 @@ class AddPropose extends Component {
             })
 
         axios.post('api/noti/create', formData);
-
-        console.log(this.s_key);
+        console.log(formData);
 
         const socket = socketIOClient(this.state.host);
         socket.emit('createNoti', this.state.receiver);
@@ -289,21 +306,19 @@ class AddPropose extends Component {
                             </div>
 
                             <div className="more-infor" onClick={this.handleOption}>
+                                <MaterialIcon icon="arrow_drop_down" />
                                 <div>
                                     {this.state.choseThis}
                                 </div>
-                                <MaterialIcon icon="arrow_drop_down" />
+
                                 <div className="option" style={{ display: this.state.show_option ? 'block' : 'none' }} >
                                     <ul>
-                                        <li onClick={() => { this.choseOption('Public') }}>Public</li>
-                                        <li onClick={() => { this.choseOption('Private') }}>Private</li>
-                                        <li onClick={() => { this.choseOption('Unlisted') }}>Unlisted</li>
+                                        <li id='Public' onClick={(e) => { this.choseOption(e.target.id) }}>Public</li>
+                                        <li id='Private' onClick={(e) => { this.choseOption(e.target.id) }}>Private</li>
+                                        <li id='Unlisted' onClick={(e) => { this.choseOption(e.target.id) }}>Unlisted</li>
                                     </ul>
                                 </div>
-
-
                             </div>
-
                         </div>
                         {
                             this.state.isPlace && <LocationSearchInput getLocation={this.getLocation} />
@@ -319,6 +334,8 @@ class AddPropose extends Component {
                         <Button className="button-send" onClick={this.handleSendPromise}>send</Button>
                     </ModalFooter>
                 </Modal >
+
+                {/* End-add propose */}
             </div>
         )
     }

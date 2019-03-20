@@ -12,7 +12,8 @@ import socketIOClient from 'socket.io-client';
 
 window.getLoginUser = () => {
   if (localStorage.getItem("username") === null) {
-    return 'sotatek'
+    localStorage.setItem('username', 'sotatek');
+    return localStorage.getItem('username');
   } else {
     return localStorage.getItem("username");
   }

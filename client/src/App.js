@@ -17,8 +17,10 @@ import './resources/assets/sass/user.scss';
 import './resources/assets/sass/home/settings.scss';
 import './resources/assets/sass/home/popup.scss';
 import './resources/assets/sass/home/logout.scss';
+import './resources/assets/sass/newfeed/newfeed.scss';
 
 // page router
+import NewFedd from './resources/assets/components/new-feed/NewFeed';
 import Home from './resources/assets/components/home/Home';
 import Login from './resources/assets/components/sign-up/Login';
 import Profile from './resources/assets/components/set-profile/Profile';
@@ -63,7 +65,8 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/newfeed' component={NewFedd} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/login/profile" component={Profile} />
           <Route exact path="/login/seed" component={SeedPhase} />

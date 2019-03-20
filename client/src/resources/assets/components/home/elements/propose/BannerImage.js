@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Axios from 'axios';
 
 const mapStatetoProps = (state) => ({
   ...state.handlePopUp,
@@ -23,11 +24,12 @@ class BannerImage extends Component {
     this.state = {
       loginUser: window.getLoginUser(),
       show_Popup: false,
-
+      // img_sender: this.props.img_sender,
+      // img_receiver: this.props.img_receiver,
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     console.log(this.props.proposeId);
 
     // TODO : convert data to Byte
@@ -37,11 +39,13 @@ class BannerImage extends Component {
     // TODO: decrypt data
 
     // TODO: convert data to string
+
+    // TODO: connect first propose
   }
 
   showPopUp = (image, proposeId) => {
-   
-   console.log('data is:', image, proposeId);
+
+    console.log('data is:', image, proposeId);
 
     this.props.showPopUp(image, proposeId);
   }

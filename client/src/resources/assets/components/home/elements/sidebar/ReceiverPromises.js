@@ -3,6 +3,7 @@ import axios from 'axios';
 import PubSub from 'pubsub-js';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import PopupPromise from './PopupPromise';
+import encryptMessage from '../../../../../../private/encrypt';
 
 class Promises extends Component {
   constructor(props) {
@@ -47,19 +48,9 @@ class Promises extends Component {
     const dataValue = new FormData();
 
     // TODO : create random_key
-    for (let i = 0; i < 26; i++) {
-      this.r_key += this.state.possible.charAt(Math.floor(Math.random() * 26));
+    for (let i = 0; i < 16; i++) {
+      this.r_key += this.state.possible.charAt(Math.floor(Math.random() * this.state.possible.length));
     }
-
-    // TODO: randomkey to bytes
-
-    // TODO: data to bytes
-
-    // TODO: create aesCtr
-
-    // TODO: encrypt data
-
-    //TODO : add append to from
 
     dataValue.append('r_key', this.r_key);
     dataValue.append('id', proposeId);

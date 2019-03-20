@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
+import * as aesjs from 'aes-js';
+import decryptMessage from '../../../../../../../private/decrypt';
+
+
 
 const socket = socketIOClient('localhost:5000');
 
@@ -33,7 +37,7 @@ class Content extends Component {
                 this.getNoti();
             }
         })
-        console.log(this.showNoti);
+        // console.log(this.showNoti);
 
     }
 
@@ -60,7 +64,7 @@ class Content extends Component {
         return false;
     }
 
-    async addNotification() {
+    addNotification = () => {
         for (let i = this.state.total_noti - 1; i >= 0; i--) {
             let item = this.state.list_noti[i];
             console.log(this.state.list_noti[i]);
@@ -69,9 +73,21 @@ class Content extends Component {
                 .then(([intance]) => {
                     console.log(intance);
                     try {
+                        // console.log(item.eventData.visibility)
+
                         this.inforNoti = this.addContent(item.event, item.eventData);
                         this.image = this.inforNoti.img;
-                        this.message = this.inforNoti.message;
+                        var contentMessage = this.inforNoti.message;
+                        var key = this.inforNoti.key;
+
+                        // Check visibility is private
+                        if (item.eventData.visibility == 2) {
+                            // Create Key Decrypt
+                            var messageDeCoded = decryptMessage(key, contentMessage);
+
+                            contentMessage = messageDeCoded;
+                        }
+
                         this.text = this.inforNoti.text;
                         this.have_img = this.inforNoti.have_img;
                         this.avatar = intance.data.data.avatar;
@@ -86,7 +102,7 @@ class Content extends Component {
                             <div className="noti_content">
                                 {item.eventData.sender === item.username ? 'Bạn' : item.eventData.sender}
                                 {' ' + this.text} {item.eventData.sender !== item.username ? 'bạn' : item.eventData.receiver}
-                                {this.message !== undefined ? ':' + this.message : ''}
+                                {contentMessage == '' ? '' : ':' + contentMessage}
                             </div>
                             <img style={{ display: this.have_img ? 'block' : 'none' }} src={this.image} className="img_receiver" alt="img" />
                         </div>
@@ -103,15 +119,15 @@ class Content extends Component {
         switch (event) {
             case "propose.request":
                 if (eventData.s_attachments.length > 0) {
-                    return { img: eventData.s_attachments[0].url, message: eventData.message, text: this.state.name_noti[0], have_img: true }
+                    return { img: eventData.s_attachments[0].url, message: eventData.message, text: this.state.name_noti[0], have_img: true, key: eventData.s_key }
                 } else
-                    return { img: '', message: eventData.s_message, text: this.state.name_noti[0], have_img: false };
+                    return { img: '', message: eventData.s_message, text: this.state.name_noti[0], have_img: false, key: eventData.s_key };
 
             case "propose.reply":
                 if (eventData.r_attachments.length > 0) {
-                    return { img: eventData.r_attachments[0].url, message: eventData.message, text: this.state.name_noti[1], have_img: true }
+                    return { img: eventData.r_attachments[0].url, message: eventData.message, text: this.state.name_noti[1], have_img: true, key: eventData.r_key }
                 } else
-                    return { img: '', message: eventData.s_message, text: this.state.name_noti[1], have_img: false };
+                    return { img: '', message: eventData.s_message, text: this.state.name_noti[1], have_img: false, key: eventData.r_key };
 
             case "memory.new":
                 if (eventData.attachments.length > 0) {

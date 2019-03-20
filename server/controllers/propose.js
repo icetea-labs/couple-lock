@@ -13,7 +13,7 @@ router.post('/request', upload.single("attachment"), checkSchema({
 }), (req, res) => {
 
   const item = {
-    visibility: req.body.visibility || 1,
+    visibility: req.body.visibility,
     sender: req.body.sender,
     s_timestamp: req.body.timestamp || Date.now(),
     s_message: req.body.message,
