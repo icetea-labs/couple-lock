@@ -26,6 +26,7 @@ import Login from './resources/assets/components/sign-up/Login';
 import Profile from './resources/assets/components/set-profile/Profile';
 import SeedPhase from './resources/assets/components/create-account/SeedPhase';
 import User from './resources/assets/components/user/User';
+import Test from './resources/assets/components/Test';
 
 const mapStateToProps = (state) => {
   return {
@@ -71,6 +72,7 @@ class App extends Component {
           <Route exact path="/login/profile" component={Profile} />
           <Route exact path="/login/seed" component={SeedPhase} />
           <Route exact path="/profile/user" component={User} />
+          <Route exact path="/test" component={Test} />
         </Switch>
       </Router>
 

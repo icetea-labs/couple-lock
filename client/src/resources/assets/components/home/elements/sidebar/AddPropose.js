@@ -37,8 +37,8 @@ class AddPropose extends Component {
                 imgUpload: ''
             },
             host: 'localhost:5000',
-            possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
             choseThis: 'Public',
+            possible: "abcdefghijklmnopqrstuvwxyz0123456789",
             visibility: 0,
             messageHex: ''
         }
@@ -206,9 +206,9 @@ class AddPropose extends Component {
 
         if (this.state.visibility === 2) {
 
-            const posible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
             for (let i = 0; i < 16; i++) {
-                s_key += posible.charAt(Math.floor(Math.random() * this.state.possible.length));
+                s_key += this.state.possible.charAt(Math.floor(Math.random() * this.state.possible.length));
             }
 
             message = encryptMessage(this.state.message, s_key).messageHex;

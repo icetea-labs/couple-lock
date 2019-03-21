@@ -1,23 +1,28 @@
 import aesjs from 'aes-js';
 
-var encryptMessage = function encryptS_key(message , key) {
-    
+var encryptMessage = function encryptS_key(message, key) {
+
     // key Side to uinit8
-    var key_bytes = aesjs.utils.utf8.toBytes(key);
+    try {
 
-    console.log(key_bytes);
+        // Convert key to  128bit(key 128);
+        var key_bytes = aesjs.utils.utf8.toBytes(key);
 
-    // TODO: create aesCtr
-    var aesCtr = new aesjs.ModeOfOperation.ctr(key_bytes, new aesjs.Counter(5));
+        // TODO: create aesCtr
+        var aesCtr = new aesjs.ModeOfOperation.ctr(key_bytes, new aesjs.Counter(5));
 
-    // TODO: data to bytes
-    var data = aesjs.utils.utf8.toBytes(message);
+        // TODO: data to bytes
+        var data = aesjs.utils.utf8.toBytes(message);
 
-    // TODO: encrypt data
-    var dataEncrypt = aesCtr.encrypt(data);
+        // TODO: encrypt data
+        var dataEncrypt = aesCtr.encrypt(data);
 
-    // TODO: convert to hexString
-    var messageHex = aesjs.utils.hex.fromBytes(dataEncrypt);
+        // TODO: convert to hexString
+        var messageHex = aesjs.utils.hex.fromBytes(dataEncrypt);
+    } catch (err) {
+        console.log(err);
+    }
+    
 
     return {
         messageHex
@@ -25,4 +30,4 @@ var encryptMessage = function encryptS_key(message , key) {
 }
 
 
-export default encryptMessage ;
+export default encryptMessage;

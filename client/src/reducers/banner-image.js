@@ -30,7 +30,7 @@ axios.get('/api/propose/list?username=' + localStorage.getItem('username'))
         // console.log(err);
     })
 
-console.log('test is', initBanner);
+// console.log('test is', initBanner);
 
 
 
