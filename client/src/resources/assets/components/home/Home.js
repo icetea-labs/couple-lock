@@ -78,7 +78,6 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    // console.log(this.props)
     PubSub.subscribe('shareMemory', () => {
       this.fetchProposeId();
     });

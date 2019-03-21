@@ -105,7 +105,9 @@ class SideBar extends Component {
           sender: p.sender,
           receiver: p.receiver,
           r_react: p.r_react,
-          viewed: p.viewed
+          viewed: p.viewed,
+          // s_attachments: p.s_attachments,
+          // s_message: p.s_message
         }
       } else {
         sidebarItems[p.sender] = {
@@ -113,7 +115,9 @@ class SideBar extends Component {
           sender: p.sender,
           receiver: p.receiver,
           r_react: p.r_react,
-          viewed: p.viewed
+          viewed: p.viewed,
+          s_attachments: p.s_attachments,
+          s_message: p.s_message
         }
       }
       this.setState({
@@ -134,7 +138,6 @@ class SideBar extends Component {
   getUserInfo = () => {
     const obj = this.state.sidebarItems;
     if (obj) {
-      // console.log(obj);
       const res = Object.keys(obj).map(function (key, index) {
         return {
           proposeId: obj[key].proposeId,
@@ -145,6 +148,8 @@ class SideBar extends Component {
           avatar: obj[key].user.avatar,
           username: obj[key].user.username,
           displayName: obj[key].user.displayName,
+          s_message: obj[key].s_message,
+          s_attachments: obj[key].s_attachments
         }
       })
       this.setState({ data: res });

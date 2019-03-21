@@ -59,7 +59,7 @@ class Promises extends Component {
       // console.log(res);
       // console.log(res.data);
       PubSub.publish('updatePromise');
-      PubSub.publish('refreshProposeDetail');
+      PubSub.publish('updateProposeDetail');
       PubSub.publish('updateBanner');
     })
 
@@ -106,7 +106,7 @@ class Promises extends Component {
                     <div className="request__items__username">@{item.username}</div>
                       <div className="request__items__btn">
                       <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
-                      <button type="button" className="request__items__btn__delete" onClick={ this.deniedPromisesModal }>Denied</button>
+                      <button type="button" className="request__items__btn__delete" onClick={ this.deniedPromisesModal }>Deny</button>
                       </div>
                   </div>
                   <div className="accept_promises_modal">
@@ -138,7 +138,7 @@ class Promises extends Component {
                           </p>
                         </ModalBody>
                         <ModalFooter>
-                        <Button disabled={!this.isDisableAccept()} className="denied_promises_request" onClick={() => this.deniedPromises(item.proposeId)}>Denied</Button>
+                        <Button disabled={!this.isDisableAccept()} className="denied_promises_request" onClick={() => this.deniedPromises(item.proposeId)}>Deny</Button>
                         <Button className="cancel_promises_request" color="info" onClick={this.deniedPromisesModal}>Cancel</Button>
                         </ModalFooter>
                     </Modal>

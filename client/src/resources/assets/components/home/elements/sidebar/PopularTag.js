@@ -46,7 +46,8 @@ class PopularTag extends Component {
 
   searchTags = (tags) => {
     const {proposeId} = this.state;
-    // console.log(proposeId);
+    PubSub.publish('tagsFilterText', tags);
+
     axios.get(`/api/memory/list?proposeId=${proposeId}&tags.includes=${tags}`)
     .then(res => {
       // console.log(res.data.data);
@@ -65,7 +66,6 @@ class PopularTag extends Component {
       <div className="popular_tags">
         {(tagsAll && tagsAll.length > 0) && <h3 className="title title_promises">Popular Tag</h3>}
         <div className="popular_tags__list">
-          {(tagsAll && tagsAll.length > 0) && <label><input className="tags_item" type="button" value="↲ All" onClick={this.resetFilterTags} /></label>}
           { this.showTags() }
         </div>
       </div>
