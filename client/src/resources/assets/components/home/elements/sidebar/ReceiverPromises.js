@@ -138,7 +138,7 @@ class Promises extends Component {
                           </p>
                         </ModalBody>
                         <ModalFooter>
-                        <Button disabled={!this.isDisableAccept()} className="denied_promises_request" onClick={() => this.deniedPromises(item.proposeId)}>Denied</Button>
+                        <Button disabled={!this.isDisableAccept()} className="denied_promises_request" onClick={() => this.deniedPromises(item.proposeId)}>Deny</Button>
                         <Button className="cancel_promises_request" color="info" onClick={this.deniedPromisesModal}>Cancel</Button>
                         </ModalFooter>
                     </Modal>

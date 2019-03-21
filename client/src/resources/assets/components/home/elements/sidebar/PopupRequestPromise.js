@@ -59,30 +59,28 @@ class PendingPromise extends Component {
           {
             (receiverPromiseList && receiverPromiseList.length > 0) ? <div>
               {
-                receiverPromiseList.map((item, index) =>{
-                  if(item.viewed !== true){
-                    return(
-                      <div className="request__items" key={index}>
-                        <div className="detail_user">
-                          <img className="avatar" src={item.avatar} alt="" />
-                          <div>
-                            <button className="displayname"> {item.displayName} </button>
-                            <div className="username">@{item.username}</div>
-                          </div>
-                        </div>
-                        <div className="content">
-                          <div className="message">Message: {item.s_message}</div>
-                          {(item.s_attachments.length > 0) && <div className="img_attachment"><img src={item.s_attachments[0].url} alt="" /></div>}
-                        </div>
-                        <div className="action">
-                            <div className="request__items__btn">
-                              <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromises }>Accept</button>
-                              <button type="button" className="request__items__btn__delete" onClick={ this.deniedPromises }>Deny</button>
-                            </div>
+                receiverPromiseList.filter(viewed => viewed !== true).map((item, index) =>{
+                  return(
+                    <div className="request__items" key={index}>
+                      <div className="detail_user">
+                        <img className="avatar" src={item.avatar} alt="" />
+                        <div>
+                          <button className="displayname"> {item.displayName} </button>
+                          <div className="username">@{item.username}</div>
                         </div>
                       </div>
-                    )
-                  }
+                      <div className="content">
+                        <div className="message">Message: {item.s_message}</div>
+                        {(item.s_attachments.length > 0) && <div className="img_attachment"><img src={item.s_attachments[0].url} alt="" /></div>}
+                      </div>
+                      <div className="action">
+                          <div className="request__items__btn">
+                            <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromises }>Accept</button>
+                            <button type="button" className="request__items__btn__delete" onClick={ this.deniedPromises }>Deny</button>
+                          </div>
+                      </div>
+                    </div>
+                  )
                 })
               }
             </div> : <div className="rp_message">No request promises</div>
