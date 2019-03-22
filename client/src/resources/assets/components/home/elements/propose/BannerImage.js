@@ -53,8 +53,8 @@ class BannerImage extends Component {
     return (
       <div className="banner_container mg-auto">
         {this.state.loginUser === this.props.sender ?
-          <img src={this.props.img_receiver} onClick={() => { this.showPopUp(this.props.img_receiver, this.props.proposeId) }} /> :
-          <img src={this.props.img_sender} onClick={() => { this.showPopUp(this.props.img_sender, this.props.proposeId) }} />
+          <img src={this.props.img_receiver} onClick={() => { this.showPopUp(this.props.img_receiver, this.props.proposeId) }} alt="" /> :
+          <img src={this.props.img_sender} onClick={() => { this.showPopUp(this.props.img_sender, this.props.proposeId) }} alt=""/>
         }
       </div>
     )

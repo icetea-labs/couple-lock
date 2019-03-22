@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import Promises from './ReceiverPromises';
+import ReceiverPromises from './ReceiverPromises';
 import AddPropose from './AddPropose';
 import PopularTag from './PopularTag';
 import SentPromises from './SentPromises';
@@ -32,6 +32,7 @@ class SideBar extends Component {
       r_react: null,
       loginUser: window.getLoginUser(),
       acceptPromises: [],
+      receiverPromises: [],
       deniedPromises: [],
       sentPromises: [],
       show_friend: false,
@@ -56,7 +57,7 @@ class SideBar extends Component {
   }
 
   componentWillMount() {
-    PubSub.subscribe('acceptPromise', () => {
+    PubSub.subscribe('updatePromise', () => {
       this.fetchData();
     });
     PubSub.subscribe('sendPromise', () => {
@@ -69,8 +70,9 @@ class SideBar extends Component {
     const { loginUser } = this.state;
     let pId = [];
     const acceptPromises = [];
-    const deniedPromises = [];
+    const receiverPromises = [];
     const sentPromises = [];
+    const deniedPromises = [];
 
     data.forEach((obj) => {
       pId.push(obj.proposeId);
@@ -79,20 +81,24 @@ class SideBar extends Component {
       if ((loginUser === obj.sender || loginUser === obj.receiver) && obj.r_react === 1) {
         acceptPromises.push(obj);
       }
-      if ((loginUser === obj.receiver) && obj.r_react === undefined) {
-        deniedPromises.push(obj);
+      if ((loginUser === obj.receiver) && obj.r_react === undefined){
+        receiverPromises.push(obj);
       }
       if ((loginUser === obj.sender) && obj.r_react === undefined) {
         sentPromises.push(obj);
       }
+      if ((loginUser === obj.receiver) && obj.r_react === 2){
+        deniedPromises.push(obj);
+      }
     });
 
-    PubSub.publish('deniedPromise', [...deniedPromises])
+    PubSub.publish('deniedPromise', [...receiverPromises])
 
     this.setState({
       acceptPromises: [...acceptPromises],
-      deniedPromises: [...deniedPromises],
+      receiverPromises: [...receiverPromises],
       sentPromises: [...sentPromises],
+      deniedPromises: [...deniedPromises],
     });
   }
 
@@ -114,7 +120,9 @@ class SideBar extends Component {
           sender: p.sender,
           receiver: p.receiver,
           r_react: p.r_react,
-          viewed: p.viewed
+          viewed: p.viewed,
+          // s_attachments: p.s_attachments,
+          // s_message: p.s_message
         }
       } else {
         sidebarItems[p.sender] = {
@@ -122,7 +130,9 @@ class SideBar extends Component {
           sender: p.sender,
           receiver: p.receiver,
           r_react: p.r_react,
-          viewed: p.viewed
+          viewed: p.viewed,
+          s_attachments: p.s_attachments,
+          s_message: p.s_message
         }
       }
       this.setState({
@@ -143,7 +153,6 @@ class SideBar extends Component {
   getUserInfo = () => {
     const obj = this.state.sidebarItems;
     if (obj) {
-      // console.log(obj);
       const res = Object.keys(obj).map(function (key, index) {
         return {
           proposeId: obj[key].proposeId,
@@ -154,6 +163,8 @@ class SideBar extends Component {
           avatar: obj[key].user.avatar,
           username: obj[key].user.username,
           displayName: obj[key].user.displayName,
+          s_message: obj[key].s_message,
+          s_attachments: obj[key].s_attachments
         }
       })
       this.setState({ data: res });
@@ -169,11 +180,11 @@ class SideBar extends Component {
     Promise.all([axios.get('/api/propose/details?id='+ pId)])
       .then(([res]) => {
         let data = res.data.data;
-        if( data.r_attachments.length  > 0) {
+        if( data.r_attachments.length  !== 0) {
           var img_receiver = data.r_attachments[0].url
         }
 
-        if( data.s_attachments.length  > 0) {
+        if( data.s_attachments.length  !== 0) {
           var img_sender = data.s_attachments[0].url
         }
 
@@ -191,7 +202,7 @@ class SideBar extends Component {
   }
 
   render() {
-    const { acceptPromises, deniedPromises, sentPromises } = this.state;
+    const { acceptPromises,receiverPromises, sentPromises, deniedPromises } = this.state;
     //console.log(sentPromises);
     return (
       <div className="sidebar">
@@ -206,7 +217,7 @@ class SideBar extends Component {
             const { activeUserId } = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return (
-              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)}>
+              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)} id={item.proposeId}>
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>
@@ -216,9 +227,8 @@ class SideBar extends Component {
             )
           })
         }
-        {/* End Show list Accepted Promise */}
-        <Promises deniedPromises={deniedPromises} />
-        <SentPromises sentPromises={sentPromises} />
+        <ReceiverPromises receiverPromises={receiverPromises}/>
+        <SentPromises sentPromises={sentPromises}/>
         <PopularTag />
       </div>
     );

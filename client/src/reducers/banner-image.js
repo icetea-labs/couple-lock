@@ -32,8 +32,6 @@ axios.get('/api/propose/list?username=' + localStorage.getItem('username'))
 
 // console.log('test is', initBanner);
 
-
-
 export default function handleBanner(state = initBanner, action) {
     switch (action.type) {
         case 'ADD_BANNER':

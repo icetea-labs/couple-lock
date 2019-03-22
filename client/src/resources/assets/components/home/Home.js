@@ -34,6 +34,8 @@ class Home extends Component {
       rightUser: [],
       proposeList: [],
       userName: [],
+      r_key: null,
+      s_key: null,
       proposeId: null,
       max_chat: 3,
       test: process.env.MONGO_DB_URI,
@@ -88,12 +90,10 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    // console.log(this.props)
     PubSub.subscribe('shareMemory', () => {
       this.fetchProposeId();
     });
-
-    PubSub.subscribe('refreshProposeDetail', () => {
+    PubSub.subscribe('updateProposeDetail', () => {
       const { proposeId } = this.state;
       if (proposeId !== null) {
         axios.get(`/api/propose/details?id=${proposeId}`)

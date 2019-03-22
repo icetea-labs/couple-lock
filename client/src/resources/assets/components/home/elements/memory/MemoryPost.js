@@ -11,7 +11,6 @@ import moment from 'moment';
 
 const options = [
   { value: 'Public', label: 'Public' },
-  { value: 'Unlisted', label: 'Unlisted' },
   { value: 'Private', label: 'Private' }
 ];
 
@@ -53,13 +52,9 @@ class MemoryPost extends Component {
     const id = this.state.selectedOption.value;
     if (id === "Public") {
       return 1;
-    } else if (id === "Unlisted") {
+    } else {
       return 2;
     }
-    else {
-      return 3;
-    }
-
   }
 
   getMessageValue = (e) => {

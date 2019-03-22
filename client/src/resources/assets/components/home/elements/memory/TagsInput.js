@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import Suggestion from './SuggestionTags';
 import { WithContext as ReactTags } from 'react-tag-input';
 import axios from 'axios';
-
-// const content = Suggestion.map((result) => {
-//   return{
-//     id: result,
-//     text: result,
-//   }
-// })
 
 const KeyCodes = {
   comma: 188,

@@ -48,7 +48,7 @@ class Content extends Component {
             this.setState({
                 total_noti: data.data.data.length,
             })
-            console.log('data is:', data);
+            // console.log('data is:', data);
             this.state.list_noti = data.data.data.map((item) => {
                 return item;
             })
@@ -67,7 +67,7 @@ class Content extends Component {
     addNotification = () => {
         for (let i = this.state.total_noti - 1; i >= 0; i--) {
             let item = this.state.list_noti[i];
-            console.log(this.state.list_noti[i]);
+            // console.log(this.state.list_noti[i]);
             Promise.all([axios.get('/api/user/details?username=' + item.eventData.sender)])
                 // eslint-disable-next-line no-loop-func
                 .then(([intance]) => {

@@ -5,7 +5,6 @@ import array from 'prop-types';
 import md5 from 'md5';
 import aesjs from 'aes-js';
 import Web3 from 'web3';
-import axios from 'axios';
 
 class SeedWord extends Component {
 
