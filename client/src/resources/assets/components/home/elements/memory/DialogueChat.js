@@ -123,7 +123,7 @@ class DialogueChat extends Component {
                   </div>
                   <p>{item.message}</p>
                   {
-                    (item.attachments[0] && item.attachments.length > 0) && <p className="attachments">
+                    (item.attachments && item.attachments.find(type => type.type === 'photo')) && <p className="attachments">
                       <img src={item.attachments[0].url} alt="" onClick={() => this.setImgUrl(item.attachments[0].url) } />
                     </p>
                   }

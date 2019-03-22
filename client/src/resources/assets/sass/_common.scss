@@ -3,6 +3,10 @@ ul {
     cursor: pointer;
   }
 
+img{
+  cursor: pointer;
+}
+
 // li{
 //   width: 120px;
 //   height: 40px;
@@ -12,6 +16,8 @@ ul {
   transition: 0.7s;
 }
 
+
+// button to easy
 .btn_common{
   margin: 10px;
   padding: 10px;
@@ -26,10 +32,12 @@ ul {
   background-color: rgba(190, 23, 190, 0.809);
 }
 
+
+// for layer
 .layer_common{
   position: fixed;
-  left: 40px;
-  top: 80px;
+  left: 10px;
+  top: 60px;
   z-index: 999;
   width: auto;
   height: auto;
@@ -37,6 +45,7 @@ ul {
  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.394);
 }
 
+// for span
 .span_common{
   background-color: none;
   width: 80%;
@@ -49,6 +58,8 @@ ul {
   background-color: rgba(255, 0, 0, 0.381);
 }
 
+
+// for popup 
 .tooltip_common{
   visibility: hidden;
   position: absolute;
@@ -93,4 +104,24 @@ ul {
 
 .fade {
   overflow-y: scroll;
+}
+
+.test{
+  position: fixed;
+  top: 300px;
+  left: 100px;
+  cursor: pointer;
+
+  input{
+    width: 300px !important;
+  }
+}
+
+.demo {
+  background: #ffffff;
+  border: solid gray 1px;
+}
+
+.data {
+  $color: green;
 }

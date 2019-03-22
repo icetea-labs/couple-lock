@@ -232,16 +232,16 @@ body{
             .add_more{
                 display: flex;
                 .more-infor{
+                    position: relative;
                     border-radius: 50px;
                     background-color: rgba(255, 127, 80, 0.204);
                     border: solid white 1px;
-                    margin: 10px;
-                    margin-right: 5%;
-                    margin-left: 5%;
+                    margin: 20px;
                     padding-right:  10px;
                     padding-left:10px;
                     height: 35px;
                     display: inline-flex;
+                    width:110px;
 
                     span{
                         width: 20px;
@@ -253,11 +253,26 @@ body{
                     label{
                         margin-top: 5px;
                     }
+
+                    .option{
+                        position: relative;
+                        background: #ffffff;
+                        bottom: -20px;
+                        width: 60px;
+                        left: -70px;
+                        li:hover{
+                            background-color: palevioletred;
+                            color: white;
+                        }
+                        
+                    }
                 }
 
                 .more-infor:hover {
                     border: solid  rgba(152, 14, 250, 0.455) 1px;
                 }
+
+                
             }
 
         }

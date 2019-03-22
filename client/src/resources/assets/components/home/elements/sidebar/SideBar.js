@@ -5,7 +5,22 @@ import ReceiverPromises from './ReceiverPromises';
 import AddPropose from './AddPropose';
 import PopularTag from './PopularTag';
 import SentPromises from './SentPromises';
-import DeniedPromises from './DeniedPromises';
+import { connect } from 'react-redux';
+
+const mapStatetoProps = (state) => ({
+  ...state.handleBanner
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  addBanner: (data) => dispatch({
+      type: 'ADD_BANNER',
+      proposeId: data.proposeId,
+      img_sender: data.img_sender,
+      img_receiver: data.img_receiver,
+      sender: data.sender,
+      receiver: data.receiver
+  })
+})
 
 class SideBar extends Component {
   constructor(props) {
@@ -69,7 +84,7 @@ class SideBar extends Component {
       if ((loginUser === obj.receiver) && obj.r_react === undefined){
         receiverPromises.push(obj);
       }
-      if ((loginUser === obj.sender) && obj.r_react === undefined){
+      if ((loginUser === obj.sender) && obj.r_react === undefined) {
         sentPromises.push(obj);
       }
       if ((loginUser === obj.receiver) && obj.r_react === 2){
@@ -143,7 +158,7 @@ class SideBar extends Component {
           proposeId: obj[key].proposeId,
           sender: obj[key].sender,
           receiver: obj[key].receiver,
-          viewed:  obj[key].viewed,
+          viewed: obj[key].viewed,
           r_react: obj[key].r_react,
           avatar: obj[key].user.avatar,
           username: obj[key].user.username,
@@ -158,12 +173,34 @@ class SideBar extends Component {
     }
   }
 
-  passingProposeId = pId => {
+  passingProposeId = (pId) => {
     this.setState({ activeUserId: pId })
     this.props.proposeIdChanged(pId);
+
+    Promise.all([axios.get('/api/propose/details?id='+ pId)])
+      .then(([res]) => {
+        let data = res.data.data;
+        if( data.r_attachments.length  !== 0) {
+          var img_receiver = data.r_attachments[0].url
+        }
+
+        if( data.s_attachments.length  !== 0) {
+          var img_sender = data.s_attachments[0].url
+        }
+
+        const dataBanner = {
+          pId,
+          img_sender: img_sender,
+          img_receiver: img_receiver,
+          sender: res.data.data.sender,
+          receiver: res.data.data.receiver
+        }
+
+        this.props.addBanner(dataBanner);
+      });
     PubSub.publish('proposeIdChangeTags', pId)
   }
-  
+
   render() {
     const { acceptPromises,receiverPromises, sentPromises, deniedPromises } = this.state;
     //console.log(sentPromises);
@@ -180,7 +217,7 @@ class SideBar extends Component {
             const { activeUserId } = this.state;
             const className = (activeUserId === item.proposeId) ? 'sidebar__item activeUser' : 'sidebar__item';
             return (
-              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)}>
+              <div className={className} key={index} onClick={() => this.passingProposeId(item.proposeId)} id={item.proposeId}>
                 <div className="sidebar__item__avatar"><img src={item.avatar} alt="" /></div>
                 <div className="sidebar__item__detail">
                   <div className="sidebar__item__detail__displayname">{item.displayName}</div>
@@ -192,11 +229,10 @@ class SideBar extends Component {
         }
         <ReceiverPromises receiverPromises={receiverPromises}/>
         <SentPromises sentPromises={sentPromises}/>
-        <DeniedPromises deniedPromises={deniedPromises}/>
         <PopularTag />
       </div>
     );
   }
 }
 
-export default SideBar;
+export default connect(mapStatetoProps, mapDispatchToProps)(SideBar);

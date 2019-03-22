@@ -8,6 +8,7 @@
     "axios": "^0.18.0",
     "bip39": "^2.5.0",
     "bootstrap": "^4.3.1",
+    "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
     "encryptjs": "^2.0.0",
     "ethereumjs-testrpc": "^6.0.3",
@@ -44,6 +45,8 @@
     "reactstrap": "^7.1.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
+    "socket.io-client": "^2.2.0",
+    "text-encoding": "^0.7.0",
     "web3": "^1.0.0-beta.37"
   },
   "scripts": {

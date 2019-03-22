@@ -1,8 +1,11 @@
-export function openPopup (open, data){
+export function openPopup (open, image, proposeId, sender, receiver){
     return {
         type: 'OPEN_POPUP',
         open,
-        data
+        image,
+        proposeId,
+        sender,
+        receiver,
     }
 }
 

@@ -11,7 +11,7 @@ class Header extends Component {
     return (
       <div id="header">
         <div className="header__container w-960">
-          <div className="logo"><Link to="/"><img src="./images/heart-logo.svg" alt="Couple Lock" /><span>LoveLock</span></Link></div>
+          <div className="logo"><Link to="/"><img src="./images/heart-logo.svg" alt="" /><span>LoveLock</span></Link></div>
           <SearchBox />
           <UserAccount />
           <Notification />

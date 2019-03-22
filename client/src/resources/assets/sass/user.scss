@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,500i,600,600i,700,700i');
+@import 'variables';
+@import 'common.scss';
+
+.user-profile{
+    height: 2000px;
+
+    .navigate{
+        height: 100vh;
+        position: fixed;
+        width: 15%;
+        .navigator{
+            position: fixed;
+            top: 10px;
+            left: 30px;
+            border: solid gray 1px;
+            width: 10%;
+        }
+
+        .more{
+            position: fixed;
+            top: 150px;
+            left: 30px;
+            width: 10%;
+            border: solid gray 1px;
+            height: 500px;
+        }
+    }
+
+    .header{
+        width: 80%;
+        height: 350px;
+        position: absolute;
+        left: 15%;
+        
+        .cover-image{
+            width: 100%;
+            height: 300px;
+            position: absolute;
+            top: 10px;
+            border: solid gray 1px;
+            // box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.163);
+        }
+    
+        .avatar{
+            width: auto;
+            height: auto;
+            z-index: 2;
+            position: absolute;
+            top: 150px;
+            left: 20%;
+            img{
+                width: 150px;
+                height: 150px;
+                border: solid rgba(59, 59, 59, 0.68) 1px;
+                border-radius: 50%;
+            }
+        }
+
+    }
+    
+
+    .body{
+        position: absolute;
+        width: 80%;
+        left: 15%;
+        top: 350px;
+        .newfeed{
+            position: absolute;
+            width: 70%;
+            border: solid gray 1px;
+            height: 300px;
+        }
+    
+        .infor-user{
+            position: absolute;
+            right: 0px;
+            width: 25%;
+            border: solid gray 1px;
+            height: 300px;
+        }
+
+        .image-user{
+            position: absolute;
+            top: 350px;
+            right: 0px;
+            width: 25%;
+            border: solid gray 1px;
+            height: 300px;
+        }
+    }
+}
+

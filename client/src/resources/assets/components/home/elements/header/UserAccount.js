@@ -33,7 +33,7 @@ class UserAccount extends Component {
     return (
       <div className="custom-right-header">
         <div className="user">
-          <span className="user__photo"><img src={this.state.avatar} alt="ảnh đại diện" /></span>
+          <span className="user__photo"><img src={this.state.avatar} alt="" /></span>
           <button className="login__button"><a href={this.state.redirect}>{this.state.linkto}</a></button>
         </div>
       </div>
