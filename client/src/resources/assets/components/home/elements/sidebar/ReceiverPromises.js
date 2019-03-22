@@ -41,22 +41,16 @@ class Promises extends Component {
     }
   }
 
-  async acceptPromises(pId , visibility) {
+  async acceptPromises(pId) {
     const proposeId = pId;
     const react = 1;
     const { promisesMessage, promisesImage } = this.state;
     const dataValue = new FormData();
 
-    console.log(visibility);
-
     // TODO : create random_key
     for (let i = 0; i < 16; i++) {
       this.r_key += this.state.possible.charAt(Math.floor(Math.random() * this.state.possible.length));
     }
-
-    // if (visibility === '2'){
-    //   var messageHex  = encryptMessage(promisesMessage, this.r_key).messageHex;
-    // }
 
     dataValue.append('r_key', this.r_key);
     dataValue.append('id', proposeId);
@@ -86,7 +80,6 @@ class Promises extends Component {
         <div className="request">
           {
             deniedPromises.length > 0 && deniedPromises.map((item, index) => {
-              console.log(item);
               return (
                 <div className="request__items" key={index}>
                   <div className="request__items__avatar">
@@ -110,7 +103,7 @@ class Promises extends Component {
                           </p>
                         </ModalBody>
                         <ModalFooter>
-                          <Button disabled={!this.isDisableAccept()} className="accept_promises_request" onClick={() => this.acceptPromises(item.proposeId , item.eventData.visibility)}>Accept</Button>
+                          <Button disabled={!this.isDisableAccept()} className="accept_promises_request" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
                           <Button className="cancel_promises_request" color="info" onClick={this.acceptPromisesModal}>Cancel</Button>
                         </ModalFooter>
                       </Modal>
