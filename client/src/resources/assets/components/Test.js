@@ -45,7 +45,7 @@ class Test extends Component {
 
     decrypt = () => {
         this.setState({
-            decryptMessage: decryptMessage(this.state.message, this.state.key).messageDecoded
+            decryptMessage: decryptMessage(this.state.message, this.state.key).messageEncrypt
         })
     }
 

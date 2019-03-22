@@ -8,6 +8,8 @@ var encryptMessage = function encryptS_key(message, key) {
         // Convert key to  128bit(key 128);
         var key_bytes = aesjs.utils.utf8.toBytes(key);
 
+        console.log(key_bytes);
+
         // TODO: create aesCtr
         var aesCtr = new aesjs.ModeOfOperation.ctr(key_bytes, new aesjs.Counter(5));
 
