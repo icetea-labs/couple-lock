@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
+import decryptMessage from '../../../../../../private/decrypt';
 
 class PendingPromise extends Component {
   constructor(props) {
@@ -49,7 +50,6 @@ class PendingPromise extends Component {
     }));
   }
 
-
   showRequestPromises = () =>{
     const {receiverPromiseList} = this.state
     return(
@@ -60,6 +60,7 @@ class PendingPromise extends Component {
             (receiverPromiseList && receiverPromiseList.length > 0) ? <div>
               {
                 receiverPromiseList.filter(viewed => viewed !== true).map((item, index) =>{
+                  const s_message = (item.visibility === '2') ? decryptMessage(item.s_message ,item.s_key).messageEncrypt : item.s_message;
                   return(
                     <div className="request__items" key={index}>
                       <div className="detail_user">
@@ -70,7 +71,7 @@ class PendingPromise extends Component {
                         </div>
                       </div>
                       <div className="content">
-                        <div className="message">Message: {item.s_message}</div>
+                        <div className="message">Message: {s_message}</div>
                         {(item.s_attachments.length > 0) && <div className="img_attachment"><img src={item.s_attachments[0].url} alt="" /></div>}
                       </div>
                       <div className="action">

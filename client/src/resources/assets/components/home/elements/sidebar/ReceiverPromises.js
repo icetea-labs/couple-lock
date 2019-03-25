@@ -121,7 +121,6 @@ class Promises extends Component {
         }
       }
 
-
       const dataBanner = {
         pId,
         img_sender: img_sender,
@@ -158,169 +157,75 @@ class Promises extends Component {
 
   render() {
     const receiverPromises = this.props.receiverPromises;
-    return ( <
-      div className = "request_promises" > {
-        receiverPromises.length > 0 && < h3 className = "title title_promises" > Request promise < /h3>} <
-        div className = "request" > {
-          receiverPromises.length > 0 && receiverPromises.map((item, index) => {
-            return ( <
-              div className = "request__items"
-              key = {
-                index
-              } >
-              <
-              div className = "request__items__avatar" >
-              <
-              img src = {
-                item.avatar
-              }
-              alt = "" / >
-              <
-              /div> <
-              div className = "detail" >
-              <
-              button className = "request__items__displayname" > {
-                item.displayName
-              } < /button> <
-              div className = "request__items__username" > @ {
-                item.username
-              } < /div> <
-              div className = "request__items__btn" >
-              <
-              button type = "button"
-              className = "request__items__btn__accept"
-              onClick = {
-                this.acceptPromisesModal
-              } > Accept < /button> <
-              button type = "button"
-              className = "request__items__btn__delete"
-              onClick = {
-                this.deniedPromisesModal
-              } > Deny < /button> < /
-              div > <
-              /div> <
-              div className = "accept_promises_modal" >
-              <
-              Modal isOpen = {
-                this.state.modal
-              }
-              toggle = {
-                this.acceptPromisesModal
-              }
-              className = {
-                this.props.className
-              } >
-              <
-              ModalHeader toggle = {
-                this.acceptPromisesModal
-              } > Accept Promises < /ModalHeader> <
-              ModalBody >
-              <
-              p >
-              <
-              span > Message: < /span> <
-              Input type = "textarea"
-              name = "text"
-              id = "exampleText"
-              onChange = {
-                this.getMessagePomises
-              }
-              /> < /
-              p > <
-              p >
-              <
-              span > Promises Images: < /span> <
-              Input type = "file"
-              accept = ".png, .jpg, .jpeg"
-              name = "file"
-              onChange = {
-                this.promisesImage
-              }
-              /> < /
-              p > <
-              /ModalBody> <
-              ModalFooter >
-              <
-              Button disabled = {
-                !this.isDisableAccept()
-              }
-              className = "accept_promises_request"
-              onClick = {
-                () => this.acceptPromises(item.proposeId)
-              } > Accept < /Button> <
-              Button className = "cancel_promises_request"
-              color = "info"
-              onClick = {
-                this.acceptPromises
-              } > Cancel < /Button> < /
-              ModalFooter > <
-              /Modal> < /
-              div > <
-              div className = "denied_promises_modal" >
-              <
-              Modal isOpen = {
-                this.state.modalDenied
-              }
-              toggle = {
-                this.deniedPromisesModal
-              }
-              className = {
-                this.props.className
-              } >
-              <
-              ModalHeader toggle = {
-                this.deniedPromisesModal
-              } > Denied Promises < /ModalHeader> <
-              ModalBody >
-              <
-              p >
-              <
-              span > Message: < /span> <
-              Input type = "textarea"
-              name = "text"
-              id = "exampleText"
-              onChange = {
-                this.getMessagePomises
-              }
-              /> < /
-              p > <
-              /ModalBody> <
-              ModalFooter >
-              <
-              Button disabled = {
-                !this.isDisableAccept()
-              }
-              className = "denied_promises_request"
-              onClick = {
-                () => this.deniedPromises(item.proposeId)
-              } > Deny < /Button> <
-              Button className = "cancel_promises_request"
-              color = "info"
-              onClick = {
-                this.deniedPromisesModal
-              } > Cancel < /Button> < /
-              ModalFooter > <
-              /Modal> < /
-              div > <
-              /div>
-            )
-          })
-        } <
-        /div> <
-        div className = "popup_promises_wrapper" >
-        <
-        PopupRequestPromise
-        acceptPromisesModal = {
-          this.acceptPromisesModal
-        }
-        deniedPromisesModal = {
-          this.deniedPromisesModal
-        }
-        /> < /
-        div > <
-        /div>
-      );
-    }
-  }
+    return(
+      <div className="request_promises">
+        {receiverPromises.length > 0 && <h3 className="title title_promises">Request promise</h3>}
+        <div className="request">
+          {
+            receiverPromises.length > 0 && receiverPromises.map((item, index) =>{
+              return(
+                <div className="request__items" key={index}>
+                  <div className="request__items__avatar">
+                    <img src={item.avatar} alt="" />
+                  </div>
+                  <div className="detail">
+                    <button className="request__items__displayname"> {item.displayName} </button>
+                    <div className="request__items__username">@{item.username}</div>
+                      <div className="request__items__btn">
+                      <button type="button" className="request__items__btn__accept" onClick={ this.acceptPromisesModal }>Accept</button>
+                      <button type="button" className="request__items__btn__delete" onClick={ this.deniedPromisesModal }>Deny</button>
+                      </div>
+                  </div>
 
-  export default connect(mapStateToProps, mapDispatchToProps)(Promises);
+                  {/* _____ Show popup accept promise when click Accept button */}
+                  <div className="accept_promises_modal">
+                    <Modal isOpen={this.state.modal} toggle={this.acceptPromisesModal} className={this.props.className}>
+                      <ModalHeader toggle={this.acceptPromisesModal}>Accept Promises</ModalHeader>
+                      <ModalBody>
+                        <p>
+                          <span>Message: </span>
+                          <Input type="textarea" name="text" id="exampleText" onChange={ this.getMessagePomises } />
+                        </p>
+                        <p>
+                          <span>Promises Images: </span>
+                          <Input type="file" accept=".png, .jpg, .jpeg" name="file" onChange={this.promisesImage} />
+                        </p>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button disabled={!this.isDisableAccept()} className="accept_promises_request" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
+                        <Button className="cancel_promises_request" color="info" onClick={this.acceptPromisesModal}>Cancel</Button>
+                      </ModalFooter>
+                    </Modal>
+                  </div>
+                  
+                  {/* _____ Show popup deny promise when click Deny button */}
+                  <div className="denied_promises_modal">
+                    <Modal isOpen={this.state.modalDenied} toggle={this.deniedPromisesModal} className={this.props.className}>
+                        <ModalHeader toggle={this.deniedPromisesModal}>Denied Promises</ModalHeader>
+                        <ModalBody>
+                          <p>
+                            <span>Message: </span>
+                            <Input type="textarea" name="text" id="exampleText" onChange={ this.getMessagePomises } />
+                          </p>
+                        </ModalBody>
+                        <ModalFooter>
+                        <Button disabled={!this.isDisableAccept()} className="denied_promises_request" onClick={() => this.deniedPromises(item.proposeId)}>Deny</Button>
+                        <Button className="cancel_promises_request" color="info" onClick={this.deniedPromisesModal}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
+                  </div>
+                </div>
+              )
+            })
+          }
+        </div>
+        <div className="popup_promises_wrapper">
+          <PopupRequestPromise
+            acceptPromisesModal = { this.acceptPromisesModal }
+            deniedPromisesModal = { this.deniedPromisesModal } />
+        </div>
+      </div>
+    )  
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Promises);
