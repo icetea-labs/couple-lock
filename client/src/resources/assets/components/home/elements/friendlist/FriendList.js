@@ -9,7 +9,7 @@ const mapDispatchToProps = (dispatch) => ({
     addFriendChat: (username) => {
         dispatch({
             type: 'ADD_FRIEND',
-            username
+            username,
         })
     }
 })
@@ -23,12 +23,12 @@ class FriendList extends Component {
             _is_online: true,
             amountChatBox: 0,
             targetChat: [],
-            see_list: false,
+            see_list: true,
             target: 'show',
             all_friend: [
-                { username: 'paulra', name: 'Paula Woker', status: true },
-                { username: 'tradatech', name: 'Truong Thi', status: false },
-                { username: 'sotatek', name: 'Sota la', status: true }
+                { username: 'paulra', display_name: 'Paula Woker', status: true },
+                { username: 'tradatech', display_name: 'Truong Thi', status: false },
+                { username: 'sotatek', display_name: 'Sota la', status: true }
             ],
             test: ' '
         }
@@ -43,8 +43,8 @@ class FriendList extends Component {
                 <label key={i} >
                     <div>
                         <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
-                        <span className="span_common" key={i} >
-                            {this.state.all_friend[i].name}
+                        <span className="span_common" key={i} id= {this.state.all_friend[i].username} onClick={(event) => this.addFriend(event.target.id)} >
+                            {this.state.all_friend[i].username}
                         </span>
                     </div>
                 </label>

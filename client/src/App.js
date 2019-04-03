@@ -18,6 +18,8 @@ import './resources/assets/sass/home/settings.scss';
 import './resources/assets/sass/home/popup.scss';
 import './resources/assets/sass/home/logout.scss';
 import './resources/assets/sass/newfeed/newfeed.scss';
+import './resources/assets/sass/home/newfeed.scss';
+
 
 // page router
 import NewFedd from './resources/assets/components/new-feed/NewFeed';

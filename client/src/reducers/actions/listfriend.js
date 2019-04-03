@@ -1,7 +1,9 @@
-export function addFriend(username){
+export function addFriend(username, roomName, displayChat){
     return {
         type: 'ADD_FRIEND',
-        username
+        username,
+        roomName,
+        displayChat
     }
 
 }

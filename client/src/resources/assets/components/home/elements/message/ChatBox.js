@@ -6,19 +6,36 @@ import PubSub from 'pubsub-js';
 import { connect } from 'react-redux';
 // import { number, string, object } from 'prop-types';
 import MaterialIcon from 'material-icons-react';
+import * as chatsocket from '../../../../../../socket/chatsocket';
+import * as socketClientIO from 'socket.io-client';
+import { addMessage } from '../../../../../../reducers/actions/message';
 
 
 firebase.initializeApp(Config);
 // Initialize Cloud Firestore through Firebase
 
-const mapStateToProps = (state) => ({...state.initListFriend});
+const mapStateToProps = (state) => ({ ...state.initListFriend, ...state.handleMessage });
 
 const mapDispatchToProps = (dispatch) => ({
-   closeThis : (username) => dispatch({
+    closeThis: (username) => dispatch({
         type: 'DELETE_FRIEND',
-        username
+        username,
+    }),
+
+    addChat: (username) => dispatch({
+        type: 'ADD_FRIEND',
+        // eslint-disable-next-line no-undef
+        usename,
+    }),
+
+    addMessage: (roomName, message) => dispatch({
+        type: 'ADD_MESSAGE',
+        roomName,
+        message
     })
 })
+
+const socket = socketClientIO('localhost:5000');
 
 class ChatBox extends Component {
     constructor() {
@@ -27,10 +44,9 @@ class ChatBox extends Component {
             user: localStorage.getItem("user_name"),
             userName_item: null,
             message_item: null,
-            useName: 'tranviet',
             see_chat: false,
             is_hidden: true,
-            message_input: '',
+            message_input: 'hello',
             avatarURL: localStorage.getItem("img_url"),
             id: localStorage.getItem("U_I"),
             ramdom_id_message: "",
@@ -41,24 +57,32 @@ class ChatBox extends Component {
 
         }
         this.displayChat = [];
-        this.hiddenMessage = this.hiddenMessage.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
     }
-    
+
     // TODO: feaching data and handle message
     fetchMessageData() {
 
     }
 
-    componentWillMount() {
-        PubSub.subscribe('reload', this.fetchMessageData());
+    componentWillReceiveProps(nextProps) {
+        if (nextProps !== this.props) {
+
+        }
     }
 
-    hiddenMessage() {
-       this.setState({
-           see_chat: !this.state.see_chat
-       })
+    componentDidMount() {
+        socket.on("receiveMessage", (message, roomName, receiver) => {
+            if (window.getLoginUser() === receiver) {
+                this.props.addMessage(roomName, message);
+                // alert('ok');
+            }
+        })
+    }
+
+    hiddenMessage = () => {
+        this.setState({
+            see_chat: !this.state.see_chat
+        })
     }
 
     hiddenChat = () => {
@@ -67,36 +91,40 @@ class ChatBox extends Component {
         })
     }
 
-    handleChange = (event) => {
-        this.setState({
-            message_input: event.target.value
-        })
-    }
-
     handleSend = () => {
-
-        for (let i = 0; i < 20; i++) {
-            this.state.ramdom_id_message += this.state.possible.charAt(Math.floor(Math.random() * 20));
-        }
-
-        firebase.firestore()
-            .collection("chat_data_bases")
-            .doc("couple")
-            .collection("chat_rooms")
-            .doc("chat_room_1")
-            .collection("messages")
-            .doc(this.state.ramdom_id_message).set({
-                content: this.state.message_input,
-                owner: this.state.id,
-                timestamp: Date.now(),
-                id: this.state.ramdom_id_message,
-            });
-        // TODO: Reload database in message
         this.setState({
             message_input: ''
         })
+    }
 
-        PubSub.publish('reload');
+    handleChange = (e) => {
+        this.setState({
+            message_input: e.target.value
+        })
+    }
+
+    sendMessage = (e) => {
+        // for (let i = 0; i < 20; i++) {
+        //     this.state.random_id_message += this.state.possible.charAt(Math.floor(Math.random() * 20));
+        // }
+        var mesage = {
+            id: 1,
+            username: window.getLoginUser(),
+            timestamp: Date.now(),
+            content: e.target.value,
+            roomName: 'paulra_sotatek'
+        }
+
+        if (e.key === 'Enter') {
+            // console.log(this.state.message_input);
+            var roomName = 'paulra_sotatek';
+            var receiver = 'paulra';
+
+            chatsocket.sendMessage(mesage, roomName, receiver);
+            this.setState({
+                message_input: null
+            })
+        }
     }
 
     render() {
@@ -104,7 +132,7 @@ class ChatBox extends Component {
             <div className="display_chatbox " style={{ display: this.state.is_hidden ? 'block' : 'none', width: this.state.see_chat ? '300px' : '200px' }}>
                 <div className="chat_box" style={{ width: this.state.see_chat ? '300px' : '200px' }}>
                     <div className="header__box" onClick={this.hiddenMessage} >
-                        <label>test</label>
+                        <label>{window.getLoginUser() }</label>
                         <MaterialIcon icon="phone" />
                         <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
@@ -116,12 +144,14 @@ class ChatBox extends Component {
                             <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
                         </div>
                         <div className="content_message">
-                            <Message owner={window.getLoginUser()} />
+                            <Message owner={window.getLoginUser()} messages={this.props.messages} roomName='paulra_sotatek' />
                         </div>
                     </div>
                     <div className="chat__send" style={{ display: this.state.see_chat ? 'block' : 'none' }} >
-                        <textarea className="chat__input" placeholder="Type Message" onChange={this.handleChange} value={this.state.message_input} ></textarea>
-                        {/* <button type="submit" className="btn_send" onClick={this.handleSend}>Send</button> */}
+                        <textarea className="chat__input" placeholder="Type Message" onKeyPress={this.sendMessage} value={this.state.message_input} onChange={this.handleChange} >
+                            {/* {this.state.message_input} */}
+                        </textarea>
+
                         <div className="icon">
                             <MaterialIcon icon="photo" />
                             <MaterialIcon icon="face" />
@@ -136,4 +166,4 @@ class ChatBox extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps )(ChatBox);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatBox);

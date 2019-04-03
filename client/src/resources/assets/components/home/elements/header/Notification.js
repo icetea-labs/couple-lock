@@ -14,7 +14,7 @@ class Notification extends Component {
             total_noti: 1,
         }
 
-        this.total_noti = 0;
+        this.total_noti = 1;
     }
 
     componentWillMount() {
@@ -29,7 +29,7 @@ class Notification extends Component {
         })
     }
 
-    toCheckViewed(){
+    toCheckViewed() {
         axios.get()
     }
 
@@ -37,8 +37,8 @@ class Notification extends Component {
         return (
             <div className="notification" onClick={this.seeNotification} >
                 <span className="icon_noti" onClick={this.checkAll}>
-                    <MaterialIcon icon="mail" color="white" />
-                    <div className="number_notification" style={{ display: this.total_noti === 0 ? 'none' : 'block' }}>
+                    <MaterialIcon icon="notifications" color="white" />
+                    <div className="number_notification">
                         <span >
                             {this.total_noti}
                         </span>
@@ -48,22 +48,15 @@ class Notification extends Component {
                 <div className="pointed" style={{ display: this.state.see_noti ? 'block' : 'none' }}></div>
                 <div className="list_notification" style={{ display: this.state.see_noti ? 'block' : 'none' }}>
                     <div className="noti_header">
-                        <label>Thông báo</label>
-                        <span onClick={this.toCheckViewed}>Đánh dấu tất cả là đã đọc</span>
+                        <div id='title'>Notification</div>
+                        <div id='make-all' onClick={this.toCheckViewed}>Make all read</div>
+                        <div id='setting'>Setting</div>
                     </div>
                     {/* Begin */}
                     <Content />
                     {/* End */}
                     <div className="noti_footer">
-                        <button className="btn_settings"  >
-                            <MaterialIcon icon="settings" />
-                            Cài đặt
-                        </button>
-                        <span>
-                            <a href="/notification">
-                                Xem tất cả các thông báo
-                            </a>
-                        </span>
+                        <span>See all</span>
                     </div>
                 </div>
             </div>

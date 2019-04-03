@@ -17,7 +17,9 @@ import ChangUser from '../helper/ChangeUser';
 import PopUp from './elements/popup/PopUp';
 // import TestButton from '../helper/TestButton';
 
-const mapStateToProps = (state) => ({ ...state });
+const mapStateToProps = (state) => ({
+  ...state.initListFriend
+});
 
 const mapDispatchToProps = (dispatch) => ({
   closeThis: (username) => dispatch({
@@ -27,8 +29,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       leftUser: [],
       rightUser: [],
@@ -40,10 +42,11 @@ class Home extends Component {
       max_chat: 3,
       test: process.env.MONGO_DB_URI,
       img_sender: [],
-      img_receiver: []
+      img_receiver: [],
     }
 
-    this.listChat = [];
+    // this.listChat = this.props.handleListFriend;
+
   }
 
   getProposeId = pId => {
@@ -75,7 +78,7 @@ class Home extends Component {
       axios.get(`/api/propose/details?id=${proposeId}`)
         .then(propose => {
           this.getUsers(propose.data.data.sender, propose.data.data.receiver);
-          this.setState({ proposeList: propose.data.data }); 
+          this.setState({ proposeList: propose.data.data });
         })
     }
   }
@@ -87,7 +90,15 @@ class Home extends Component {
     } catch (err) {
       console.log(err);
     }
+
+    console.log(this.props.handleListFriend);
+    // this.listChat.map((item, index) => {
+    //   return (
+    //     <ChatBox key={index} nameChat={item} />
+    //   )
+    // })
   }
+
 
   componentWillMount() {
     PubSub.subscribe('shareMemory', () => {
@@ -131,16 +142,12 @@ class Home extends Component {
             </div>
           </div>
           <div className="list_chatbox">
-            {
-              this.listChat
-            }
+            <ChatBox roomName = 'pualra_sotatek' sender= 'sotatek' receiver = 'paulra' />
           </div>
           <FriendList />
           <ChangUser />
           <PopUp />
         </div>
-        <ChatBox />
-        {/* <TestButton /> */}
       </Layout >
     );
   }

@@ -1,7 +1,7 @@
+import * as _ from 'lodash';
 
 const initListFriend = [
-    { username: 'paulra', name: 'Viet', status: true },
-    { username: 'sotatek', name: 'Trang', status: false },
+    { username: 'paula' , roomName: 'paulra_sotatek', displayChat : '' }
 ];
 
 
@@ -9,14 +9,24 @@ export default function handleListFriend(state = initListFriend, action) {
     // eslint-disable-next-line default-case
     switch (action.type) {
         case 'ADD_FRIEND':
-            return {
-                friends: [...state, { id: 2, name: action.username, status: true }]
-            }
+            handleListFriend = [...state];
+            let username = action.username;
+            handleListFriend.forEach(( item ) => {
+                if ( item.username === username) {
+                    return handleListFriend;
+                }
+            })
+
+            return [...state, { username: action.username , roomName : action.roomName, displayChat: action.displayChat }];
+
 
         case 'DELETE_FRIEND':
-            return {
-                friends: [...state]
-            };
+            var handleListFriend = [...state];
+
+            return _.remove(handleListFriend, function (item) {
+                return item.username === action.username;
+            })
+
 
         default:
             return state;

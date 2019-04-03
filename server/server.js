@@ -10,6 +10,8 @@ var express = require('express')
   , cookieParser = require('cookie-parser')
   , socketIO = require('socket.io')
   , http = require('http')
+  , MyModel = require('./models/user-model')
+  , chat_room = require('./chat/chatroom');
 
 
 const server = http.createServer(app);
@@ -56,23 +58,46 @@ const io = socketIO(server);
 io.on('connection', socket => {
   console.log("User Connected", socket.id);
 
- //  listen event on client
-  socket.on('createNoti', (receiver) =>{
+  //  listen event on client
+  socket.on('createNoti', (receiver) => {
     // test on server
     console.log('receive is:', receiver);
 
     // Create emit on server
-    io.sockets.emit('receiveNoti',receiver);
+    io.sockets.emit('receiveNoti', receiver);
   });
 
-  socket.on('disconnect', ()=> {
+  socket.on('disconnect', () => {
     console.log('user Disconnected');
   })
-});
 
-mongoose.connect(keys.mongoDB.dbURI, (err, data) => {
-  console.log('mongoosedb connected');
-})
+  // TODO: listen on event Send message.
+
+  socket.on('sendMessage', (message, roomName, receiver) => {
+
+    // TODO: checkmessage
+    console.log('Server receive a message')
+    console.log(message, roomName, receiver);
+    // TODO: find chat room,
+    mongoose.connect(keys.mongoDB.dbURI, () => {
+      MyModel.findOne({ "name": roomName })
+        .then((data, err) => {
+          // TODO: Client receiver roomChat,
+
+          // TODO: Save message to chatRoom
+          // console.log(data);
+          var test = data.toJSON();
+          console.log(test.members);
+        }).catch(err => {
+          console.log(err);
+        })
+    })
+
+    // TODO : client receiver roomchat
+    io.sockets.emit('receiveMessage', message, roomName, receiver);
+
+  });
+});
 
 server.listen(5000, function () {
   console.log('SERVER http://localhost:5000')

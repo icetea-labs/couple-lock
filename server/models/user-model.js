@@ -1,13 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const document = mongoose.DocumentProvider;
 
-var userSchema = new Schema({
-    display_name: String,
-    google_id: String,
-    user_name: String,
-    img_url: String,
+var messsage = new document({
+    id: String,
+    content: String,
+    type: String,
+    owner: String,
+    timestamp: Number,
+});
+
+var member = new document({
+    id: String,
+    username: String,   
+    displayname: String,
+    avatar: String,
 })
 
-var User = mongoose.model('duyviet2841998', userSchema);
+var chat_rooms = new Schema({}, {collection: "chat_rooms"});
 
-module.exports = User;
+const MyModel = mongoose.model('duyviet2841998', chat_rooms);
+
+module.exports = MyModel;

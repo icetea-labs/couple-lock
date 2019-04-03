@@ -1,0 +1,41 @@
+chatrooms : [
+    "paulra_sotatek": {
+        id: "paulra_sotatek",
+
+        members: [
+            "0x4Cf35B3bB73e2CFA7f42ca6E14d572b7cc5bb09a": {
+                id: "0x4Cf35B3bB73e2CFA7f42ca6E14d572b7cc5bb09a",
+                username: "paulra",
+                firstname: "Paulra",
+                lastname: "Roben",
+                avatar: "https://picsum.photos/200/200",
+            }
+
+            "0xFE5A1AA408beCDdAB0A20C5F9cbCF6897AC977e2": {
+                id: "0xFE5A1AA408beCDdAB0A20C5F9cbCF6897AC977e2",
+                username: "sotatek",
+                firstname: "So Ta",
+                lastename: " Tếch",
+                avatar: "https://static.topcv.vn.jpg"
+            }
+        ],
+
+        messages: [
+            "sdfia98dfaehoasduifhasuihfoa": {
+                id: "sdfia98dfaehoasduifhasuihfoa",
+                username: "paulra",
+                timestamp: Date.now(),
+                content: "Anh nhớ em nhiều lắm"
+            }
+
+            "sdij988asjoi98aspas9dapwfaj9": {
+                id: "sdij988asjoi98aspas9dapwfaj9",
+                username: "sotatek",
+                timestamp: Date.now(),
+                content: " Em cũng thế"
+            }
+        ]
+    },
+
+    "paulra_richard": {}
+]

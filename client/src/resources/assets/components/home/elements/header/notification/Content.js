@@ -99,7 +99,7 @@ class Content extends Component {
                         <div key={i} className={this.isView(item) ? 'li_noti' : 'li_noti viewed'} >
                             <img className="sender_img" src={this.avatar} alt="avatar sender" />
                             <div className="noti_content">
-                                {item.eventData.sender === item.username ? 'Bạn' : item.eventData.sender}
+                                <span id ='sender_name'>{item.eventData.sender === item.username ? 'Bạn' : item.eventData.sender}</span>
                                 {' ' + this.text} {item.eventData.sender !== item.username ? 'bạn' : item.eventData.receiver}
                                 {messageDeCoded === '' ? '' : ':' + messageDeCoded}
                             </div>

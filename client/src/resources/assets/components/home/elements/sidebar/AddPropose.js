@@ -40,7 +40,8 @@ class AddPropose extends Component {
             choseThis: 'Public',
             possible: "abcdefghijklmnopqrstuvwxyz0123456789",
             visibility: 0,
-            messageHex: ''
+            messageHex: '',
+            isTyping: false,
         }
 
         this.choseThis = 'Public'
@@ -154,6 +155,9 @@ class AddPropose extends Component {
             }
         }
 
+        this.setState({
+            isTyping: true
+        })
     }
 
     handleShowListFriend = () => {
@@ -249,17 +253,41 @@ class AddPropose extends Component {
                 <button type="button" className="btn_add_promise" onClick={this.handleShowListFriend}><span className="icon-ic-add"></span>Add Promise</button>
                 <Modal className="add_friend" isOpen={this.state.show_friend} toggle={this.toggle} >
                     <ModalHeader >
-                        <div className="propose_header">Propose <button className="btn_close" onClick={this.handleClose}>x</button>
+                        <div className="propose_header">Promise <button className="btn_close" onClick={this.handleClose}>x</button>
                         </div>
                     </ModalHeader>
                     <ModalBody>
+                        <span>
+                            Tag your partner to promise
+                        </span>
                         <input placeholder="Search..." value={this.state.receiver} onChange={this.handleSearch} />
-                        <ul>
+                        <ul style={{ display: this.state.isTyping ? 'block' : 'none' }}>
                             {this.state.person_filter}
                         </ul>
+                        <div>
+                            <span>
+                                Your promise
+                            </span>
+                            <div>
+                                <textarea name="" id="" rows="3" placeholder="Describe your Memory..." onChange={this.handleMessage} value={this.state.message}></textarea>
+                            </div>
+                            <div>
+                                <div className="tag_friend">
+                                    <div className="tag">
+                                        <input type="text" className="input-tag" placeholder="TAGS:    #honeymoon #travel" />
+                                    </div>
+                                    <div className="to-avatar">
+                                        <div className="friend-avatar">
+                                            <img className="image_friend" src={this.state.avatar_target} alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </ModalBody>
                     <ModalFooter>
-                        <Button className="btn_next" onClick={this.handleShowToProMise}>Next</Button>
+                        <Button className="button-send" onClick={this.handleSendPromise}>Send</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -282,16 +310,6 @@ class AddPropose extends Component {
                                     <textarea name="" id="" rows="3" placeholder="Describe your Memory..." onChange={this.handleMessage} value={this.state.message}></textarea>
                                 </div>
                             </div>
-                            <div className="tag_friend">
-                                <div className="tag">
-                                    <input type="text" className="input-tag" placeholder="TAGS:    #honeymoon #travel" />
-                                </div>
-                                <div className="to-avatar">
-                                    <div className="friend-avatar">
-                                        <img className="image_friend" src={this.state.avatar_target} alt="" />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div className="add_more">
                             <div className="more-infor" htmlFor="upload">
@@ -307,9 +325,9 @@ class AddPropose extends Component {
 
                             <div className="more-infor" onClick={this.handleOption}>
                                 <MaterialIcon icon="arrow_drop_down" />
-                                <div>
+                                <label>
                                     {this.state.choseThis}
-                                </div>
+                                </label>
 
                                 <div className="option" style={{ display: this.state.show_option ? 'block' : 'none' }} >
                                     <ul>
@@ -331,7 +349,6 @@ class AddPropose extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button className="button-send" onClick={this.handleSendPromise}>send</Button>
                     </ModalFooter>
                 </Modal >
 
