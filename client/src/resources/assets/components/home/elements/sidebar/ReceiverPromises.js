@@ -53,8 +53,12 @@ class Promises extends Component {
   }
 
   promisesImage = e => {
+    const img = {
+      imgUpload: e.target.files[0],
+      imgPreview: URL.createObjectURL(e.target.files[0]),
+    }
     this.setState({
-      promisesImage: e.target.files[0],
+      promisesImage: img,
     });
   }
 
@@ -86,7 +90,7 @@ class Promises extends Component {
     dataValue.append('id', proposeId);
     dataValue.append('react', react);
     dataValue.append('message', promisesMessage);
-    dataValue.append('attachment', promisesImage);
+    dataValue.append('attachment', (promisesImage) ? promisesImage.imgUpload : null);
 
     axios.post('/api/propose/reply', dataValue)
       .then(res => {
@@ -182,19 +186,20 @@ class Promises extends Component {
                     <Modal isOpen={this.state.modal} toggle={this.acceptPromisesModal} className={this.props.className}>
                       <ModalHeader toggle={this.acceptPromisesModal}>Accept Promises</ModalHeader>
                       <ModalBody>
-                        <p>
-                          <span>Message: </span>
-                          <Input type="textarea" name="text" id="exampleText" onChange={ this.getMessagePomises } />
-                        </p>
-                        <p>
-                          <span>Promises Images: </span>
-                          <Input type="file" accept=".png, .jpg, .jpeg" name="file" onChange={this.promisesImage} />
-                        </p>
+                        <p className="send_message">Your message</p>
+                        <Input className="msg_text" type="textarea" name="text" id="exampleText" placeholder="" onChange={ this.getMessagePomises } />
+                        <div className="upload_img_promise">
+                            <span class="icon-photo"></span>
+                            <Input type="file" accept=".png, .jpg, .jpeg" name="file" onChange={this.promisesImage} />
+                        </div>
+                        {
+                          (this.state.promisesImage != null) && <div className="img_preview"><img src={this.state.promisesImage.imgPreview} alt="" /></div>
+                        }
+                        <div className="btn_promise_pop">
+                          <button type="button" className="cancel_promises_request btn_pop btn_border" onClick={this.acceptPromisesModal}>Cancel</button>
+                          <button type="button" className="accept_promises_request btn_pop btn_background" disabled={!this.isDisableAccept()}  onClick={() => this.acceptPromises(item.proposeId)}>Accept</button>
+                        </div>
                       </ModalBody>
-                      <ModalFooter>
-                        <Button disabled={!this.isDisableAccept()} className="accept_promises_request" onClick={() => this.acceptPromises(item.proposeId)}>Accept</Button>
-                        <Button className="cancel_promises_request" color="info" onClick={this.acceptPromisesModal}>Cancel</Button>
-                      </ModalFooter>
                     </Modal>
                   </div>
                   
@@ -203,15 +208,16 @@ class Promises extends Component {
                     <Modal isOpen={this.state.modalDenied} toggle={this.deniedPromisesModal} className={this.props.className}>
                         <ModalHeader toggle={this.deniedPromisesModal}>Denied Promises</ModalHeader>
                         <ModalBody>
-                          <p>
-                            <span>Message: </span>
-                            <Input type="textarea" name="text" id="exampleText" onChange={ this.getMessagePomises } />
-                          </p>
+                          <div>
+                            <p className="send_message">Your message</p>
+                            <Input type="textarea" className="msg_text" name="text" id="exampleText" onChange={ this.getMessagePomises } />
+                          </div>
+
+                          <div className="btn_promise_pop">
+                            <button type="button" className="btn_pop btn_border" color="info" onClick={this.deniedPromisesModal}>Cancel</button>
+                            <button type="button" disabled={!this.isDisableAccept()} className="btn_pop btn_background" onClick={() => this.deniedPromises(item.proposeId)}>Deny</button>
+                          </div>
                         </ModalBody>
-                        <ModalFooter>
-                        <Button disabled={!this.isDisableAccept()} className="denied_promises_request" onClick={() => this.deniedPromises(item.proposeId)}>Deny</Button>
-                        <Button className="cancel_promises_request" color="info" onClick={this.deniedPromisesModal}>Cancel</Button>
-                        </ModalFooter>
                     </Modal>
                   </div>
                 </div>

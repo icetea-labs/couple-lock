@@ -6,6 +6,7 @@ import AddPropose from './AddPropose';
 import PopularTag from './PopularTag';
 import SentPromises from './SentPromises';
 import { connect } from 'react-redux';
+import DeniedPromises from './DeniedPromises';
 
 const mapStatetoProps = (state) => ({
   ...state.handleBanner
@@ -231,6 +232,7 @@ class SideBar extends Component {
         }
         <ReceiverPromises receiverPromises={receiverPromises}/>
         <SentPromises sentPromises={sentPromises}/>
+        <DeniedPromises deniedPromises={deniedPromises} />
         <PopularTag />
       </div>
     );
