@@ -13,17 +13,20 @@ import './resources/assets/sass/home/chatbox.scss';
 import './resources/assets/sass/home/addpromise.scss';
 import './resources/assets/sass/home/list_friend.scss';
 import './resources/assets/sass/home/notification.scss';
-import './resources/assets/sass/user/cover_image.scss';
+import './resources/assets/sass/user.scss';
 import './resources/assets/sass/home/settings.scss';
 import './resources/assets/sass/home/popup.scss';
 import './resources/assets/sass/home/logout.scss';
+import './resources/assets/sass/newfeed/newfeed.scss';
 
 // page router
+import NewFedd from './resources/assets/components/new-feed/NewFeed';
 import Home from './resources/assets/components/home/Home';
 import Login from './resources/assets/components/sign-up/Login';
 import Profile from './resources/assets/components/set-profile/Profile';
 import SeedPhase from './resources/assets/components/create-account/SeedPhase';
 import User from './resources/assets/components/user/User';
+import Test from './resources/assets/components/Test';
 
 const mapStateToProps = (state) => {
   return {
@@ -63,11 +66,13 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/newfeed' component={NewFedd} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/login/profile" component={Profile} />
           <Route exact path="/login/seed" component={SeedPhase} />
           <Route exact path="/profile/user" component={User} />
+          <Route exact path="/test" component={Test} />
         </Switch>
       </Router>
 
@@ -76,7 +81,7 @@ class App extends Component {
 }
 
 function demoAsyncCall() {
-  return new Promise((resolve) => setTimeout(() => resolve(), 2500));
+  return new Promise((resolve) => setTimeout(() => resolve(), 1000));
 }
 
 

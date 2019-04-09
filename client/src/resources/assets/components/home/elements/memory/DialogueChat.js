@@ -94,7 +94,7 @@ class DialogueChat extends Component {
       });
       return data;
     }else if(tagsFilterResult && tagsFilterResult.length === 0){
-      return <div className="msg_notags">Tags not found !!!</div>
+      return <div className="msg_notags">Tags not found</div>
     }else{
       return(
         this.state.memoryList.length > 0 && this.state.memoryList.map((item, index) => {
@@ -123,7 +123,7 @@ class DialogueChat extends Component {
                   </div>
                   <p>{item.message}</p>
                   {
-                    (item.attachments[0] && item.attachments.length > 0) && <p className="attachments">
+                    (item.attachments && item.attachments.find(type => type.type === 'photo')) && <p className="attachments">
                       <img src={item.attachments[0].url} alt="" onClick={() => this.setImgUrl(item.attachments[0].url) } />
                     </p>
                   }

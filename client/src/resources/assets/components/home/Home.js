@@ -15,27 +15,32 @@ import ChatBox from './elements/message/ChatBox';
 import FriendList from './elements/friendlist/FriendList';
 import ChangUser from '../helper/ChangeUser';
 import PopUp from './elements/popup/PopUp';
+// import TestButton from '../helper/TestButton';
 
-const mapStateToProps = (state) => ({...state.initListFriend});
+const mapStateToProps = (state) => ({ ...state });
 
 const mapDispatchToProps = (dispatch) => ({
-   closeThis : (username) => dispatch({
-        type: 'DELETE_FRIEND',
-        username
-    })
+  closeThis: (username) => dispatch({
+    type: 'DELETE_FRIEND',
+    username
+  })
 })
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       leftUser: [],
       rightUser: [],
       proposeList: [],
       userName: [],
+      r_key: null,
+      s_key: null,
       proposeId: null,
       max_chat: 3,
       test: process.env.MONGO_DB_URI,
+      img_sender: [],
+      img_receiver: []
     }
 
     this.listChat = [];
@@ -50,6 +55,8 @@ class Home extends Component {
   }
 
   getUsers = (sender, receiver) => {
+    // TODO: sender user is param username,
+    // TODO: receiver is user propose of username
     const p1 = axios.get("/api/user/details?username=" + sender);
     const p2 = axios.get("/api/user/details?username=" + receiver);
     Promise.all([p1, p2])
@@ -68,13 +75,18 @@ class Home extends Component {
       axios.get(`/api/propose/details?id=${proposeId}`)
         .then(propose => {
           this.getUsers(propose.data.data.sender, propose.data.data.receiver);
-          this.setState({ proposeList: propose.data.data });
+          this.setState({ proposeList: propose.data.data }); 
         })
     }
   }
 
   componentDidMount() {
     this.fetchProposeId();
+    try {
+      console.log(this.props.match.params.username);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   componentWillMount() {
@@ -90,6 +102,7 @@ class Home extends Component {
           })
       }
     });
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -104,7 +117,7 @@ class Home extends Component {
       <Layout>
         <div>
           <div className="propose">
-            <BannerImage mes={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} proposeId={this.state.proposeId} />
+            <BannerImage proposeId={this.state.proposeId} />
             <RecentChat propose={this.state.proposeList} sender={this.state.leftUser} receiver={this.state.rightUser} />
           </div>
 
@@ -127,6 +140,7 @@ class Home extends Component {
           <PopUp />
         </div>
         <ChatBox />
+        {/* <TestButton /> */}
       </Layout >
     );
   }

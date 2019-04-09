@@ -12,7 +12,6 @@ class CoverImage extends Component {
     render() {
         return (
             <div className= "layer_common cover_image " >
-                <img src='./images/banner.jpg' />
             </div>
         )
     }

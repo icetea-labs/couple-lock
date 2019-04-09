@@ -82,6 +82,24 @@ class PreviewImages extends Component {
                 })
               }
             </div>
+            {/* gallery */}
+            <div className="gallery_img">
+              {
+                this.props.imgList.length > 0 && this.props.imgList.map((image, index) => {
+                  return (
+                    <div className="img_items">
+                      <img
+                      key={index}
+                      src={image.src} 
+                      alt={image.title}
+                      className={`image ${this.state.slideIndex === index ? "active" : ""}`}
+                      onClick={() => this.setSlideIndex(index)}
+                      />
+                    </div>
+                  )
+                })
+              }
+            </div>
           </div>
         </div>
       )

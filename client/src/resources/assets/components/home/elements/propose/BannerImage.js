@@ -1,81 +1,63 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import PopUp from '../popup/PopUp';
-import PubSub from 'pubsub-js';
 import { connect } from 'react-redux';
+import Axios from 'axios';
 
 const mapStatetoProps = (state) => ({
-  ...state.initPopup
+  ...state.handlePopUp,
+  ...state.handleBanner,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  showPopUp: (data = "open now") => {
+  showPopUp: (image, proposeId) => {
     dispatch({
       type: 'OPEN_POPUP',
-      data,
+      image,
+      proposeId,
     })
   }
 });
 
 
 class BannerImage extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      imgBanner: [],
       loginUser: window.getLoginUser(),
-      show_Popup: false
+      show_Popup: false,
+      // img_sender: this.props.img_sender,
+      // img_receiver: this.props.img_receiver,
     }
-    this.showPopUp = (data) => {this.props.showPopUp(data)}
-  }
-
-  componentDidMount() {
-    this.getImgBanner()
   }
 
   componentWillMount() {
-    PubSub.subscribe('updateBanner', () => {
-      this.getImgBanner();
-    });
+
+    // TODO : convert data to Byte
+
+    // TODO : create aesCtr
+
+    // TODO: decrypt data
+
+    // TODO: convert data to string
+
+    // TODO: connect first propose
   }
 
-  getImgBanner = () => {
-    const {loginUser} = this.state;
-    axios.get(`/api/propose/list?username=${loginUser}`)
-    .then(res => {
-      this.setState({ imgBanner: res.data.data });
-    });
-  }
+  showPopUp = (image, proposeId) => {
 
-  showImgBanner = () => {
-    const {imgBanner, loginUser} = this.state;
-    const proposeId = this.props.proposeId;
-    const list = imgBanner.length > 0 && imgBanner.map((item, index) => {
-      if(item.id === proposeId && loginUser === item.sender && item.r_attachments){
-        return(
-          <div key={index}>
-            {(item.r_attachments.length > 0) && <img src={item.r_attachments[0].url} alt="" onClick={this.showPopUp}/>}
-          </div>
-        )
-      }else if(item.id === proposeId && loginUser === item.receiver && item.s_attachments){
-        return(
-          <div key={index}>
-            {(item.s_attachments.length > 0) && <img src={item.s_attachments[0].url} alt="" onClick={this.showPopUp}/>}
-          </div>
-        )
-      }else{
-        //console.log("false");
-      }
-    })
-    return list;
+    console.log('data is:', image, proposeId);
+
+    this.props.showPopUp(image, proposeId);
   }
 
   render() {
     return (
       <div className="banner_container mg-auto">
-        { this.showImgBanner () }
+        {this.state.loginUser === this.props.sender ?
+          <img src={this.props.img_receiver} onClick={() => { this.showPopUp(this.props.img_receiver, this.props.proposeId) }} alt="" /> :
+          <img src={this.props.img_sender} onClick={() => { this.showPopUp(this.props.img_sender, this.props.proposeId) }} alt=""/>
+        }
       </div>
-    );
+    )
   }
 }
 

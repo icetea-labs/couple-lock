@@ -2,35 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-photoswipe/lib/photoswipe.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers/reducer';
+import socketIOClient from 'socket.io-client';
+
 
 window.getLoginUser = () => {
-  if (localStorage.getItem("sender") === null) {
-    return 'sotatek'
+  if (localStorage.getItem("username") === null) {
+    localStorage.setItem('username', 'sotatek');
+    return localStorage.getItem('username');
   } else {
-    return localStorage.getItem("sender");
+    return localStorage.getItem("username");
   }
 };
 
-const list_friend = [
-  { id: 1, name: 'Paula' },
-  { id: 2, name: 'Annie' },
-  { id: 3, name: 'Richard' }
-]
+const socket = socketIOClient('localhost:5000');
 
 /**
  * create storage
  */
 const store = createStore(
-  reducer,list_friend,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  reducer, socket, compose(applyMiddleware(), window.devToolsExtension ? window.devToolsExtension() : f => f));
 
-// const store = configureStore();
-// store.dispatch(actions.setTracks(tracks));
 
 ReactDOM.render((
   <Provider store={store}>
@@ -38,5 +34,7 @@ ReactDOM.render((
   </Provider>
 ), document.getElementById('root')
 );
+
+
 
 serviceWorker.unregister();

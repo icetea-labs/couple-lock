@@ -13,12 +13,13 @@ router.post('/request', upload.single("attachment"), checkSchema({
 }), (req, res) => {
 
   const item = {
-    visibility: req.body.visibility || 1,
+    visibility: req.body.visibility,
     sender: req.body.sender,
     s_timestamp: req.body.timestamp || Date.now(),
     s_message: req.body.message,
     s_attachments: [],
-    receiver: req.body.receiver
+    receiver: req.body.receiver,
+    s_key: req.body.s_key,
   }
 
   if (!req.file) {
@@ -44,7 +45,9 @@ router.post('/reply', upload.single("attachment"), checkSchema({
     r_timestamp: req.body.timestamp || Date.now(),
     r_react: req.body.react,
     r_message: req.body.message,
-    r_attachments: []
+    r_attachments: [],
+    r_key: req.body.r_key,
+    memory_key: req.body.memory_key
   }
 
   if (!req.file) {

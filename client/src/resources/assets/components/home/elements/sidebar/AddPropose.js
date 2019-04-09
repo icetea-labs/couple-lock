@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
-import moment from 'moment';
+import md5 from 'md5';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import MaterialIcon, { image, place, arrow_drop_down } from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 import LocationSearchInput from '../memory/Places';
+import socketIOClient from 'socket.io-client';
+import * as aesjs from 'aes-js';
+// import textEncoding from 'text-encoding';
+import encryptMessage from '../../../../../../private/encrypt';
 
 class AddPropose extends Component {
 
@@ -14,6 +18,7 @@ class AddPropose extends Component {
             avatarUrl: localStorage.getItem("I_U"),
             show_friend: false,
             show_promise: false,
+            show_option: false,
             list_user: [],
             receiver: "",
             items: {},
@@ -31,11 +36,56 @@ class AddPropose extends Component {
                 imgPreview: '',
                 imgUpload: ''
             },
+            host: 'localhost:5000',
+            choseThis: 'Public',
+            possible: "abcdefghijklmnopqrstuvwxyz0123456789",
+            visibility: 0,
+            messageHex: ''
         }
+
+        this.choseThis = 'Public'
     }
     componentWillMount() {
         this.filterData();
         this.fetchDataSender();
+    }
+
+    choseOption = (id) => {
+
+        this.setState({
+            choseThis: id
+        })
+
+        // eslint-disable-next-line default-case
+        switch (id) {
+            case 'Public':
+                this.setState({
+                    visibility: 0
+                });
+                break;
+
+            case 'Unlisted':
+                this.setState({
+                    visibility: 1
+                })
+
+                break;
+
+            case 'Private':
+                this.setState({
+                    visibility: 2
+                })
+
+                break
+        }
+
+        this.handleOption();
+    }
+
+    handleOption = () => {
+        this.setState({
+            show_option: !this.state.show_option
+        })
     }
 
     showInputPlaces = () => {
@@ -87,9 +137,8 @@ class AddPropose extends Component {
     }
 
     handleSearch = (e) => {
-
         this.state.person_filter = [];
-        if (e.target.value == '') {
+        if (e.target.value === '') {
             this.setState({
                 person_filter: []
             })
@@ -152,26 +201,46 @@ class AddPropose extends Component {
     handleSendPromise = (e) => {
         e.preventDefault();
         var formData = new FormData();
-        this.state.s_attachments.push(this.state.url, this.state.message, this.state.location);
+        var s_key = '';
+        var message = this.state.message
+
+        if (this.state.visibility === 2) {
+
+
+            for (let i = 0; i < 16; i++) {
+                s_key += this.state.possible.charAt(Math.floor(Math.random() * this.state.possible.length));
+            }
+
+            message = encryptMessage(this.state.message, s_key).messageHex;
+        }
+
+        this.state.s_attachments.push(this.state.url, this.state.location);
         formData.append('sender', this.state.sender);
         formData.append('s_attachments', this.state.s_attachments);
         formData.append('receiver', this.state.receiver);
         formData.append('r_address', this.state.publickey);
-        formData.append('message', this.state.message);
+        formData.append('message', message);
         formData.append('attachment', this.state.selectFile.imgUpload);
+        formData.append('visibility', this.state.visibility);
+        formData.append('s_key', s_key);
+
 
         axios.post('/api/propose/request', formData)
-        .then(res => {
-            // console.log(res);
-            // console.log(res.data);
-            PubSub.publish('sendPromise');
-        })
+            .then(res => {
+                // console.log(res);
+                // console.log(res.data);
+                PubSub.publish('sendPromise');
+            })
+
+        axios.post('api/noti/create', formData);
+        console.log(formData);
+
+        const socket = socketIOClient(this.state.host);
+        socket.emit('createNoti', this.state.receiver);
 
         this.setState({
-            show_promise: false
+            show_promise: !this.state.show_promise
         })
-
-        axios.post('api/noti/create', formData )
     }
 
     render() {
@@ -225,21 +294,31 @@ class AddPropose extends Component {
                             </div>
                         </div>
                         <div className="add_more">
-                            <label className="more-infor" htmlFor="upload">
+                            <div className="more-infor" htmlFor="upload">
                                 <span className="icon-photo"></span>
                                 <label htmlFor="upload" >Photo</label>
                                 <input type="file" id="upload" accept="img, mp4" onChange={this.handleUploadImg} style={{ display: "none" }} />
-                            </label>
+                            </div>
 
-                            <label className="more-infor" onClick={this.showInputPlaces} >
+                            <div className="more-infor" onClick={this.showInputPlaces} >
                                 <span className="icon-location" ></span>
                                 <label>Check-in</label>
-                            </label>
+                            </div>
 
-                            <label className="more-infor">
+                            <div className="more-infor" onClick={this.handleOption}>
                                 <MaterialIcon icon="arrow_drop_down" />
-                                <label>Public</label>
-                            </label>
+                                <div>
+                                    {this.state.choseThis}
+                                </div>
+
+                                <div className="option" style={{ display: this.state.show_option ? 'block' : 'none' }} >
+                                    <ul>
+                                        <li id='Public' onClick={(e) => { this.choseOption(e.target.id) }}>Public</li>
+                                        <li id='Private' onClick={(e) => { this.choseOption(e.target.id) }}>Private</li>
+                                        <li id='Unlisted' onClick={(e) => { this.choseOption(e.target.id) }}>Unlisted</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         {
                             this.state.isPlace && <LocationSearchInput getLocation={this.getLocation} />
@@ -255,6 +334,8 @@ class AddPropose extends Component {
                         <Button className="button-send" onClick={this.handleSendPromise}>send</Button>
                     </ModalFooter>
                 </Modal >
+
+                {/* End-add propose */}
             </div>
         )
     }
