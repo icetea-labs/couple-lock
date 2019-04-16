@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal } from 'reactstrap';
 import { connect } from 'react-redux';
-import MaterialIcon, { exit } from 'material-icons-react';
 
 const  mapStateToProps = (state) => {
   return {
@@ -35,7 +34,7 @@ class PopUp extends Component {
     for (let i = 0; i < 20; i++) {
       this.allComment.push(
         <div key={i}>
-          <img src={this.state.comment[0].avatar} alt="" />
+          <img type='photo' src={this.state.comment[0].avatar} alt="" />
           <label>{this.state.comment[0].content}</label>
         </div>
       )

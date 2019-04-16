@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import PubSub from 'pubsub-js';
 import ReceiverPromises from './ReceiverPromises';
-import AddPropose from './AddPropose';
+import AddPromise from './AddPromise';
 import PopularTag from './PopularTag';
 import SentPromises from './SentPromises';
 import { connect } from 'react-redux';
@@ -208,7 +208,7 @@ class SideBar extends Component {
       <div className="sidebar">
 
         {/* Chose friend */}
-        <AddPropose sender={window.getLoginUser()} />
+        <AddPromise sender={window.getLoginUser()} />
 
         {/* Show list Accepted Promise */}
         {acceptPromises.length > 0 && <h3 className="title title_promise">Accepted promise</h3>}

@@ -1,6 +1,6 @@
-export function addFriend(username, roomName, displayChat){
+export function addChat(username, roomName, displayChat){
     return {
-        type: 'ADD_FRIEND',
+        type: 'ADD_CHAT',
         username,
         roomName,
         displayChat
@@ -10,7 +10,7 @@ export function addFriend(username, roomName, displayChat){
 
 export function deleteFriend(username){
     return {
-        type: 'DELETE_FRIEND',
+        type: 'DELETE_CHAT',
         username
     }
 }

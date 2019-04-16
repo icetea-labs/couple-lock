@@ -1,29 +1,21 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import Config from '../firebase/Config';
 import Message from './Message';
-import PubSub from 'pubsub-js';
 import { connect } from 'react-redux';
-// import { number, string, object } from 'prop-types';
 import MaterialIcon from 'material-icons-react';
 import * as chatsocket from '../../../../../../socket/chatsocket';
 import * as socketClientIO from 'socket.io-client';
-import { addMessage } from '../../../../../../reducers/actions/message';
+import axios from 'axios';
 
-
-firebase.initializeApp(Config);
-// Initialize Cloud Firestore through Firebase
-
-const mapStateToProps = (state) => ({ ...state.initListFriend, ...state.handleMessage });
+const mapStateToProps = (state) => ({ ...state.handleListChat, ...state.handleMessage });
 
 const mapDispatchToProps = (dispatch) => ({
     closeThis: (username) => dispatch({
-        type: 'DELETE_FRIEND',
+        type: 'DELETE_CHAT',
         username,
     }),
 
     addChat: (username) => dispatch({
-        type: 'ADD_FRIEND',
+        type: 'ADD_CHAT',
         // eslint-disable-next-line no-undef
         usename,
     }),
@@ -46,13 +38,16 @@ class ChatBox extends Component {
             message_item: null,
             see_chat: false,
             is_hidden: true,
-            message_input: 'hello',
+            message_input: '',
             avatarURL: localStorage.getItem("img_url"),
             id: localStorage.getItem("U_I"),
             ramdom_id_message: "",
             messages: [],
             list_message: [],
-
+            possible: "abcdefghijklmnopqrstuvwxyz0123456789",
+            receiver: [],
+            avatar: '',
+            sender: localStorage.getItem('username'),
             // Redux test
 
         }
@@ -72,9 +67,13 @@ class ChatBox extends Component {
 
     componentDidMount() {
         socket.on("receiveMessage", (message, roomName, receiver) => {
-            if (window.getLoginUser() === receiver) {
-                this.props.addMessage(roomName, message);
-                // alert('ok');
+            for (let i = 0; i < receiver.length; i++) {
+                if ( this.state.sender === receiver[i].username) {
+                    this.props.addMessage(roomName, message);
+                    this.setState({
+                        avatar: receiver[i].avatar
+                    })
+                } 
             }
         })
     }
@@ -98,32 +97,40 @@ class ChatBox extends Component {
     }
 
     handleChange = (e) => {
+
         this.setState({
             message_input: e.target.value
         })
+
     }
 
     sendMessage = (e) => {
-        // for (let i = 0; i < 20; i++) {
-        //     this.state.random_id_message += this.state.possible.charAt(Math.floor(Math.random() * 20));
-        // }
-        var mesage = {
-            id: 1,
-            username: window.getLoginUser(),
-            timestamp: Date.now(),
-            content: e.target.value,
-            roomName: 'paulra_sotatek'
-        }
-
         if (e.key === 'Enter') {
             // console.log(this.state.message_input);
-            var roomName = 'paulra_sotatek';
-            var receiver = 'paulra';
+            e.preventDefault();
 
-            chatsocket.sendMessage(mesage, roomName, receiver);
+            var roomName = 'paulra_sotatek';
+            let random_id_message = ''
+            for (let i = 0; i < 16; i++) {
+                random_id_message += this.state.possible.charAt(Math.floor(Math.random() * this.state.possible.length));
+            }
+
+            var message = {
+                id: random_id_message,
+                username: window.getLoginUser(),
+                timestamp: Date.now(),
+                content: e.target.value,
+                roomName: 'paulra_sotatek'
+            }
+
+            this.props.addMessage(roomName, message);
+
+            chatsocket.sendMessage(message, roomName, this.state.sender);
             this.setState({
                 message_input: null
             })
+
+            e.target.value = null;
         }
     }
 
@@ -132,19 +139,15 @@ class ChatBox extends Component {
             <div className="display_chatbox " style={{ display: this.state.is_hidden ? 'block' : 'none', width: this.state.see_chat ? '300px' : '200px' }}>
                 <div className="chat_box" style={{ width: this.state.see_chat ? '300px' : '200px' }}>
                     <div className="header__box" onClick={this.hiddenMessage} >
-                        <label>{window.getLoginUser() }</label>
+                        <label>{window.getLoginUser()}</label>
                         <MaterialIcon icon="phone" />
                         <button className="btn_close" onClick={this.hiddenChat}>x</button>
                     </div>
                     <div className="chat__content" style={{ display: this.state.see_chat ? 'block' : 'none' }}>
                         <div>
                         </div>
-                        <div className="inside_message">
-                            <img src={this.state.avatarURL} />
-                            <div className="content_message"><label id="friend_message" >Chào người anh em</label></div>
-                        </div>
                         <div className="content_message">
-                            <Message owner={window.getLoginUser()} messages={this.props.messages} roomName='paulra_sotatek' />
+                            <Message owner={window.getLoginUser()} messages={this.props.messages} roomName='paulra_sotatek' avatar={this.state.avatar} />
                         </div>
                     </div>
                     <div className="chat__send" style={{ display: this.state.see_chat ? 'block' : 'none' }} >

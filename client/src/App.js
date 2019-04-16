@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import MaterialIcon, { autorenew } from 'material-icons-react';
 
 // scss
 import './resources/assets/sass/home/app.scss';

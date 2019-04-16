@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
 class ToolTip extends Component {
-    constructor(props){
-        super(props)
+    constructor(){
+        super()
+
+        this.state = {}
     }
 
     render() {

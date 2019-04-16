@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => ({...state.handlListFriend});
+const mapStateToProps = (state) => ({ ...state.handlListChat });
 
 const mapDispatchToProps = (dispatch) => ({
     // eslint-disable-next-line no-unused-expressions
     addFriendChat: (username) => {
         dispatch({
-            type: 'ADD_FRIEND',
+            type: 'ADD_CHAT',
             username,
         })
     }
@@ -23,12 +23,12 @@ class FriendList extends Component {
             _is_online: true,
             amountChatBox: 0,
             targetChat: [],
-            see_list: true,
+            see_list: false,
             target: 'show',
             all_friend: [
-                { username: 'paulra', display_name: 'Paula Woker', status: true },
-                { username: 'tradatech', display_name: 'Truong Thi', status: false },
-                { username: 'sotatek', display_name: 'Sota la', status: true }
+                { username: 'paulra', display_name: 'Paula Woker', avatar: '' },
+                { username: 'tradatech', display_name: 'Truong Thi', avatar: '' },
+                { username: 'sotatek', display_name: 'Sota la', avatar: '' }
             ],
             test: ' '
         }
@@ -42,8 +42,7 @@ class FriendList extends Component {
             this.list_friend.push(
                 <label key={i} >
                     <div>
-                        <div className="_is_online" style={this.state._is_online ? { backgroundColor: "red" } : { backgroundColor: "green" }}></div>
-                        <span className="span_common" key={i} id= {this.state.all_friend[i].username} onClick={(event) => this.addFriend(event.target.id)} >
+                        <span className="span_common" key={i} id={this.state.all_friend[i].username} onClick={(event) => this.addFriend(event.target.id)} >
                             {this.state.all_friend[i].username}
                         </span>
                     </div>

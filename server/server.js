@@ -10,9 +10,7 @@ var express = require('express')
   , cookieParser = require('cookie-parser')
   , socketIO = require('socket.io')
   , http = require('http')
-  , MyModel = require('./models/user-model')
-  , chat_room = require('./chat/chatroom');
-
+  , db = require('./models/user-model')
 
 const server = http.createServer(app);
 
@@ -71,30 +69,59 @@ io.on('connection', socket => {
     console.log('user Disconnected');
   })
 
-  // TODO: listen on event Send message.
+  //  listen on event Send message.
+  socket.on('sendMessage', (message, roomName, sender) => {
 
-  socket.on('sendMessage', (message, roomName, receiver) => {
+    // console.log(sender);
 
-    // TODO: checkmessage
-    console.log('Server receive a message')
-    console.log(message, roomName, receiver);
-    // TODO: find chat room,
+    // find chat room,
     mongoose.connect(keys.mongoDB.dbURI, () => {
-      MyModel.findOne({ "name": roomName })
-        .then((data, err) => {
-          // TODO: Client receiver roomChat,
 
-          // TODO: Save message to chatRoom
-          // console.log(data);
-          var test = data.toJSON();
-          console.log(test.members);
-        }).catch(err => {
+      var my_querry = { name: "paulra_sotatek" };
+      var new_message = {
+
+        $push: {
+          messages: {
+            $each: [{
+              id: message.id,
+              content: message.content,
+              timestamp: message.timestamp,
+              owner: message.owner}],
+
+            $possition: -1
+          }
+        }
+      }
+
+      db.update(my_querry, new_message, function (err, res) {
+        if (err) {
           console.log(err);
-        })
-    })
+          throw err;
+        };
+        console.log(res);
+        console.log("add 1 message");
+      }).exec()
+        .then((data) => { console.log(data) })
+        .catch(err => { console.log(err) });
+
+      // Send to receiver
+      db.findOne({ "name": roomName })
+        .then((data) => {
+          // Find all member in chatroom
+          var receiver = [];
+          let intance = data.toJSON();
+          for (let i = 0; i < intance.members.length; i++) {
+            if (sender !== intance.members[i].username) {
+              receiver.push(intance.members[i]);
+            }
+          }
+          // console.log(receiver);
+          io.sockets.emit('receiveMessage', message, roomName, receiver);
+        }).catch(err => { console.log(err) });
+
+    });
 
     // TODO : client receiver roomchat
-    io.sockets.emit('receiveMessage', message, roomName, receiver);
 
   });
 });

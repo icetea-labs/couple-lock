@@ -63,7 +63,6 @@ exports.update = (id, newProps) => {
             event: 'propose.reply',
             eventData: data
         })
-
         return data
     })
 }

@@ -7,7 +7,7 @@ class People extends Component {
         super(props)
 
         this.state = {
-            is_open: true
+            is_open: false
         }
 
         // this.is_open = true
@@ -25,10 +25,10 @@ class People extends Component {
     }
 
     fetchData = () => {
-        for ( let i = 0 ; i < 8 ; i ++){
+        for ( let i = 0 ; i < 3 ; i ++){
             this.acceptFriend.push(
-                <div className="invite" >
-                    <image />
+                <div className="invite" key={i} >
+                    {/* <image /> */}
                     <label>name</label>
                     <span id="confirm" >CONFIRM</span>
                     <span id="delete">DELETE</span>

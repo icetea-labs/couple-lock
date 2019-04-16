@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { number, string, object } from 'prop-types';
-import soketClientIO from 'socket.io-client';
-import { connect } from 'react-redux';
 
 export default class Message extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      possible: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-      ramdom_id_message: "",
+      possible: "abcdefghijklmnopqrstuvwxyz0123456789",
       messages: [],
       list_message: [],
       displayChat: []
@@ -29,10 +25,23 @@ export default class Message extends Component {
 
   renderChat = () => {
     this.state.displayChat = this.state.list_message.map((item, index) => {
+
+      let show_img = true;
+      let id = 'friend_message';
+      if (this.props.owner === item.username) {
+        id = 'my_message';
+        show_img = false;
+      }
+
       return (
-        <div key={index} id='my_message'>
-          <span>{item.content}</span>
+        <div className="message">
+          <div className="avatar">
+          </div>
+          <div key={item.id} id={id}>
+            <span>{item.content}</span>
+          </div>
         </div>
+
       );
     })
 
@@ -41,26 +50,16 @@ export default class Message extends Component {
     })
   }
 
-//       arrayMessage.sort();
+  render() {
+    return (
 
-//       for (let i = 0; i < querySnapDocument.docs.length; i++) {
-//         var sortMessage = messages.filter(
-//           (value) => {
-//             return value.timestamp === arrayMessage[i]
-//           }
-//         );
-//         this.state.list_message.push(sortMessage[0]);
-//       }
-
-render() {
-  return (
-    <div>
-      {
-        this.state.displayChat
-      }
-    </div>
-  )
-}
+      <div className="content_message">
+        {
+          this.state.displayChat
+        }
+      </div>
+    )
+  }
 }
 
 // export default Message;
