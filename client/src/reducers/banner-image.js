@@ -20,6 +20,7 @@ axios.get('/api/propose/list?username=' + localStorage.getItem('username'))
             if (instance.data.data[0].r_attachments.length !== 0) {
                 initBanner.img_receiver = instance.data.data[0].r_attachments[0].url;
             }
+            
             initBanner.sender = instance.data.data[0].sender;
             initBanner.receiver = instance.data.data[0].receiver;
         }

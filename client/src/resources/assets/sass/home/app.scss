@@ -686,17 +686,6 @@ img{
       }
     }
   }
-  .img_preview{
-    display: inline-flex;
-    width: 100px;
-    max-height: 100px;
-    margin-top: 10px;
-    overflow: hidden;
-    img{
-      height: auto;
-      object-fit: cover;
-    }
-  }
   .action{
     width: 100%;
     margin-top: 16px;
@@ -776,7 +765,17 @@ img{
     }
   }
 }
-
+.img_preview{
+  display: inline-flex;
+  width: 100px;
+  max-height: 100px;
+  margin-top: 10px;
+  overflow: hidden;
+  img{
+    height: auto;
+    object-fit: cover;
+  }
+}
 .dialogue_chat{
   width:100%;
   margin-top: 42px;
@@ -882,6 +881,7 @@ img{
   width: 280px;
   border-radius: 10px;
   padding: 20px;
+  margin-bottom: 50px;
   background: $color-white;
   .btn_add_promise{
     width: 172px;
@@ -1011,16 +1011,91 @@ img{
 }
 
 .modal{
-  .accept_promises_request{
-    background-image: linear-gradient(332deg, #b276ff, #fe8dc3);
-    border: none;
+  .modal-content{
+    border-radius: 10px;
+    // min-width: 600px;
   }
-  .cancel_promises_request{
-    border: none;
+  .modal-header{
+    background: $color-violet;
     color: $color-white;
+    padding: 17px 35px;
+    border-bottom: none;
+    .modal-title{
+      font-size: $font-large;
+    }
+    .close{
+      color: $color-white;
+      font-size: $font-large;
+      font-size: 30px;
+      padding: 10px 0;
+      text-shadow: none;
+      opacity: 1;
+      font-weight: normal;
+    }
+  }
+  .modal-body{
+    padding: 30px 35px;
   }
 }
-
+.send_message{
+  color: $color-black-min;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.msg_text{
+  min-height: 87px;
+  color: $color-grey-scorp;
+  padding: 15px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.btn_promise_pop{
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  .btn_pop{
+    width: 172px;
+    line-height: 46px;
+    font-size: $font-medium;
+    font-weight: 600;
+    border-radius: 23px;
+  }
+  .btn_background{
+    color: $color-white;
+    background-image: linear-gradient(340deg, #b276ff, #fe8dc3);
+  }
+  .btn_border{
+    margin-right: 30px;
+    border: 1px solid $color-grey;
+    background: $color-white;
+    color: $color-black-min;
+  }
+}
+button:disabled,
+button[disabled]{
+  opacity: .6;
+  cursor: not-allowed;
+}
+.upload_img_promise{
+  width: 24px;
+  height: 23px;
+  display: inline-block;
+  margin-right: 20px;
+  position: relative;
+  overflow: hidden;
+  span{
+    font-size: 24px;
+  }
+  input[type=file]{
+    width: 100%;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+}
 .popular_tags{
   .popular_tags__list{
     display: inline-block;
@@ -1050,45 +1125,27 @@ img{
     .detail_user{
       display: flex;
       align-items: center;
-      .avatar{
-        width: 80px;
-        height: 80px;
-        border:1px solid $color-violet;
-        border-radius: 3px;
-        padding: 3px;
-        margin-right: 15px;
-        overflow: hidden;
-      }
-      .displayname{
-        font-size: $font-root;
-        color: $color-grey-shuttle;
-        font-weight: 600;
-        text-transform: capitalize;
-      }
-      .username{
-        font-size: $font-smaller;
-        color: $color-violet;
+      .user_send{
+        color: $color-black-min;
         font-weight: 500;
       }
     }
+    .message{
+      line-height: 1.57;
+      text-align: left;
+      color: $color-grey-scorp;
+    }
     .message, .img_attachment{
-      margin-top: 10px;
+      margin-top: 25px;
     }
-    &__btn__accept, &__btn__delete{
-      background: $color-violet;
-      color: $color-white;
-      font-weight: 600;
-      padding: 3px 6px;
-      border-radius: 3px;
-      margin-right: 10px;
-      margin-top: 10px;
+    .img_attachment{
+      text-align: center;
     }
-    &__btn__delete{
-      background: $color-grey-dark;
+    &__btn{
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
     }
-  }
-  button{
-    background: none;
   }
 }
 .rp_message{
@@ -1120,92 +1177,122 @@ img{
 
 .popup_preview_image{
   position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s ease;
+  z-index: 1000;
+  &.active{
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    visibility: visible;
+  }
+  .popup_container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba($color-black, 0.9)
+  }
+  .btn_close{
+    width: 65px;
+    line-height: 65px;
+    font-size: 40px;
+    background: rgba(0, 0, 0, 0.1);
+    color: $color-white;
+    font-weight: 500;
+    position: absolute;
     top: 0;
-    bottom: 0;
-    left: 0;
     right: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease;
-    z-index: 1000;
-    &.active{
-      opacity: 1;
+    z-index: 10000;
+  }
+  .slide_container{
+    color: $color-white;
+    .slide_item {
+      top: 50%;
+      left: 50%;
+      height: auto;
+      position: absolute;
+      margin: auto;
+      opacity: 0;
+      transform: translate(-50%, -50%);
       transition: opacity 0.5s ease;
-      visibility: visible;
+      &.active{
+        opacity: 1;
+      }
     }
-    .popup_container {
-      position: relative;
+    .slide_content{
       width: 100%;
-      height: 100%;
-    }
-    .overlay{
+      min-height: 65px;
+      padding-top: 10px;
+      text-align: center;
       position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba($color-black, 0.9)
-    }
-    .btn_close{
-      width: 65px;
-      line-height: 65px;
-      font-size: 40px;
-      background: rgba(0, 0, 0, 0.9);
-      color: $color-white;
-      font-weight: 500;
-      position: absolute;
+      margin: auto;
+      opacity: 0;
       top: 0;
+      left: 50%;
+      background: rgba(51, 51, 51, 0.6);
+      transform: translateX(-50%);
+      transition: opacity 0.6s ease;
+      z-index: 100;
+      &.active{
+        opacity: 1;
+      }
+    }
+  }
+  .slide_btn {
+    button {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      background: rgba(152, 152, 152, 0.3);
+      color: #ffffff;
+      font-size: 18px;
+    }
+    .btn_next{
+      top: 50%;
+      transform: translateY(-50%);
       right: 0;
     }
-    .slide_container{
-      color: $color-white;
-      .slide_item {
-        top: 50%;
-        left: 50%;
-        width: auto;
+    .btn_prev{
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+    }
+  }
+  .gallery_img {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    background: rgba(51, 51, 51, 0.6);
+    padding: 15px;
+    transform: translateX(-50%);
+    .img_items {
+      display: inline-flex;
+      width: 90px;
+      height: 90px;
+      margin-right: 15px;
+      overflow: hidden;
+      img{
         height: auto;
-        position: absolute;
-        margin: auto;
-        opacity: 0;
-        transform: translate(-50%, -50%);
-        transition: opacity 0.5s ease;
-        &.active{
-          opacity: 1;
-        }
-      }
-      .slide_content{
-        width: 100%;
-        text-align: center;
-        position: absolute;
-        margin: auto;
-        opacity: 0;
-        bottom: 0;
-        left: 50%;
-        background: rgba(72, 72, 72, 0.36);
-        transform: translateX(-50%);
+        object-fit: cover;
+        opacity: 0.5;
         transition: opacity 0.6s ease;
-        z-index: 100;
+        border: 3px solid $color-grey-scorp;
         &.active{
           opacity: 1;
+          border: 3px solid $color-white;
         }
       }
     }
-    .slide_btn {
-      button {
-        position: absolute;
-        width: 45px;
-        height: 45px;
-        background: rgba(152, 152, 152, 0.3);
-        color: #ffffff;
-        font-size: 18px;
-      }
-      .btn_next{
-        top: 50%;
-        transform: translateY(-50%);
-        right: 0;
-      }
-      .btn_prev{
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0;
-      }
-    }
+  }
 }

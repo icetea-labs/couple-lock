@@ -94,7 +94,7 @@ class DialogueChat extends Component {
       });
       return data;
     }else if(tagsFilterResult && tagsFilterResult.length === 0){
-      return <div className="msg_notags">Tags not found !!!</div>
+      return <div className="msg_notags">Tags not found</div>
     }else{
       return(
         this.state.memoryList.length > 0 && this.state.memoryList.map((item, index) => {

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import MaterialIcon from 'material-icons-react';
 import * as chatsocket from '../../../../../../socket/chatsocket';
 import * as socketClientIO from 'socket.io-client';
-import axios from 'axios';
 
 const mapStateToProps = (state) => ({ ...state.handleListChat, ...state.handleMessage });
 
@@ -27,7 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
     })
 })
 
-const socket = socketClientIO('localhost:5000');
+const socket = socketClientIO(process.env.develop_mode);
 
 class ChatBox extends Component {
     constructor() {

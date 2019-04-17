@@ -6,6 +6,7 @@ import AddPromise from './AddPromise';
 import PopularTag from './PopularTag';
 import SentPromises from './SentPromises';
 import { connect } from 'react-redux';
+import DeniedPromises from './DeniedPromises';
 
 const mapStatetoProps = (state) => ({
   ...state.handleBanner
@@ -121,8 +122,6 @@ class SideBar extends Component {
           receiver: p.receiver,
           r_react: p.r_react,
           viewed: p.viewed,
-          // s_attachments: p.s_attachments,
-          // s_message: p.s_message
         }
       } else {
         sidebarItems[p.sender] = {
@@ -132,7 +131,9 @@ class SideBar extends Component {
           r_react: p.r_react,
           viewed: p.viewed,
           s_attachments: p.s_attachments,
-          s_message: p.s_message
+          s_message: p.s_message,
+          s_key: p.s_key,
+          visibility: p.visibility,
         }
       }
       this.setState({
@@ -164,6 +165,8 @@ class SideBar extends Component {
           username: obj[key].user.username,
           displayName: obj[key].user.displayName,
           s_message: obj[key].s_message,
+          s_key: obj[key].s_key,
+          visibility: obj[key].visibility,
           s_attachments: obj[key].s_attachments
         }
       })
@@ -229,6 +232,7 @@ class SideBar extends Component {
         }
         <ReceiverPromises receiverPromises={receiverPromises}/>
         <SentPromises sentPromises={sentPromises}/>
+        <DeniedPromises deniedPromises={deniedPromises} />
         <PopularTag />
       </div>
     );

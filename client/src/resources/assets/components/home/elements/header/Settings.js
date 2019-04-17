@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MaterialIcon, { settings } from 'material-icons-react';
+import MaterialIcon from 'material-icons-react';
 import ToolTip from '../../../helper/ToolTip';
 
 class Settings extends Component {

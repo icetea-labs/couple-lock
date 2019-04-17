@@ -10,8 +10,8 @@ const socket = socketIOClient('localhost:5000');
 
 class Content extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             name_noti: [
                 'đã tạo một hẹn ước mới với ',
@@ -88,7 +88,9 @@ class Content extends Component {
                         // decode message
                         var messageDeCoded = decryptMessage(this.inforNoti.message, s_key).messageEncrypt;
 
-                        console.log(messageDeCoded);
+                        // console.log(messageDeCoded);
+                    } else {
+                        var messageDeCoded = this.inforNoti.message 
                     }
 
                     this.text = this.inforNoti.text;
@@ -182,7 +184,7 @@ class Content extends Component {
                         text: this.state.name_noti[2],
                         have_img: false,
                         s_key,
-                        r_key
+                        r_key,
                     }
         }
     }

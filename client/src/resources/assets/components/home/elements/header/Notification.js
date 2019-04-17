@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
 import MaterialIcon from 'material-icons-react';
-import axios from 'axios';
 import Content from './notification/Content'
 import ToolTip from '../../../helper/ToolTip';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => ({ ...state.handleNoti });
+
+const mapDispatchToProps = (dispatch) => ({
+});
 
 class Notification extends Component {
 
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
 
         this.state = {
             see_noti: false,
             total_noti: 1,
         }
-
-        this.total_noti = 1;
     }
 
-    componentWillMount() {
-        axios.get('/api/noti/list?username=').then(data =>
-            this.total_noti = data.data.data.length
-        )
+    componentWillMount(){
+        console.log(this.props)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props !== nextProps) {
+
+        }
     }
 
     seeNotification = () => {
@@ -30,7 +37,7 @@ class Notification extends Component {
     }
 
     toCheckViewed() {
-        axios.get()
+
     }
 
     render() {
@@ -40,7 +47,7 @@ class Notification extends Component {
                     <MaterialIcon icon="notifications" color="white" />
                     <div className="number_notification">
                         <span >
-                            {this.total_noti}
+                            {this.props.handleNoti}
                         </span>
                     </div>
                     <ToolTip name="thông báo" />
@@ -64,4 +71,4 @@ class Notification extends Component {
     }
 }
 
-export default Notification;
+export default connect(mapStateToProps, mapDispatchToProps)(Notification);
